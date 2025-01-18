@@ -1,9 +1,9 @@
 package com.example.eventum.signUp.vIewModel
 
+import RetrofitClient
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.eventum.signUp.api.SignUpRepository
 import com.example.eventum.signUp.event.SignUpEvent
 import com.example.eventum.signUp.model.SignUpModel
 import com.example.eventum.signUp.model.User
@@ -13,10 +13,21 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SignUpViewModel: ViewModel() {
-    private val signUpApi = RetrofitClient.instance.create(SignUpRepository::class.java)
     val signUpModel = MutableStateFlow(SignUpModel())
-    var user: User = User(email = "", password = "")
 
+    init {
+        viewModelScope.launch {
+            try {
+                val users = RetrofitClient.instance.getUsers()
+                users.map {
+                    Log.e("kolchak", it.email)
+                }
+            }
+            catch (e: Exception) {
+                Log.e("error", e.message.toString())
+            }
+        }
+    }
 
     private fun updateEmail(email: String) {
         signUpModel.value.email = email
@@ -27,16 +38,7 @@ class SignUpViewModel: ViewModel() {
     }
 
     private fun finishRegistration() {
-        user.email = signUpModel.value.email.toString()
-        user.password = signUpModel.value.password.toString()
-        viewModelScope.launch {
-            try {
-                signUpApi.createUser(user)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-        Log.e("kolchak", "${signUpModel.value.email} ${signUpModel.value.password}")
+
     }
 
     fun handleEvent(signUpEvent: SignUpEvent) {

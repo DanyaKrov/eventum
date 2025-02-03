@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Eventum</string>
+    // sign up page
+    <string name="hello">Hello</string>
+    <string name="create_account">Create an account</string>
+    <string name="first_name">Your email</string>
+    <string name="second_name">Second name</string>
+    <string name="enter_password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="register">Register</string>
+    <string name="have_account">Have an account? Click here</string>
+    <string name="PasswordsIdentity">Passwords need to be identical</string>
+    <string name="PasswordLength">Passwords need to be at least 8 letters</string>
+    <string name="EmailRequirement">Please enter valid email address</string>
+    // login page
+    <string name="login_into_account">Login into your account</string>
+    <string name="login">Login</string>
+
+</resources>

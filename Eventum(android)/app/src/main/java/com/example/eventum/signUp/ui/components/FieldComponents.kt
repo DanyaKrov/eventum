@@ -14,13 +14,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.eventum.signUp.vIewModel.SignUpViewModel
 import com.example.eventum.signUp.event.SignUpEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BasicTextField(labelValue: String, viewModel: SignUpViewModel = viewModel()) {
+fun BasicTextField(labelValue: String, viewModel: SignUpViewModel = hiltViewModel(),
+                   changeFunction: (String) -> Unit) {
 
     var textValue by remember { mutableStateOf("") }
 
@@ -29,7 +30,7 @@ fun BasicTextField(labelValue: String, viewModel: SignUpViewModel = viewModel())
         value = textValue,
         onValueChange = {
             textValue = it
-            viewModel.handleEvent(SignUpEvent.EmailChanged(it)) },
+            changeFunction(it) }, // call link to function in viewModel
         maxLines = 2,
         label = { Text(labelValue) }
     )
@@ -38,7 +39,8 @@ fun BasicTextField(labelValue: String, viewModel: SignUpViewModel = viewModel())
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SecretTextField(labelValue: String, viewModel: SignUpViewModel = viewModel()) {
+fun SecretTextField(labelValue: String,
+                    changeFunction: (String) -> Unit) {
 
     var textValue by remember { mutableStateOf("") }
 
@@ -47,7 +49,7 @@ fun SecretTextField(labelValue: String, viewModel: SignUpViewModel = viewModel()
         value = textValue,
         onValueChange = {
             textValue = it
-            viewModel.handleEvent(SignUpEvent.PasswordChanged(it))},
+            changeFunction(it) }, // call link to function in viewModel
         label = { Text(labelValue) },
         maxLines = 2,
         visualTransformation = PasswordVisualTransformation(),

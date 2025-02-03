@@ -16,15 +16,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.eventum.signUp.vIewModel.SignUpViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.eventum.signUp.event.SignUpEvent
+import com.example.eventum.signUp.vIewModel.SignUpViewModel
 
 @Composable
-fun ButtonComponent(labelvalue: String, viewModel: SignUpViewModel = viewModel()) {
+fun ButtonComponent(labelvalue: String,
+                    clickFunction: () -> Unit) {
     Button(
         modifier = Modifier.fillMaxWidth(),
-        onClick = { viewModel.handleEvent(SignUpEvent.ButtonClicked())},
+        onClick = clickFunction,
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(Color.Transparent),
         shape = RoundedCornerShape(50.dp)

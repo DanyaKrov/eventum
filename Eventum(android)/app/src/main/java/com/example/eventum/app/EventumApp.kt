@@ -11,7 +11,5 @@ fun EventumApp() {
     Surface (
         modifier = Modifier.fillMaxSize(),
         color = Color.White
-    ) {
-
-    }
+    ) {}
 }

@@ -7,6 +7,12 @@ sealed class SignUpEvent {
     class PasswordChanged(val password: String):
         SignUpEvent()
 
-    class ButtonClicked():
+    class SignUpFinished():
+        SignUpEvent()
+
+    class MoveToLogin():
+        SignUpEvent()
+
+    class SecondPasswordChanged(val password: String):
         SignUpEvent()
 }

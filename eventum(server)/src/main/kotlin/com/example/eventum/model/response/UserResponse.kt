@@ -7,5 +7,6 @@ data class UserResponse(
     val name: String,
     val email: String,
     val picture: String,
-    val users : MutableSet<User>
+    val users : MutableSet<User>,
+    val password: String
 )

@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.example.eventum.api.RetrofitClient
 import com.example.eventum.login.api.LoginRepository
+import com.example.eventum.mainPage.api.EventsRepository
 import com.example.eventum.signUp.api.SignUpRepository
 import com.example.eventum.util.StringRepository
 import dagger.Module
@@ -33,6 +34,12 @@ object HiltModule { // dependency injection module for using StringRepository cl
     @Singleton
     fun provideLoginRepository(): LoginRepository {
         return RetrofitClient.createLoginInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideEventsRepository(): EventsRepository {
+        return RetrofitClient.createEventsInstance()
     }
 
     @Provides

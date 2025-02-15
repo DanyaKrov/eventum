@@ -1,11 +1,11 @@
 package com.example.eventum.api
 
 import com.example.eventum.login.api.LoginRepository
+import com.example.eventum.mainPage.api.EventsRepository
 import com.example.eventum.signUp.api.SignUpRepository
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 object RetrofitClient {
     private const val BASE_URL = "http://10.0.2.2:8000/"
@@ -28,5 +28,9 @@ object RetrofitClient {
 
     fun createLoginInstance(): LoginRepository {
         return instance.create(LoginRepository::class.java)
+    }
+
+    fun createEventsInstance(): EventsRepository {
+        return instance.create(EventsRepository::class.java)
     }
 }

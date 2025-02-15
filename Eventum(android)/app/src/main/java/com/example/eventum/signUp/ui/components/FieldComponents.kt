@@ -15,8 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.eventum.signUp.vIewModel.SignUpViewModel
-import com.example.eventum.signUp.event.SignUpEvent
+import com.example.eventum.signUp.viewModel.SignUpViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

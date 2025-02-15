@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -20,7 +22,6 @@ import com.example.eventum.login.event.LoginEvent
 import com.example.eventum.login.viewModel.LoginViewModel
 import com.example.eventum.signUp.ui.components.BasicTextField
 import com.example.eventum.signUp.ui.components.ButtonComponent
-import com.example.eventum.signUp.ui.components.ErrorTextComponent
 import com.example.eventum.signUp.ui.components.HeaderTextComponent
 import com.example.eventum.signUp.ui.components.SecretTextField
 
@@ -28,6 +29,13 @@ import com.example.eventum.signUp.ui.components.SecretTextField
 @Preview
 fun LoginScreen(navController: NavHostController = rememberNavController(),
                 viewModel: LoginViewModel = hiltViewModel()) {
+    val navigationStatus by viewModel.navigationStatusRead.collectAsState()
+    LaunchedEffect(navigationStatus) {
+        when(navigationStatus) {
+            "move_to_signUp" -> navController.navigate("login")
+            "logged_in" -> navController.navigate("main_page")
+        }
+    }
     Surface (
         modifier = Modifier
             .fillMaxSize()

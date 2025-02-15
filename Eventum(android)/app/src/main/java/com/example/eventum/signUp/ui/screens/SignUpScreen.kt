@@ -25,7 +25,7 @@ import com.example.eventum.signUp.ui.components.BasicTextField
 import com.example.eventum.signUp.ui.components.ButtonComponent
 import com.example.eventum.signUp.ui.components.ErrorTextComponent
 import com.example.eventum.signUp.ui.components.SecretTextField
-import com.example.eventum.signUp.vIewModel.SignUpViewModel
+import com.example.eventum.signUp.viewModel.SignUpViewModel
 
 
 @Composable

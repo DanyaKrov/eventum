@@ -1,13 +1,13 @@
-package com.example.eventum.signUp.vIewModel
+package com.example.eventum.signUp.viewModel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eventum.R
-import com.example.eventum.signUp.api.SignUpRepository
 import com.example.eventum.signUp.event.SignUpEvent
 import com.example.eventum.signUp.model.SignUpModel
 import com.example.eventum.api.model.UserRequest
+import com.example.eventum.signUp.api.SignUpRepository
 import com.example.eventum.util.StringRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +40,7 @@ class SignUpViewModel @Inject constructor(
     private fun finishRegistration() {
         viewModelScope.launch {
             val user = UserRequest(name = signUpModel.name.toString(),
-                email = signUpModel.email.toString())
+                email = signUpModel.email)
             if (checkRequirements()) {
                 try {
                     repository.createUser(user)

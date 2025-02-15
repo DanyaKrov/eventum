@@ -15,5 +15,7 @@
     // login page
     <string name="login_into_account">Login into your account</string>
     <string name="login">Login</string>
+    <string name="PasswordNotBlank">You need to enter password</string>
+    <string name="EmailNotBlank">You need to enter email</string>
 
 </resources>

@@ -16,9 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.eventum.signUp.event.SignUpEvent
-import com.example.eventum.signUp.vIewModel.SignUpViewModel
 
 @Composable
 fun ButtonComponent(labelvalue: String,

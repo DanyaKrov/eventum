@@ -33,6 +33,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.springframework.ai:spring-ai-anthropic-spring-boot-starter")
+	implementation("mysql:mysql-connector-java:8.0.33")
+	implementation("com.mysql:mysql-connector-j")
 	runtimeOnly("com.mysql:mysql-connector-j")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

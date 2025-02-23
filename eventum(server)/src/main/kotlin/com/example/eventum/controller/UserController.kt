@@ -13,8 +13,8 @@ class UserController(private val userService: UserService) {
     @GetMapping
     fun getAll(): List<UserResponse> {return userService.getAll()}
 
-    @GetMapping("/getUserById")
-    fun getUserById(@RequestParam userId: Long): User = userService.getById(userId)
+    @GetMapping("/{userId}")
+    fun getUserById(@PathVariable userId: Long): User = userService.getById(userId)
 
     @GetMapping("/getUserByEmail")
     fun getUserByEmail(@RequestParam userEmail: String): User = userService.getByEmail(userEmail)
@@ -26,7 +26,7 @@ class UserController(private val userService: UserService) {
     fun update(@PathVariable id: Long, @RequestBody user: UserRequest) = userService.update(id, user)
 
     @PostMapping
-    fun create(@RequestBody user: UserRequest): UserResponse = userService.create(user)
+    fun create(@RequestBody user: UserRequest): User = userService.create(user)
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long, response: HttpServletResponse): String = userService.delete(id)

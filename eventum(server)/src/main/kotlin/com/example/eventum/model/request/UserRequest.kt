@@ -6,4 +6,5 @@ data class UserRequest(
     val picture: String = "",
     val password: String,
     val friends: List<Long> = listOf(),
+    val events: List<Long> = emptyList(),
 )

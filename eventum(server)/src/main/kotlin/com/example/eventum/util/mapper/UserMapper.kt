@@ -15,8 +15,10 @@ class UserMapper(
             entity.name,
             entity.email,
             entity.picture,
-            entity.friends,
-            entity.password)
+            entity.password,
+            entity.friends.map { it.id },
+            entity.events.map { it.id}
+        )
     }
 
     fun updateUser(user: User, newUser: UserRequest): User = user.apply {

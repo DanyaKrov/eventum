@@ -16,7 +16,6 @@ interface EventService {
     fun getAll(): List<EventResponse>
     fun update(id: Long, event: EventRequest): EventResponse
     fun getTargetContacts(id: Long): List<ContactResponse>
-    fun getTargetUsers(id: Long): List<UserResponse>
     fun delete(id: Long): String
     fun create(event: EventRequest): EventResponse
 }

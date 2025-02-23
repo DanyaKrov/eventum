@@ -5,6 +5,4 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface EventDao: CrudRepository<Event, Long> {
-    fun getById(id: Long): Event
-}
+interface EventDao: CrudRepository<Event, Long>

@@ -15,6 +15,6 @@ interface UserService {
     fun update(id: Long, user: UserRequest): UserResponse
     fun getContacts(id: Long): List<UserResponse>
     fun delete(id: Long): String
-    fun create(user: UserRequest): UserResponse
+    fun create(user: UserRequest): User
     fun getByIds(ids: List<Long>): List<User>
 }

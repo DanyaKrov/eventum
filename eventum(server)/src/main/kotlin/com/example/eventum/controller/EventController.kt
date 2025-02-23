@@ -22,9 +22,6 @@ class EventController(private val eventService: EventService) {
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): Event = eventService.getById(id)
 
-    @GetMapping("/{id}/users")
-    fun getUsers(@PathVariable id: Long): List<UserResponse> = eventService.getTargetUsers(id)
-
     @GetMapping("/{id}/contacts")
     fun getContacts(@PathVariable id: Long): List<ContactResponse> = eventService.getTargetContacts(id)
 

@@ -7,10 +7,10 @@ import java.time.LocalDateTime
 
 data class EventRequest(
     var name: String,
-    var description: String,
-    var time: LocalDateTime,
+    var description: String = "",
+    var time: String,
     var picture: String = "",
     var tag: Tag? = null, // tags of event
-    var usersIds: MutableSet<User> = mutableSetOf(), // users, which target in event
-    var contactsIds: MutableSet<Contact> = mutableSetOf(), // contacts, which target in event
+    var usersIds: List<Long> = listOf(), // users' ids, which target in event
+    var contactsIds: List<Long> = listOf(), // contacts' ids, which target in event
 )

@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UserDao: CrudRepository<User, Long> {
-    fun findById(userId: Long?): User
-    fun findByEmail(email: String?): User
+    fun findByEmail(email: String?): User?
 }

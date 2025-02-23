@@ -3,12 +3,14 @@ package com.example.eventum.service.impl
 import com.example.eventum.database.entity.Contact
 import com.example.eventum.database.entity.Event
 import com.example.eventum.database.repository.EventDao
+import com.example.eventum.database.repository.UserDao
 import com.example.eventum.exception.type.NotFoundException
 import com.example.eventum.model.request.EventRequest
 import com.example.eventum.model.response.ContactResponse
 import com.example.eventum.model.response.EventResponse
 import com.example.eventum.model.response.UserResponse
 import com.example.eventum.service.EventService
+import com.example.eventum.service.UserService
 import com.example.eventum.util.mapper.ContactMapper
 import com.example.eventum.util.mapper.EventMapper
 import com.example.eventum.util.mapper.UserMapper
@@ -22,7 +24,7 @@ class EventServiceImpl(
     private val contactMapper: ContactMapper
 )
     : EventService {
-    override fun getById(id: Long): Event = dao.getById(id)
+    override fun getById(id: Long): Event = dao.findById(id).orElseThrow {NotFoundException()}
 
     override fun getAll(): List<EventResponse> = dao.findAll().map {
         mapper.entityToResponse(it)
@@ -35,10 +37,6 @@ class EventServiceImpl(
 
     override fun getTargetContacts(id: Long): List<ContactResponse> = getById(id).contactsIds.map {
         contactMapper.entityToResponse(it)
-    }
-
-    override fun getTargetUsers(id: Long): List<UserResponse> = getById(id).usersIds.map {
-        userMapper.entityToResponse(it)
     }
 
     override fun delete(id: Long): String {

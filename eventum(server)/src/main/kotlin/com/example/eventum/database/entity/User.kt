@@ -25,5 +25,14 @@ data class User(
         joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)],
         inverseJoinColumns = [JoinColumn(name = "friend_id", referencedColumnName = "id", nullable = true)],
     )
-    var friends: MutableSet<User> = mutableSetOf()
+    var friends: MutableSet<User> = mutableSetOf(),
+
+    @ManyToMany
+    @JoinTable(
+        name = "user_events",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "event_id")],
+    )
+    var events: MutableSet<Event> = mutableSetOf(), // events, created by user
+
 )

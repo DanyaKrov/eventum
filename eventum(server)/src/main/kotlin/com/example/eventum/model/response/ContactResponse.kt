@@ -8,5 +8,4 @@ import jakarta.persistence.ManyToOne
 data class ContactResponse(
     var id: Long = 0,
     var name: String,
-    val user: UserResponse
 )

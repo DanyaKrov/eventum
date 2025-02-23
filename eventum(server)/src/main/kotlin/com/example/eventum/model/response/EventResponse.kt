@@ -7,9 +7,8 @@ data class EventResponse(
     val id: Long,
     val name: String,
     val description: String,
-    val time: LocalDateTime,
+    val time: String, // " yyyy-MM-dd format
     val picture: String,
     val tag: String, // tag of event
-    val usersIds: List<UserResponse>, // users, which target in event
-    val contactsIds: List<ContactResponse>, // contacts, which target in event
+    val contactsIds: List<ContactResponse> // contacts, which target in event
 )

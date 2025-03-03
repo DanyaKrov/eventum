@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.eventum.login.presentation.ui.screens.LoginScreen
-import com.example.eventum.mainPage.presentation.ui.screens.EventsScreen
-import com.example.eventum.signUp.presentation.ui.screens.SignUpScreen
+import com.example.eventum.screen_login.presentation.ui.screens.LoginScreen
+import com.example.eventum.screen_mainPage.presentation.ui.screens.EventsScreen
+import com.example.eventum.screen_signUp.presentation.ui.screens.SignUpScreen
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

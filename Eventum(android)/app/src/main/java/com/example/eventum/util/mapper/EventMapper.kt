@@ -2,8 +2,8 @@ package com.example.eventum.util.mapper
 
 import com.example.eventum.data.api.model.EventResponse
 import com.example.eventum.data.roomDatabase.entity.EventEntity
-import com.example.eventum.mainPage.data.remote.entity.EventRequest
-import com.example.eventum.mainPage.domain.model.Event
+import com.example.eventum.screen_mainPage.data.remote.entity.EventRequest
+import com.example.eventum.screen_mainPage.domain.model.Event
 import dagger.internal.DaggerGenerated
 
 @DaggerGenerated

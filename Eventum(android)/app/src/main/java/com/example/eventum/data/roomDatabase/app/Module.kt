@@ -3,6 +3,7 @@ package com.example.eventum.data.roomDatabase.app
 import android.content.Context
 import androidx.room.Room
 import com.example.eventum.data.roomDatabase.dao.EventDao
+import com.example.eventum.data.roomDatabase.dao.PresentDao
 import com.example.eventum.data.roomDatabase.dao.UserDao
 import dagger.Module
 import dagger.Provides
@@ -32,5 +33,10 @@ object Module {
     @Provides
     fun provideEventDao(db: AppDatabase): EventDao {
         return db.eventDao()
+    }
+
+    @Provides
+    fun providePresentDao(db: AppDatabase): PresentDao {
+        return db.presentDao()
     }
 }

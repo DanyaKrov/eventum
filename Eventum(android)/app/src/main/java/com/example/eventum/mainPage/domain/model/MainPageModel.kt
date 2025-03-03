@@ -1,7 +1,0 @@
-package com.example.eventum.mainPage.domain.model
-
-data class MainPageModel(
-    val isLoading: Boolean = false,
-    val events: MutableList<Event> = mutableListOf(),
-    val errorMessage: String = ""
-)

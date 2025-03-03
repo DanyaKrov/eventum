@@ -1,9 +1,11 @@
 package com.example.eventum.data.api
 
 import com.example.eventum.common.Constants
-import com.example.eventum.login.data.remote.api.LoginApiService
-import com.example.eventum.mainPage.data.remote.dataSource.EventsRemoteDataSource
-import com.example.eventum.signUp.data.api.SignUpRepository
+import com.example.eventum.screen_login.data.remote.api.LoginApiService
+import com.example.eventum.screen_mainPage.data.remote.dataSource.EventsRemoteDataSource
+import com.example.eventum.screen_presents.data.remote.datasource.PresentsRemoteDataSource
+import com.example.eventum.screen_presents.data.remote.datasource.WishListRemoteDataSource
+import com.example.eventum.screen_signUp.data.api.SignUpRepository
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -31,5 +33,13 @@ object RetrofitClient {
 
     fun createEventsInstance(): EventsRemoteDataSource {
         return instance.create(EventsRemoteDataSource::class.java)
+    }
+
+    fun createPresentsInstance(): PresentsRemoteDataSource {
+        return instance.create(PresentsRemoteDataSource::class.java)
+    }
+
+    fun createWishListRemoteDataSource(): WishListRemoteDataSource {
+        return instance.create(WishListRemoteDataSource::class.java)
     }
 }

@@ -4,15 +4,18 @@ import android.app.Application
 import android.content.Context
 import com.example.eventum.data.api.RetrofitClient
 import com.example.eventum.data.roomDatabase.mapper.UserMapper
-import com.example.eventum.login.data.remote.api.LoginApiService
-import com.example.eventum.login.data.remote.repository.LoginApiRepository
-import com.example.eventum.login.domain.repository.LoginRepository
-import com.example.eventum.mainPage.data.remote.dataSource.EventsRemoteDataSource
-import com.example.eventum.mainPage.data.remote.service.EventsRemoteService
-import com.example.eventum.mainPage.data.remote.repository.EventsRemoteRepository
-import com.example.eventum.signUp.data.api.SignUpRepository
+import com.example.eventum.screen_login.data.remote.api.LoginApiService
+import com.example.eventum.screen_login.data.remote.repository.LoginApiRepository
+import com.example.eventum.screen_login.domain.repository.LoginRepository
+import com.example.eventum.screen_mainPage.data.remote.dataSource.EventsRemoteDataSource
+import com.example.eventum.notifications.repository.NotificationsRepository
+import com.example.eventum.notifications.service.NotificationsService
+import com.example.eventum.screen_presents.data.remote.datasource.PresentsRemoteDataSource
+import com.example.eventum.screen_presents.data.remote.datasource.WishListRemoteDataSource
+import com.example.eventum.screen_signUp.data.api.SignUpRepository
 import com.example.eventum.util.StringRepository
 import com.example.eventum.util.mapper.EventMapper
+import com.example.eventum.util.mapper.PresentMapper
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -45,6 +48,19 @@ object HiltModule { // dependency injection module for using StringRepository cl
 
     @Provides
     @Singleton
+    fun providePresentsRemoteDataSource(): PresentsRemoteDataSource {
+        return RetrofitClient.createPresentsInstance()
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideWishListRemoteDataSource(): WishListRemoteDataSource {
+        return RetrofitClient.createWishListRemoteDataSource()
+    }
+
+    @Provides
+    @Singleton
     fun provideEventsRepository(): EventsRemoteDataSource {
         return RetrofitClient.createEventsInstance()
     }
@@ -58,6 +74,12 @@ object HiltModule { // dependency injection module for using StringRepository cl
     @Singleton
     fun provideEventMapper(): EventMapper {
         return EventMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun providePresentMapper(): PresentMapper {
+        return PresentMapper()
     }
 
     @Provides
@@ -76,4 +98,11 @@ abstract class RepositoryHiltModule { // domain repositories implementations for
     abstract fun bindLoginRepository(
         impl: LoginApiRepository
     ): LoginRepository
+
+
+    @Binds
+    @Singleton
+    abstract fun bindNotificationsRepository(
+        impl: NotificationsService
+    ): NotificationsRepository
 }

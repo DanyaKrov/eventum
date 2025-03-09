@@ -1,7 +1,7 @@
 package com.example.eventum.screen_presents.data.remote.service
 
-import com.example.eventum.screen_presents.data.remote.datasource.PresentsRemoteDataSource
-import com.example.eventum.screen_presents.data.remote.datasource.WishListRemoteDataSource
+import com.example.eventum.screen_presents.data.remote.dataSource.PresentsRemoteDataSource
+import com.example.eventum.screen_presents.data.remote.dataSource.WishListRemoteDataSource
 import com.example.eventum.screen_presents.data.remote.repository.PresentsRemoteRepository
 import com.example.eventum.screen_presents.domain.model.Present
 import javax.inject.Inject

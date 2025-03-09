@@ -23,7 +23,7 @@ class LoginViewModel @Inject constructor(
     private val navigationStatus: MutableStateFlow<String> = MutableStateFlow("")
     val navigationStatusRead: StateFlow<String> = navigationStatus
 
-    private val model: LoginModel = LoginModel();
+    private val model: LoginModel = LoginModel()
 
     fun handleEvent(loginEvent: LoginEvent) {
         when (loginEvent) {

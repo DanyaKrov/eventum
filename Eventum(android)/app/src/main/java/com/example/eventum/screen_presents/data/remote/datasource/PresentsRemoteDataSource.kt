@@ -1,9 +1,8 @@
-package com.example.eventum.screen_presents.data.remote.datasource
+package com.example.eventum.screen_presents.data.remote.dataSource
 
 import com.example.eventum.screen_presents.domain.model.Present
 import retrofit2.http.Body
 import retrofit2.http.DELETE
-import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path

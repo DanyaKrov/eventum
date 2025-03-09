@@ -11,5 +11,6 @@ object Constants {
     const val NOTIFICATION_DEFAULT_DESCRIPTION = "Prepare now with Eventum"
     // savedStateHandle keys
     const val WISHLIST_ID = "WISHLIST_ID"
-
+    // navigation activities
+    const val NAVIGATION_MOVE_TO_MAIN_PAGE = "main_page"
 }

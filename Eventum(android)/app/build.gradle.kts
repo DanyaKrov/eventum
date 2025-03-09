@@ -94,6 +94,9 @@ dependencies {
 
     // worker for notifications system
     implementation("androidx.work:work-runtime-ktx:2.8.1")
+
+    // dataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.3")
 }
 
 kapt {

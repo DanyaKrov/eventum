@@ -7,7 +7,7 @@ import dagger.internal.DaggerGenerated
 @DaggerGenerated
 class PresentMapper {
     fun fromEntityToModel(presentEntity: PresentEntity): Present = Present(
-        remoteId = presentEntity.id,
+        id = presentEntity.id,
         title = presentEntity.title,
         description = presentEntity.description
     )

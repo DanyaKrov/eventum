@@ -1,5 +1,6 @@
 package com.example.eventum.data.roomDatabase.dao
 
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -8,6 +9,7 @@ import com.example.eventum.data.roomDatabase.entity.PresentEntity
 import com.example.eventum.data.roomDatabase.entity.WishListEntity
 import com.example.eventum.data.roomDatabase.entity.WishListWithPresents
 
+@Dao
 interface WishListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: WishListEntity): Long

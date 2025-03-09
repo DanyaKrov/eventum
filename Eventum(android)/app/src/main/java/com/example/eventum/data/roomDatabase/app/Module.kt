@@ -2,9 +2,11 @@ package com.example.eventum.data.roomDatabase.app
 
 import android.content.Context
 import androidx.room.Room
+import com.example.eventum.data.roomDatabase.dao.ContactDao
 import com.example.eventum.data.roomDatabase.dao.EventDao
 import com.example.eventum.data.roomDatabase.dao.PresentDao
 import com.example.eventum.data.roomDatabase.dao.UserDao
+import com.example.eventum.data.roomDatabase.dao.WishListDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,5 +40,15 @@ object Module {
     @Provides
     fun providePresentDao(db: AppDatabase): PresentDao {
         return db.presentDao()
+    }
+
+    @Provides
+    fun provideContactDao(db: AppDatabase): ContactDao {
+        return db.contactDao()
+    }
+
+    @Provides
+    fun provideWishListDao(db: AppDatabase): WishListDao {
+        return db.wishListDao()
     }
 }

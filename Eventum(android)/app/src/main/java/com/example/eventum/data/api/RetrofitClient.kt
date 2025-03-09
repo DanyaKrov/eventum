@@ -1,10 +1,11 @@
 package com.example.eventum.data.api
 
 import com.example.eventum.common.Constants
+import com.example.eventum.screen_contacts.data.remote.dataSource.ContactsRemoteDataSource
 import com.example.eventum.screen_login.data.remote.api.LoginApiService
 import com.example.eventum.screen_mainPage.data.remote.dataSource.EventsRemoteDataSource
-import com.example.eventum.screen_presents.data.remote.datasource.PresentsRemoteDataSource
-import com.example.eventum.screen_presents.data.remote.datasource.WishListRemoteDataSource
+import com.example.eventum.screen_presents.data.remote.dataSource.PresentsRemoteDataSource
+import com.example.eventum.screen_presents.data.remote.dataSource.WishListRemoteDataSource
 import com.example.eventum.screen_signUp.data.api.SignUpRepository
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -41,5 +42,9 @@ object RetrofitClient {
 
     fun createWishListRemoteDataSource(): WishListRemoteDataSource {
         return instance.create(WishListRemoteDataSource::class.java)
+    }
+
+    fun createContactsRemoteDataSource(): ContactsRemoteDataSource {
+        return instance.create(ContactsRemoteDataSource::class.java)
     }
 }

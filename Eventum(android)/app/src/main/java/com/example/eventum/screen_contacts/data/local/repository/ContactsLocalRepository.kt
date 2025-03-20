@@ -1,6 +1,6 @@
 package com.example.eventum.screen_contacts.data.local.repository
 
-import com.example.eventum.data.roomDatabase.entity.ContactEntity
+import com.example.eventum.data.local.entity.ContactEntity
 
 interface ContactsLocalRepository {
     suspend fun insert(contact: ContactEntity)

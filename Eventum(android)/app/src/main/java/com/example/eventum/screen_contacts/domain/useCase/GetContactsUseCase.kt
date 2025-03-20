@@ -1,9 +1,6 @@
 package com.example.eventum.screen_contacts.domain.useCase
 
-import android.net.http.HttpException
-import android.os.Build
-import androidx.annotation.RequiresExtension
-import com.example.eventum.common.Resource
+import com.example.eventum.domain.model.Resource
 import com.example.eventum.screen_contacts.domain.model.Contact
 import com.example.eventum.screen_contacts.domain.repository.ContactsRepository
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +17,7 @@ class GetContactsUseCase @Inject constructor(
                 emit(Resource.Loading())
                 val contacts = repository.getContacts(userId, refreshLocalDatabase).toMutableList()
                 emit(Resource.Success(contacts))
-        }
+            }
             catch (e: IOException) {
                 emit(Resource.Error("Couldn't reach server"))
             }

@@ -3,6 +3,7 @@ package com.example.eventum.screen_login.presentation.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eventum.R
+import com.example.eventum.common.Constants
 import com.example.eventum.screen_login.domain.model.AuthRequest
 import com.example.eventum.screen_login.presentation.event.LoginEvent
 import com.example.eventum.screen_login.domain.model.LoginModel
@@ -48,7 +49,7 @@ class LoginViewModel @Inject constructor(
                 val authRequest = AuthRequest(model.email, model.password)
                 try {
                     loginUseCase.execute(authRequest)
-                    navigationStatus.value = "logged_in"
+                    navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
                 }
                 catch (e: Exception) {
                     model.response.value = "Email or password is incorrect"

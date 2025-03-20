@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.eventum.R
+import com.example.eventum.common.Constants
 import com.example.eventum.screen_login.presentation.event.LoginEvent
 import com.example.eventum.screen_login.presentation.viewModel.LoginViewModel
 import com.example.eventum.screen_signUp.presentation.ui.components.BasicTextField
@@ -32,8 +33,8 @@ fun LoginScreen(navController: NavHostController = rememberNavController(),
     val navigationStatus by viewModel.navigationStatusRead.collectAsState()
     LaunchedEffect(navigationStatus) {
         when(navigationStatus) {
-            "move_to_signUp" -> navController.navigate("login")
-            "logged_in" -> navController.navigate("main_page")
+            "move_to_signUp" -> navController.navigate("sign_up")
+            Constants.NAVIGATION_MOVE_TO_MAIN_PAGE -> navController.navigate("main_page")
         }
     }
     Surface (

@@ -1,13 +1,14 @@
 package com.example.eventum.screen_signUp.presentation.viewModel
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eventum.R
+import com.example.eventum.common.Constants
 import com.example.eventum.screen_signUp.presentation.event.SignUpEvent
 import com.example.eventum.screen_signUp.domain.model.SignUpModel
-import com.example.eventum.data.api.model.UserRequest
-import com.example.eventum.screen_signUp.data.api.SignUpRepository
+import com.example.eventum.screen_signUp.domain.useCase.SignUpUseCase
 import com.example.eventum.util.StringRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,32 +19,33 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val stringRepository: StringRepository, // repository for reading string
-    private val repository: SignUpRepository // repository for working with API
+    private val signUpUseCase: SignUpUseCase
 ): ViewModel() {
     // navigation parameters
     private val navigationStatus: MutableStateFlow<String> = MutableStateFlow("")
     val navigationStatusRead: StateFlow<String> = navigationStatus
-    val signUpModel: SignUpModel = SignUpModel()
+    private val _model = mutableStateOf(SignUpModel())
+    val model = _model
 
     private fun updateEmail(email: String) {
-        signUpModel.email = email
+        _model.value.email = email
     }
 
     private fun updatePassword(password: String) {
-        signUpModel.password = password
+        _model.value.password = password
     }
 
     private fun updateSecondPassword(password: String) {
-        signUpModel.secondPassword = password
+        _model.value.secondPassword = password
     }
 
     private fun finishRegistration() {
         viewModelScope.launch {
-            val user = UserRequest(name = signUpModel.name.toString(),
-                email = signUpModel.email)
             if (checkRequirements()) {
                 try {
-                    repository.createUser(user)
+                    // useCase of checking if email is already used in the system
+                    signUpUseCase(model.value)
+                    navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
                 }
                 catch (e: Exception) {
                     Log.e("testing", e.message.toString())
@@ -67,22 +69,22 @@ class SignUpViewModel @Inject constructor(
                 finishRegistration()
             }
             is SignUpEvent.MoveToLogin -> {
-                navigationStatus.value = "move_to_login"
+                navigationStatus.value = Constants.NAVIGATION_MOVE_TO_LOGIN_PAGE
             }
         }
     }
 
 
     private fun checkRequirements(): Boolean { // check requirements and change signUpModel if need
-        signUpModel.requirementsStatement.value = ""
-        if (!signUpModel.email.contains("@"))
-            signUpModel.requirementsStatement.value +=
+        model.value.requirementsStatement.value = ""
+        if (!model.value.email.contains("@"))
+            model.value.requirementsStatement.value +=
                 stringRepository.getString(R.string.EmailRequirement) + "\n"
-        if (!signUpModel.password.equals(signUpModel.secondPassword))
-            signUpModel.requirementsStatement.value +=
+        if (!model.value.password.equals(model.value.secondPassword))
+            model.value.requirementsStatement.value +=
                 stringRepository.getString(R.string.PasswordsIdentity) + "\n"
-        if ((signUpModel.password?.length ?: 0) < 8)
-            signUpModel.requirementsStatement.value +=
+        if ((model.value.password?.length ?: 0) < 8)
+            model.value.requirementsStatement.value +=
                 stringRepository.getString(R.string.PasswordLength) + "\n"
         else
             return true

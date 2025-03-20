@@ -1,10 +1,10 @@
 package com.example.eventum.screen_login.domain.useCase
 
-import com.example.eventum.data.api.model.UserResponse
-import com.example.eventum.data.roomDatabase.mapper.UserMapper
-import com.example.eventum.data.roomDatabase.repository.UserLocalRepository
+import com.example.eventum.data.remote.model.UserResponse
+import com.example.eventum.data.local.repository.UserLocalRepository
 import com.example.eventum.screen_login.domain.model.AuthRequest
 import com.example.eventum.screen_login.domain.repository.LoginRepository
+import com.example.eventum.util.mapper.UserMapper
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
@@ -18,7 +18,7 @@ class LoginUseCase @Inject constructor(
             if (result.isFailure)
                 return result
             result.getOrThrow()?.let {  // if user authorised, he needs to be saved to local database
-                roomUserLocalRepository.insertUser(userMapper.createUser(it))
+                roomUserLocalRepository.insertUser(userMapper.createEntity(it))
             }
             return result
 

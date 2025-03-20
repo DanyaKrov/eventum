@@ -10,5 +10,5 @@ class RefreshEventsUseCase @Inject constructor(
     private val mapper: EventMapper
 ) {
     suspend operator fun invoke(eventsIds: List<Long>, refreshLocalDatabase: Boolean): List<Event> =
-        repository.getEvents(eventsIds, refreshLocalDatabase).map { mapper.responseToPresentableModel(it) }
+        repository.getEvents(eventsIds, refreshLocalDatabase)
 }

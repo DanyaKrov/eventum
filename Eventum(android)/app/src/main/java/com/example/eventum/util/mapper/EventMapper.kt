@@ -1,16 +1,17 @@
 package com.example.eventum.util.mapper
 
-import com.example.eventum.data.api.model.EventResponse
-import com.example.eventum.data.roomDatabase.entity.EventEntity
+import com.example.eventum.data.remote.model.EventResponse
+import com.example.eventum.data.local.entity.EventEntity
 import com.example.eventum.screen_mainPage.data.remote.entity.EventRequest
 import com.example.eventum.screen_mainPage.domain.model.Event
 import dagger.internal.DaggerGenerated
 
 @DaggerGenerated
 class EventMapper {
-    fun responseToPresentableModel(event: EventResponse): Event {
+    fun entityToPresentableModel(event: EventEntity): Event {
         return Event(
             event.id,
+            event.eventId,
             event.name,
             event.description,
             event.time,
@@ -49,4 +50,14 @@ class EventMapper {
             event.picture ?: ""
         )
     }
+
+    fun updateEntity(event: Event) = EventEntity(
+        event.localId,
+        event.remoteId,
+        event.name,
+        event.description,
+        event.time,
+        event.tag ?: "",
+        event.picture ?: ""
+    )
 }

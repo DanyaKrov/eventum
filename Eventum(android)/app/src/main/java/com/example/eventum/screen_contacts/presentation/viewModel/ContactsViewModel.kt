@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eventum.common.Constants
-import com.example.eventum.common.Resource
-import com.example.eventum.data.roomDatabase.preferences.UserPreferences
+import com.example.eventum.domain.model.Resource
+import com.example.eventum.data.local.preferences.UserPreferences
 import com.example.eventum.domain.useCase.GetUserUseCase
 import com.example.eventum.screen_contacts.domain.model.Contact
 import com.example.eventum.screen_contacts.domain.model.ContactsModel
@@ -14,27 +14,20 @@ import com.example.eventum.screen_contacts.domain.useCase.GetContactsUseCase
 import com.example.eventum.screen_contacts.presentation.event.ContactsEvent
 import com.example.eventum.screen_contacts.presentation.event.ContactsNavigationEvent
 import com.example.eventum.screen_contacts.presentation.sort.SortOrder
-import com.example.eventum.screen_login.domain.model.LoginModel
-import com.example.eventum.screen_presents.domain.model.PresentsModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
     private val getContactsUseCase: GetContactsUseCase,
-    private val getUserUseCase: GetUserUseCase,
     private val deleteContactUseCase: DeleteContactUseCase,
     private val userPreferences: UserPreferences
 ): ViewModel() {
@@ -54,7 +47,8 @@ class ContactsViewModel @Inject constructor(
 
     private fun getContacts() {
         userPreferences.userIdFlow // state of user Id
-            .onEach {  navigationStatus.value = "log_out" } // it means no userId presented at the moment
+            .onEach { userId -> if (userId == null)
+                navigationStatus.value = "log_out" } // it means no userId presented at the moment
             .filterNotNull()
             .flatMapLatest { userId ->
                 getContactsUseCase(userId) // if id changes, contacts update

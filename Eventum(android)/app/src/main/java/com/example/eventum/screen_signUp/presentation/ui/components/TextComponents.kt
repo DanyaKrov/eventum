@@ -54,7 +54,7 @@ fun HeaderTextComponent(value: String) {
 
 @Composable
 fun ErrorTextComponent(signUpViewModel: SignUpViewModel = hiltViewModel()) {
-    val textValue by signUpViewModel.signUpModel.requirementsStatement.collectAsState()
+    val textValue by signUpViewModel.model.value.requirementsStatement.collectAsState()
     Text(
         text = textValue,
         modifier = Modifier

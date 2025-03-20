@@ -1,7 +1,7 @@
 package com.example.eventum.screen_mainPage.data.service
 
 
-import com.example.eventum.data.api.model.EventResponse
+import com.example.eventum.data.remote.model.EventResponse
 import com.example.eventum.screen_mainPage.data.local.repository.EventsLocalRepository
 import com.example.eventum.screen_mainPage.data.remote.repository.EventsRemoteRepository
 import com.example.eventum.screen_mainPage.domain.model.Event
@@ -15,31 +15,30 @@ class EventsService @Inject constructor(
     private val mapper: EventMapper
 ): EventsRepository {
     override suspend fun getEvents( eventsIds: List<Long>, forceRefresh: Boolean
-    ): List<EventResponse> {
-        return if (forceRefresh) {
+    ): List<Event> {
+        if (forceRefresh) {
             try {
                 val remoteEvents = getRemoteEvents(eventsIds)
                 localRepository.clearEvents()
                 localRepository.saveEvents(remoteEvents.map { mapper.responseToEntity(it) })
-                remoteEvents
             } catch (e: Exception) {
-                localRepository.getEvents().map { mapper.entityToResponse(it) }
+                // handle it
             }
         } else {
             val localEvents = localRepository.getEvents()
             if (localEvents.isNotEmpty()) {
-                localEvents.map { mapper.entityToResponse(it) }
+                localRepository.getEvents().map { mapper.entityToPresentableModel(it) }
             } else {
                 val remoteEvents = getRemoteEvents(eventsIds)
                 localRepository.saveEvents(remoteEvents.map { mapper.responseToEntity(it) })
-                remoteEvents
             }
         }
+        return localRepository.getEvents().map { mapper.entityToPresentableModel(it) }
     }
 
     override suspend fun deleteEvent(event: Event): String {
-        localRepository.deleteEvent(event.eventId)
-        return remoteRepository.delete(event.eventId)
+        localRepository.deleteEvent(event.localId)
+        return remoteRepository.delete(event.remoteId)
     }
 
     private suspend fun getRemoteEvents(eventsIds: List<Long>) = eventsIds.map {

@@ -5,23 +5,24 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.eventum.data.api.RetrofitClient
-import com.example.eventum.data.roomDatabase.mapper.UserMapper
-import com.example.eventum.data.roomDatabase.preferences.UserPreferences
+import com.example.eventum.data.remote.RetrofitClient
+import com.example.eventum.data.local.preferences.UserPreferences
 import com.example.eventum.screen_login.data.remote.api.LoginApiService
 import com.example.eventum.screen_login.data.remote.repository.LoginApiRepository
 import com.example.eventum.screen_login.domain.repository.LoginRepository
 import com.example.eventum.screen_mainPage.data.remote.dataSource.EventsRemoteDataSource
-import com.example.eventum.notifications.repository.NotificationsRepository
-import com.example.eventum.notifications.service.NotificationsService
+import com.example.eventum.feature_notifications.repository.NotificationsRepository
+import com.example.eventum.feature_notifications.service.NotificationsService
 import com.example.eventum.screen_contacts.data.remote.dataSource.ContactsRemoteDataSource
 import com.example.eventum.screen_presents.data.remote.dataSource.PresentsRemoteDataSource
 import com.example.eventum.screen_presents.data.remote.dataSource.WishListRemoteDataSource
-import com.example.eventum.screen_signUp.data.api.SignUpRepository
+import com.example.eventum.screen_signUp.data.remote.dataSource.UsersRemoteDataSource
 import com.example.eventum.util.StringRepository
 import com.example.eventum.util.mapper.ContactMapper
 import com.example.eventum.util.mapper.EventMapper
+import com.example.eventum.util.mapper.NotificationMapper
 import com.example.eventum.util.mapper.PresentMapper
+import com.example.eventum.util.mapper.UserMapper
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -42,12 +43,6 @@ object HiltModule { // dependency injection module for using StringRepository cl
 
     @Provides
     @Singleton
-    fun provideSignUpRepository(): SignUpRepository {
-        return RetrofitClient.createSignUpInstance()
-    }
-
-    @Provides
-    @Singleton
     fun provideLoginRepository(): LoginApiService {
         return RetrofitClient.createLoginInstance()
     }
@@ -56,6 +51,13 @@ object HiltModule { // dependency injection module for using StringRepository cl
     @Singleton
     fun providePresentsRemoteDataSource(): PresentsRemoteDataSource {
         return RetrofitClient.createPresentsInstance()
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideUsersRemoteDataSource(): UsersRemoteDataSource {
+        return RetrofitClient.createUsersInstance()
     }
 
 
@@ -112,6 +114,12 @@ object HiltModule { // dependency injection module for using StringRepository cl
     @Singleton
     fun provideContactMapper(): ContactMapper {
         return ContactMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationMapper(): NotificationMapper {
+        return NotificationMapper()
     }
 }
 

@@ -1,6 +1,6 @@
 package com.example.eventum.screen_mainPage.data.remote.dataSource
 
-import com.example.eventum.data.api.model.EventResponse
+import com.example.eventum.data.remote.model.EventResponse
 import com.example.eventum.screen_mainPage.data.remote.entity.EventRequest
 import retrofit2.http.DELETE
 import retrofit2.http.Body

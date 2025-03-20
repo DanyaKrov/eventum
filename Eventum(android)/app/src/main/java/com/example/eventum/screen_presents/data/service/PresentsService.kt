@@ -1,6 +1,5 @@
 package com.example.eventum.screen_presents.data.service
 
-import com.example.eventum.data.roomDatabase.dao.PresentDao
 import com.example.eventum.screen_presents.data.local.repository.PresentsLocalRepository
 import com.example.eventum.screen_presents.data.remote.repository.PresentsRemoteRepository
 import com.example.eventum.screen_presents.domain.model.Present

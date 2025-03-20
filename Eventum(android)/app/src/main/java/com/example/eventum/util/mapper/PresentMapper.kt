@@ -1,6 +1,6 @@
 package com.example.eventum.util.mapper
 
-import com.example.eventum.data.roomDatabase.entity.PresentEntity
+import com.example.eventum.data.local.entity.PresentEntity
 import com.example.eventum.screen_presents.domain.model.Present
 import dagger.internal.DaggerGenerated
 

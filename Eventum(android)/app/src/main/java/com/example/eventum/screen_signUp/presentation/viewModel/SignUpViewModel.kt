@@ -1,6 +1,7 @@
 package com.example.eventum.screen_signUp.presentation.viewModel
 
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +10,7 @@ import com.example.eventum.common.Constants
 import com.example.eventum.screen_signUp.presentation.event.SignUpEvent
 import com.example.eventum.screen_signUp.domain.model.SignUpModel
 import com.example.eventum.screen_signUp.domain.useCase.SignUpUseCase
-import com.example.eventum.util.StringRepository
+import com.example.eventum.util.reader.StringRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +26,7 @@ class SignUpViewModel @Inject constructor(
     private val navigationStatus: MutableStateFlow<String> = MutableStateFlow("")
     val navigationStatusRead: StateFlow<String> = navigationStatus
     private val _model = mutableStateOf(SignUpModel())
-    val model = _model
+    val model: State<SignUpModel> = _model
 
     private fun updateEmail(email: String) {
         _model.value.email = email

@@ -5,24 +5,26 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.eventum.data.local.preferences.EventPreferences
 import com.example.eventum.data.remote.RetrofitClient
 import com.example.eventum.data.local.preferences.UserPreferences
-import com.example.eventum.screen_login.data.remote.api.LoginApiService
-import com.example.eventum.screen_login.data.remote.repository.LoginApiRepository
-import com.example.eventum.screen_login.domain.repository.LoginRepository
+import com.example.eventum.data.local.preferences.WishListPreferences
 import com.example.eventum.screen_mainPage.data.remote.dataSource.EventsRemoteDataSource
 import com.example.eventum.feature_notifications.repository.NotificationsRepository
 import com.example.eventum.feature_notifications.service.NotificationsService
 import com.example.eventum.screen_contacts.data.remote.dataSource.ContactsRemoteDataSource
+import com.example.eventum.screen_login.data.remote.dataSource.LoginRemoteDataSource
 import com.example.eventum.screen_presents.data.remote.dataSource.PresentsRemoteDataSource
-import com.example.eventum.screen_presents.data.remote.dataSource.WishListRemoteDataSource
+import com.example.eventum.screen_profile.data.remote.dataSource.ProfileRemoteDataSource
 import com.example.eventum.screen_signUp.data.remote.dataSource.UsersRemoteDataSource
-import com.example.eventum.util.StringRepository
+import com.example.eventum.screen_wishList.data.remote.dataSource.WishListRemoteDataSource
+import com.example.eventum.util.reader.StringRepository
 import com.example.eventum.util.mapper.ContactMapper
 import com.example.eventum.util.mapper.EventMapper
 import com.example.eventum.util.mapper.NotificationMapper
 import com.example.eventum.util.mapper.PresentMapper
 import com.example.eventum.util.mapper.UserMapper
+import com.example.eventum.util.mapper.WishListMapper
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -43,7 +45,7 @@ object HiltModule { // dependency injection module for using StringRepository cl
 
     @Provides
     @Singleton
-    fun provideLoginRepository(): LoginApiService {
+    fun provideLoginRepository(): LoginRemoteDataSource {
         return RetrofitClient.createLoginInstance()
     }
 
@@ -51,6 +53,12 @@ object HiltModule { // dependency injection module for using StringRepository cl
     @Singleton
     fun providePresentsRemoteDataSource(): PresentsRemoteDataSource {
         return RetrofitClient.createPresentsInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideProfileRemoteDataSource(): ProfileRemoteDataSource {
+        return RetrofitClient.createProfileInstance()
     }
 
 
@@ -85,11 +93,23 @@ object HiltModule { // dependency injection module for using StringRepository cl
     }
 
 
-    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_prefs")
+    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app_prefs")
     @Provides
     @Singleton
     fun provideUserPreferences(@ApplicationContext context: Context): UserPreferences {
         return UserPreferences(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideEventPreferences(@ApplicationContext context: Context): EventPreferences {
+        return EventPreferences(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWishListPreferences(@ApplicationContext context: Context): WishListPreferences {
+        return WishListPreferences(context)
     }
 
     @Provides
@@ -112,6 +132,12 @@ object HiltModule { // dependency injection module for using StringRepository cl
 
     @Provides
     @Singleton
+    fun provideWishListMapper(): WishListMapper {
+        return WishListMapper()
+    }
+
+    @Provides
+    @Singleton
     fun provideContactMapper(): ContactMapper {
         return ContactMapper()
     }
@@ -127,13 +153,6 @@ object HiltModule { // dependency injection module for using StringRepository cl
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryHiltModule { // domain repositories implementations for UseCase classes
-    @Binds
-    @Singleton
-    abstract fun bindLoginRepository(
-        impl: LoginApiRepository
-    ): LoginRepository
-
-
     @Binds
     @Singleton
     abstract fun bindNotificationsRepository(

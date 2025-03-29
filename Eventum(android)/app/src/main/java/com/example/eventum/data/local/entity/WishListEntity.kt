@@ -9,14 +9,15 @@ import androidx.room.Relation
 @Entity(tableName = "wishList",
     indices = [Index(value = ["wishListId"], unique = true)]) // need to make this field unique
 data class WishListEntity(
-    @PrimaryKey val id: Long,
-    val wishListId: Long, // id from mysql database
+    @PrimaryKey val id: Long = 0,
+    val remoteId: Long, // id from mysql database
+    val userId: Long
 
 )
 
 
 data class WishListWithPresents(
-    @Embedded val user: WishListEntity,
+    @Embedded val wishList: WishListEntity,
     @Relation(
         parentColumn = "wishListId",
         entityColumn = "wishListParentId"

@@ -1,5 +1,6 @@
 package com.example.eventum.screen_event.presentation.viewModel
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -43,7 +44,7 @@ class EventViewModel @Inject constructor(
     val navigationStatus: StateFlow<String> = _navigationStatus
 
     private val _model = mutableStateOf(EventModel()) // mutable state of model
-    val model = _model // immutable state of model to presentation layer
+    val model: State<EventModel> = _model // immutable state of model to presentation layer
 
 
     init {

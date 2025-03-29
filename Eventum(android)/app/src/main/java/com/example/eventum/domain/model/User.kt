@@ -3,9 +3,9 @@ package com.example.eventum.domain.model
 data class User(
     val localId: Long = 0,
     val remoteId: Long, // id from mysql database
-    val name: String,
-    val email: String,
-    val picture: String = "",
-    val friends: List<Long> = listOf(),
-    val events: List<Long> = listOf()
+    var name: String,
+    var email: String,
+    var picture: String = "",
+    var friends: List<Long> = listOf(),
+    var events: List<Long> = listOf()
 )

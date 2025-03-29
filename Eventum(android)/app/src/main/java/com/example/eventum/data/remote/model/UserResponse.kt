@@ -5,7 +5,7 @@ data class UserResponse(
     val name: String,
     val email: String,
     val picture: String,
-    val password: String,
-    val friends: List<Long>,
-    val events: List<Long>,
+    val password: String = "", // for now, password parameter will be ignored for update request
+    val friends: List<Long> = listOf(),
+    val events: List<Long> = listOf(),
 )

@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
     foreignKeys = [
         ForeignKey(
             entity = WishListEntity::class,
-            parentColumns = ["wishListId"],
+            parentColumns = ["remoteId"],
             childColumns = ["wishListParentId"],
             onDelete = ForeignKey.CASCADE
         )

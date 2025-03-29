@@ -9,7 +9,15 @@ class PresentMapper {
     fun fromEntityToModel(presentEntity: PresentEntity): Present = Present(
         id = presentEntity.id,
         title = presentEntity.title,
-        description = presentEntity.description
+        description = presentEntity.description,
+        wishListId = presentEntity.wishListParentId
+    )
+
+    fun fromModelToEntity(present: Present): PresentEntity = PresentEntity(
+        presentId = present.id,
+        title = present.title,
+        description = present.description,
+        wishListParentId = present.wishListId
     )
 
     fun updateEntity(oldPresent: PresentEntity, newPresent: Present): PresentEntity = PresentEntity(

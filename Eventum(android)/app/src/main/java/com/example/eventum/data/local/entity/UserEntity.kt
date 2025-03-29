@@ -8,7 +8,7 @@ import com.example.eventum.data.local.converter.ListConverter
 @Entity(tableName = "user")
 data class UserEntity(
     @PrimaryKey val id: Long = 0,
-    val userId: Long, // id from mysql database
+    val remoteId: Long, // id from mysql database
     val name: String,
     val email: String,
     val picture: String,

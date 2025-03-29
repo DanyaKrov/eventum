@@ -1,4 +1,4 @@
-package com.example.eventum.util
+package com.example.eventum.util.reader
 
 import android.content.Context
 import dagger.internal.DaggerGenerated

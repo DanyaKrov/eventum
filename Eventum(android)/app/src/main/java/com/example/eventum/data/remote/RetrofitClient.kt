@@ -2,11 +2,12 @@ package com.example.eventum.data.remote
 
 import com.example.eventum.common.Constants
 import com.example.eventum.screen_contacts.data.remote.dataSource.ContactsRemoteDataSource
-import com.example.eventum.screen_login.data.remote.api.LoginApiService
+import com.example.eventum.screen_login.data.remote.dataSource.LoginRemoteDataSource
 import com.example.eventum.screen_mainPage.data.remote.dataSource.EventsRemoteDataSource
 import com.example.eventum.screen_presents.data.remote.dataSource.PresentsRemoteDataSource
-import com.example.eventum.screen_presents.data.remote.dataSource.WishListRemoteDataSource
+import com.example.eventum.screen_profile.data.remote.dataSource.ProfileRemoteDataSource
 import com.example.eventum.screen_signUp.data.remote.dataSource.UsersRemoteDataSource
+import com.example.eventum.screen_wishList.data.remote.dataSource.WishListRemoteDataSource
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -28,8 +29,8 @@ object RetrofitClient {
         return instance.create(UsersRemoteDataSource::class.java)
     }
 
-    fun createLoginInstance(): LoginApiService {
-        return instance.create(LoginApiService::class.java)
+    fun createLoginInstance(): LoginRemoteDataSource {
+        return instance.create(LoginRemoteDataSource::class.java)
     }
 
     fun createEventsInstance(): EventsRemoteDataSource {
@@ -38,6 +39,10 @@ object RetrofitClient {
 
     fun createPresentsInstance(): PresentsRemoteDataSource {
         return instance.create(PresentsRemoteDataSource::class.java)
+    }
+
+    fun createProfileInstance(): ProfileRemoteDataSource {
+        return instance.create(ProfileRemoteDataSource::class.java)
     }
 
     fun createWishListRemoteDataSource(): WishListRemoteDataSource {

@@ -1,4 +1,4 @@
-package com.example.eventum.domain.useCase
+package com.example.eventum.screen_mainPage.domain.useCase
 
 import com.example.eventum.domain.model.Resource
 import com.example.eventum.data.local.repository.UserLocalRepository
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 import java.io.IOException
 import javax.inject.Inject
 
-class GetUserUseCase @Inject constructor(
+class GetCurrentUserUseCase @Inject constructor(
     private val repository: UserLocalRepository,
     private val mapper: UserMapper
 ) { // useCase to get active user. But maybe in the future local database won't contain singular user

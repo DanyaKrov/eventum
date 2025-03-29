@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class EventPreferences @Inject constructor(
+class EventPreferences @Inject constructor( // for storing selected event remote id
     context: Context
 ) {
     private val dataStore = context.dataStore

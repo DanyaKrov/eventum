@@ -8,7 +8,7 @@ import com.example.eventum.screen_login.domain.model.AuthRequest
 import com.example.eventum.screen_login.presentation.event.LoginEvent
 import com.example.eventum.screen_login.domain.model.LoginModel
 import com.example.eventum.screen_login.domain.useCase.LoginUseCase
-import com.example.eventum.util.StringRepository
+import com.example.eventum.util.reader.StringRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

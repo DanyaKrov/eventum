@@ -1,7 +1,6 @@
 package com.example.eventum.screen_mainPage.data.service
 
 
-import com.example.eventum.data.remote.model.EventResponse
 import com.example.eventum.screen_mainPage.data.local.repository.EventsLocalRepository
 import com.example.eventum.screen_mainPage.data.remote.repository.EventsRemoteRepository
 import com.example.eventum.screen_mainPage.domain.model.Event

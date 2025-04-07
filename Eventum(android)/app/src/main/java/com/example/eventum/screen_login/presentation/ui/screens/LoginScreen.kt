@@ -32,10 +32,10 @@ fun LoginScreen(navController: NavHostController = rememberNavController(),
                 viewModel: LoginViewModel = hiltViewModel()) {
     val navigationStatus by viewModel.navigationStatusRead.collectAsState()
     LaunchedEffect(navigationStatus) {
-        when(navigationStatus) {
-            "move_to_signUp" -> navController.navigate("sign_up")
-            Constants.NAVIGATION_MOVE_TO_MAIN_PAGE -> navController.navigate("main_page")
+        try {
+            navController.navigate(navigationStatus)
         }
+        catch (_: Exception) {}
     }
     Surface (
         modifier = Modifier

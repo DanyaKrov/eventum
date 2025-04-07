@@ -7,19 +7,18 @@ import androidx.room.PrimaryKey
 import androidx.room.Relation
 
 @Entity(tableName = "wishList",
-    indices = [Index(value = ["wishListId"], unique = true)]) // need to make this field unique
+    indices = [Index(value = ["remoteId"], unique = true)]) // need to make this field unique
 data class WishListEntity(
     @PrimaryKey val id: Long = 0,
     val remoteId: Long, // id from mysql database
     val userId: Long
-
 )
 
 
 data class WishListWithPresents(
     @Embedded val wishList: WishListEntity,
     @Relation(
-        parentColumn = "wishListId",
+        parentColumn = "remoteId",
         entityColumn = "wishListParentId"
     )
     val presents: List<PresentEntity>

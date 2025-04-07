@@ -1,7 +1,6 @@
 package com.example.eventum.screen_mainPage.domain.repository
 
 
-import com.example.eventum.data.remote.model.EventResponse
 import com.example.eventum.screen_mainPage.domain.model.Event
 
 interface EventsRepository {

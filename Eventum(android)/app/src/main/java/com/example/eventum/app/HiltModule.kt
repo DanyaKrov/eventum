@@ -6,6 +6,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.eventum.data.local.preferences.EventPreferences
+import com.example.eventum.data.local.preferences.GiftListPreferences
+import com.example.eventum.data.local.preferences.SettingsPreferences
 import com.example.eventum.data.remote.RetrofitClient
 import com.example.eventum.data.local.preferences.UserPreferences
 import com.example.eventum.data.local.preferences.WishListPreferences
@@ -13,14 +15,20 @@ import com.example.eventum.screen_mainPage.data.remote.dataSource.EventsRemoteDa
 import com.example.eventum.feature_notifications.repository.NotificationsRepository
 import com.example.eventum.feature_notifications.service.NotificationsService
 import com.example.eventum.screen_contacts.data.remote.dataSource.ContactsRemoteDataSource
+import com.example.eventum.screen_giftList.data.remote.dataSource.GiftListRemoteDataSource
+import com.example.eventum.screen_giftList.data.remote.dataSource.GiftRemoteDataSource
 import com.example.eventum.screen_login.data.remote.dataSource.LoginRemoteDataSource
 import com.example.eventum.screen_presents.data.remote.dataSource.PresentsRemoteDataSource
 import com.example.eventum.screen_profile.data.remote.dataSource.ProfileRemoteDataSource
+import com.example.eventum.screen_settings.data.remote.dataSource.SettingsRemoteDataSource
+import com.example.eventum.screen_settings.data.remote.service.SettingsRemoteService
 import com.example.eventum.screen_signUp.data.remote.dataSource.UsersRemoteDataSource
 import com.example.eventum.screen_wishList.data.remote.dataSource.WishListRemoteDataSource
 import com.example.eventum.util.reader.StringRepository
 import com.example.eventum.util.mapper.ContactMapper
 import com.example.eventum.util.mapper.EventMapper
+import com.example.eventum.util.mapper.GiftListMapper
+import com.example.eventum.util.mapper.GiftMapper
 import com.example.eventum.util.mapper.NotificationMapper
 import com.example.eventum.util.mapper.PresentMapper
 import com.example.eventum.util.mapper.UserMapper
@@ -57,6 +65,18 @@ object HiltModule { // dependency injection module for using StringRepository cl
 
     @Provides
     @Singleton
+    fun provideGiftListRemoteDataSource(): GiftListRemoteDataSource {
+        return RetrofitClient.createGiftListInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGiftRemoteDataSource(): GiftRemoteDataSource {
+        return RetrofitClient.createGiftInstance()
+    }
+
+    @Provides
+    @Singleton
     fun provideProfileRemoteDataSource(): ProfileRemoteDataSource {
         return RetrofitClient.createProfileInstance()
     }
@@ -83,6 +103,12 @@ object HiltModule { // dependency injection module for using StringRepository cl
 
     @Provides
     @Singleton
+    fun provideSettingsRemoteDataSource(): SettingsRemoteDataSource {
+        return RetrofitClient.createSettingsRemoteDataSource()
+    }
+
+    @Provides
+    @Singleton
     fun provideEventsRepository(): EventsRemoteDataSource {
         return RetrofitClient.createEventsInstance()
     }
@@ -102,6 +128,12 @@ object HiltModule { // dependency injection module for using StringRepository cl
 
     @Provides
     @Singleton
+    fun provideSettingsPreferences(@ApplicationContext context: Context): SettingsPreferences {
+        return SettingsPreferences(context)
+    }
+
+    @Provides
+    @Singleton
     fun provideEventPreferences(@ApplicationContext context: Context): EventPreferences {
         return EventPreferences(context)
     }
@@ -110,6 +142,12 @@ object HiltModule { // dependency injection module for using StringRepository cl
     @Singleton
     fun provideWishListPreferences(@ApplicationContext context: Context): WishListPreferences {
         return WishListPreferences(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGiftListPreferences(@ApplicationContext context: Context): GiftListPreferences {
+        return GiftListPreferences(context)
     }
 
     @Provides
@@ -146,6 +184,18 @@ object HiltModule { // dependency injection module for using StringRepository cl
     @Singleton
     fun provideNotificationMapper(): NotificationMapper {
         return NotificationMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGiftListMapper(): GiftListMapper {
+        return GiftListMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGiftMapper(): GiftMapper {
+        return GiftMapper()
     }
 }
 

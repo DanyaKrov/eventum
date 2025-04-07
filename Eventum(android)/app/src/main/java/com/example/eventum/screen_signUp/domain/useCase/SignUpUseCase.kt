@@ -1,7 +1,5 @@
 package com.example.eventum.screen_signUp.domain.useCase
 
-import com.example.eventum.data.remote.model.UserRequest
-import com.example.eventum.screen_login.domain.repository.LoginRepository
 import com.example.eventum.screen_signUp.domain.model.SignUpModel
 import com.example.eventum.screen_signUp.domain.model.SignUpRequest
 import com.example.eventum.screen_signUp.domain.repository.SignUpRepository

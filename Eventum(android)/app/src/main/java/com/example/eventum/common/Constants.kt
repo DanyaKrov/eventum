@@ -15,6 +15,7 @@ object Constants {
     const val NAVIGATION_MOVE_TO_PROFILE_PAGE = "move_to_profile_page"
     const val NAVIGATION_MOVE_TO_MAIN_PAGE = "move_to_main_page"
     const val NAVIGATION_MOVE_TO_LOGIN_PAGE = "move_to_login_page"
+    const val NAVIGATION_MOVE_TO_SIGNUP_PAGE = "move_to_signup_page"
     const val NAVIGATION_MOVE_TO_EVENT_PAGE = "move_to_event_page"
     const val NAVIGATION_MOVE_TO_SETTINGS_PAGE = "move_to_settings_page"
     const val NAVIGATION_MOVE_TO_CONTACTS_PAGE = "move_to_contacts_page"

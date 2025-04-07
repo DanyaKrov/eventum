@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.eventum.common.Constants
 import com.example.eventum.screen_login.presentation.ui.screens.LoginScreen
 import com.example.eventum.screen_mainPage.presentation.ui.screens.EventsScreen
 import com.example.eventum.screen_signUp.presentation.ui.screens.SignUpScreen
@@ -15,9 +16,9 @@ class EventumApplication : Application()
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "signUp") {
-        composable("signUp") { SignUpScreen(navController) }
-        composable("login") { LoginScreen(navController) }
-        composable("main_page") { EventsScreen(navController) }
+    NavHost(navController = navController, startDestination = Constants.NAVIGATION_MOVE_TO_SIGNUP_PAGE) {
+        composable(Constants.NAVIGATION_MOVE_TO_SIGNUP_PAGE) { SignUpScreen(navController) }
+        composable(Constants.NAVIGATION_MOVE_TO_LOGIN_PAGE) { LoginScreen(navController) }
+        composable(Constants.NAVIGATION_MOVE_TO_MAIN_PAGE) { EventsScreen(navController) }
     }
 }

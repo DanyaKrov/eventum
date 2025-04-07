@@ -1,6 +1,6 @@
 package com.example.eventum.util.mapper
 
-import com.example.eventum.data.remote.model.EventResponse
+import com.example.eventum.data.remote.model.EventRemote
 import com.example.eventum.data.local.entity.EventEntity
 import com.example.eventum.screen_mainPage.data.remote.entity.EventRequest
 import com.example.eventum.screen_mainPage.domain.model.Event
@@ -20,7 +20,7 @@ class EventMapper {
         )
     }
 
-    fun responseToEntity(event: EventResponse): EventEntity {
+    fun responseToEntity(event: EventRemote): EventEntity {
         return EventEntity(
             eventId = event.id,
             name=event.name,
@@ -31,8 +31,8 @@ class EventMapper {
         )
     }
 
-    fun entityToResponse(event: EventEntity): EventResponse {
-        return EventResponse(
+    fun entityToResponse(event: EventEntity): EventRemote {
+        return EventRemote(
             event.id,
             event.name,
             event.description,

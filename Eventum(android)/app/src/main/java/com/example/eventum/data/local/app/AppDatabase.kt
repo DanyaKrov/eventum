@@ -12,14 +12,19 @@ import com.example.eventum.data.local.dao.UserDao
 import com.example.eventum.data.local.dao.WishListDao
 import com.example.eventum.data.local.entity.ContactEntity
 import com.example.eventum.data.local.entity.EventEntity
+import com.example.eventum.data.local.entity.GiftEntity
+import com.example.eventum.data.local.entity.GiftListEntity
+import com.example.eventum.data.local.entity.GiftStateEntity
 import com.example.eventum.data.local.entity.NotificationEntity
 import com.example.eventum.data.local.entity.PresentEntity
 import com.example.eventum.data.local.entity.UserEntity
 import com.example.eventum.data.local.entity.WishListEntity
+import com.example.eventum.screen_giftList.data.local.dao.GiftDao
+import com.example.eventum.screen_giftList.data.local.dao.GiftListDao
 
 @Database(entities = [UserEntity::class, EventEntity::class, PresentEntity::class,
-                     WishListEntity::class, ContactEntity::class,
-                     NotificationEntity::class],version = 1)
+                     WishListEntity::class, ContactEntity::class, GiftStateEntity::class,
+                     NotificationEntity::class, GiftEntity::class, GiftListEntity::class, ],version = 1)
 @TypeConverters(ListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -28,4 +33,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun contactDao(): ContactDao
     abstract fun wishListDao(): WishListDao
     abstract fun notificationDao(): NotificationDao
+    abstract fun giftDao(): GiftDao
+    abstract fun giftListDao(): GiftListDao
 }

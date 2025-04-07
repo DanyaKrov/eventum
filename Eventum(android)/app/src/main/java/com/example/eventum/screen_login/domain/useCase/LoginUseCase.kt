@@ -1,6 +1,6 @@
 package com.example.eventum.screen_login.domain.useCase
 
-import com.example.eventum.data.remote.model.UserResponse
+import com.example.eventum.data.remote.model.UserRemote
 import com.example.eventum.data.local.repository.UserLocalRepository
 import com.example.eventum.screen_login.domain.model.AuthRequest
 import com.example.eventum.screen_login.domain.repository.LoginRepository
@@ -12,7 +12,7 @@ class LoginUseCase @Inject constructor(
     private val loginRepository: LoginRepository,
     private val userMapper: UserMapper,
 ) {
-    suspend fun execute(authRequest: AuthRequest) : Result<UserResponse?>{
+    suspend fun execute(authRequest: AuthRequest) : Result<UserRemote?>{
         try {
             val result = loginRepository.authorise(authRequest)
             if (result.isFailure)

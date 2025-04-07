@@ -26,7 +26,7 @@ interface WishListDao {
     suspend fun updatePresents(presents: List<PresentEntity>)
 
     @Query("DELETE FROM wishList WHERE remoteId=:remoteId")
-    suspend fun delete(remoteId: Long): Boolean
+    suspend fun delete(remoteId: Long)
 
     @Transaction
     suspend fun updateWishListWithPresents(wishList: WishListEntity, presents: List<PresentEntity>) {

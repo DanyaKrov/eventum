@@ -85,7 +85,9 @@ class PresentsViewModel @Inject constructor(
 
 
     private fun navigateBack() {
-
+        viewModelScope.launch {
+            navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_EVENT_PAGE)
+        }
     }
 
 

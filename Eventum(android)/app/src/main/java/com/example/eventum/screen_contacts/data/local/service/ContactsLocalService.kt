@@ -1,7 +1,7 @@
 package com.example.eventum.screen_contacts.data.local.service
 
 import com.example.eventum.data.local.dao.ContactDao
-import com.example.eventum.data.local.entity.ContactEntity
+import com.example.eventum.data.local.model.entity.ContactEntity
 import com.example.eventum.screen_contacts.data.local.repository.ContactsLocalRepository
 import javax.inject.Inject
 
@@ -9,10 +9,10 @@ class ContactsLocalService @Inject constructor(
     private val dao: ContactDao
 ): ContactsLocalRepository {
     override suspend fun insert(contact: ContactEntity) {
-        TODO("Not yet implemented")
+        dao.insert(contact)
     }
 
-    override suspend fun getAll(): List<ContactEntity> = dao.getAll()
+    override suspend fun getAll(userId: Long): List<ContactEntity> = dao.getAll(userId)
 
     override suspend fun updateContact(newContact: ContactEntity): String {
         return try {

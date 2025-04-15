@@ -1,9 +1,9 @@
 package com.example.eventum.screen_giftList.data.remote.dataSource
 
-import com.example.eventum.data.remote.model.GiftListRemote
-import com.example.eventum.data.remote.model.GiftRemote
+import com.example.eventum.data.remote.model.response.GiftRemote
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -18,4 +18,7 @@ interface GiftRemoteDataSource {
 
     @DELETE("gifts/{id}")
     suspend fun deleteById(@Path("id") id: Long): String
+
+    @GET("contact/gifts/{contactId}") // correct it to requests to api
+    suspend fun getGifts(@Path("contactId") contactId: Long): List<GiftRemote>
 }

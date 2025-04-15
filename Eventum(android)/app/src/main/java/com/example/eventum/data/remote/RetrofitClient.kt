@@ -2,7 +2,6 @@ package com.example.eventum.data.remote
 
 import com.example.eventum.common.Constants
 import com.example.eventum.screen_contacts.data.remote.dataSource.ContactsRemoteDataSource
-import com.example.eventum.screen_giftList.data.remote.dataSource.GiftListRemoteDataSource
 import com.example.eventum.screen_giftList.data.remote.dataSource.GiftRemoteDataSource
 import com.example.eventum.screen_login.data.remote.dataSource.LoginRemoteDataSource
 import com.example.eventum.screen_mainPage.data.remote.dataSource.EventsRemoteDataSource
@@ -42,10 +41,6 @@ object RetrofitClient {
 
     fun createPresentsInstance(): PresentsRemoteDataSource {
         return instance.create(PresentsRemoteDataSource::class.java)
-    }
-
-    fun createGiftListInstance(): GiftListRemoteDataSource {
-        return instance.create(GiftListRemoteDataSource::class.java)
     }
 
     fun createGiftInstance(): GiftRemoteDataSource {

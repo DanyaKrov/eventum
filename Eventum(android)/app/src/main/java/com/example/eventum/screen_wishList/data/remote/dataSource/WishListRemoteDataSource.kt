@@ -1,6 +1,6 @@
 package com.example.eventum.screen_wishList.data.remote.dataSource
 
-import com.example.eventum.data.remote.model.WishListRemote
+import com.example.eventum.data.remote.model.response.WishListRemote
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET

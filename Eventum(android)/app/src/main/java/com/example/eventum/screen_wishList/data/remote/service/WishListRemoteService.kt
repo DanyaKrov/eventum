@@ -1,6 +1,6 @@
 package com.example.eventum.screen_wishList.data.remote.service
 
-import com.example.eventum.data.remote.model.WishListRemote
+import com.example.eventum.data.remote.model.response.WishListRemote
 import com.example.eventum.screen_wishList.data.remote.dataSource.WishListRemoteDataSource
 import com.example.eventum.screen_wishList.data.remote.repository.WishListRemoteRepository
 import javax.inject.Inject

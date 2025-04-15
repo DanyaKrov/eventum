@@ -56,6 +56,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
 }
 
 dependencies {
@@ -68,7 +71,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.test:core-ktx:1.6.1")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
@@ -97,6 +102,17 @@ dependencies {
 
     // dataStore
     implementation("androidx.datastore:datastore-preferences:1.1.3")
+
+    // junit
+    implementation("junit:junit:4.13.2")
+    // testing
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation ("androidx.test:core-ktx:1.6.1")
+    testImplementation ("androidx.test.ext:junit-ktx:1.2.1")
+    testImplementation("androidx.room:room-testing:2.6.1")
+    testImplementation("org.robolectric:robolectric:4.7.3")
+    testImplementation("androidx.test:core:1.6.1")
 }
 
 kapt {

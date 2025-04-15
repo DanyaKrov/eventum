@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.eventum.data.local.entity.PresentEntity
+import com.example.eventum.data.local.model.entity.PresentEntity
 
 @Dao
 interface PresentDao {

@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.eventum.data.local.entity.ContactEntity
+import com.example.eventum.data.local.model.entity.ContactEntity
 
 @Dao
 interface ContactDao {
@@ -25,6 +25,6 @@ interface ContactDao {
     @Query("DELETE FROM contact")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM contact")
-    suspend fun getAll(): List<ContactEntity>
+    @Query("SELECT * FROM contact WHERE userRemoteId=:userId")
+    suspend fun getAll(userId: Long): List<ContactEntity>
 }

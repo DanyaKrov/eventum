@@ -1,9 +1,9 @@
 package com.example.eventum.screen_wishList.data.local.service
 
 import com.example.eventum.data.local.dao.WishListDao
-import com.example.eventum.data.local.entity.PresentEntity
-import com.example.eventum.data.local.entity.WishListEntity
-import com.example.eventum.data.local.entity.WishListWithPresents
+import com.example.eventum.data.local.model.entity.PresentEntity
+import com.example.eventum.data.local.model.entity.WishListEntity
+import com.example.eventum.data.local.model.entity.WishListWithPresents
 import com.example.eventum.screen_wishList.data.local.repository.WishListLocalRepository
 import javax.inject.Inject
 

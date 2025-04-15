@@ -1,8 +1,8 @@
 package com.example.eventum.screen_event.data.local.service
 
 import com.example.eventum.data.local.dao.EventDao
-import com.example.eventum.data.local.entity.EventEntity
-import com.example.eventum.data.local.entity.EventWithNotificationsEntity
+import com.example.eventum.data.local.model.entity.EventEntity
+import com.example.eventum.data.local.model.entity.EventWithNotificationsEntity
 import com.example.eventum.screen_event.data.local.repository.EventLocalRepository
 import javax.inject.Inject
 

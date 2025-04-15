@@ -1,6 +1,6 @@
 package com.example.eventum.screen_login.data.remote.service
 
-import com.example.eventum.data.remote.model.UserRemote
+import com.example.eventum.data.remote.model.response.UserRemote
 import com.example.eventum.screen_login.data.remote.dataSource.LoginRemoteDataSource
 import com.example.eventum.screen_login.data.remote.repository.LoginRemoteRepository
 import com.example.eventum.screen_login.domain.model.AuthRequest

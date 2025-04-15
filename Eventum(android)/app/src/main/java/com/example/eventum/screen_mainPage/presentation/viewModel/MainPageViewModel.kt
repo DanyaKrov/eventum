@@ -24,7 +24,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -45,27 +47,25 @@ class MainPageViewModel @Inject constructor(
     val navigationStatusRead: SharedFlow<String> = navigationStatus
 
     init {
-        getUser()
+        userPreferences.userIdFlow
             .filterNotNull()
-            .onEach { result -> when(result) {
-                is Resource.Success -> {
-                    refreshEvents(result.data?.events ?: listOf(), false)
-                    result.data?.let {
-                        userPreferences.saveUserId(result.data.remoteId)
-                    } ?: navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_LOGIN_PAGE)
-                }
-                is Resource.Loading -> {
-                    _model.value = MainPageModel(isLoading = true)
-                }
-                is Resource.Error -> {
-                    _model.value = MainPageModel(errorMessage = result.message ?: "An unexpected error occurred")
-                }
-            } }
+            .flatMapLatest { userRemoteId ->
+                getCurrentUserUseCase(userRemoteId)
+                    .filterNotNull()
+                    .onEach { result -> when(result) {
+                        is Resource.Success -> {
+                            refreshEvents(result.data?.events ?: listOf(), false)
+                        }
+                        is Resource.Loading -> {
+                            _model.value = MainPageModel(isLoading = true)
+                        }
+                        is Resource.Error -> {
+                            _model.value = MainPageModel(errorMessage = result.message ?: "An unexpected error occurred")
+                        }
+                    }
+                    }
+            }
             .launchIn(viewModelScope)
-    }
-
-    private fun getUser(): Flow<Resource<User>> {
-        return getCurrentUserUseCase()
     }
 
     private suspend fun refreshEvents(eventsIds: List<Long>, refreshLocal: Boolean) {

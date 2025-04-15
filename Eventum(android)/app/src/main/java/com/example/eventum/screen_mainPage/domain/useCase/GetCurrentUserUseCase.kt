@@ -12,12 +12,12 @@ import javax.inject.Inject
 class GetCurrentUserUseCase @Inject constructor(
     private val repository: UserLocalRepository,
     private val mapper: UserMapper
-) { // useCase to get active user. But maybe in the future local database won't contain singular user
-    operator fun invoke(): Flow<Resource<User>> =
+) {
+    operator fun invoke(remoteId: Long): Flow<Resource<User>> =
         flow{
             try {
                 emit(Resource.Loading())
-                val user = mapper.fromEntityToModel(repository.getUser())
+                val user = mapper.fromEntityToModel(repository.getUser(remoteId))
                 emit(Resource.Success(user))
             }
             catch (e: IOException) {

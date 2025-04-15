@@ -1,6 +1,6 @@
 package com.example.eventum.screen_login.data.remote.dataSource
 
-import com.example.eventum.data.remote.model.UserRemote
+import com.example.eventum.data.remote.model.response.UserRemote
 import com.example.eventum.screen_login.domain.model.AuthRequest
 import retrofit2.Response
 import retrofit2.http.Body

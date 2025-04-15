@@ -1,7 +1,7 @@
 package com.example.eventum.screen_profile.data.local.service
 
 import com.example.eventum.data.local.dao.UserDao
-import com.example.eventum.data.local.entity.UserEntity
+import com.example.eventum.data.local.model.entity.UserEntity
 import com.example.eventum.screen_profile.data.local.repository.ProfileLocalRepository
 import javax.inject.Inject
 

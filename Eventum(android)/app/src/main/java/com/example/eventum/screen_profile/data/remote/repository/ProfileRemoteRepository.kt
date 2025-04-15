@@ -1,6 +1,6 @@
 package com.example.eventum.screen_profile.data.remote.repository
 
-import com.example.eventum.data.remote.model.UserRemote
+import com.example.eventum.data.remote.model.response.UserRemote
 import retrofit2.Response
 
 interface ProfileRemoteRepository {

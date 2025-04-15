@@ -9,7 +9,6 @@ import com.example.eventum.data.local.dao.PresentDao
 import com.example.eventum.data.local.dao.UserDao
 import com.example.eventum.data.local.dao.WishListDao
 import com.example.eventum.screen_giftList.data.local.dao.GiftDao
-import com.example.eventum.screen_giftList.data.local.dao.GiftListDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -64,10 +63,5 @@ object Module {
     @Provides
     fun provideGiftDao(db: AppDatabase): GiftDao {
         return db.giftDao()
-    }
-
-    @Provides
-    fun provideGiftListDao(db: AppDatabase): GiftListDao {
-        return db.giftListDao()
     }
 }

@@ -9,8 +9,10 @@ import com.example.eventum.domain.model.Resource
 import com.example.eventum.data.local.preferences.UserPreferences
 import com.example.eventum.screen_contacts.domain.model.Contact
 import com.example.eventum.screen_contacts.domain.model.ContactsModel
+import com.example.eventum.screen_contacts.domain.useCase.AddContactUseCase
 import com.example.eventum.screen_contacts.domain.useCase.DeleteContactUseCase
 import com.example.eventum.screen_contacts.domain.useCase.GetContactsUseCase
+import com.example.eventum.screen_contacts.domain.useCase.UpdateContactUseCase
 import com.example.eventum.screen_contacts.presentation.event.ContactsEvent
 import com.example.eventum.screen_contacts.presentation.event.ContactsNavigationEvent
 import com.example.eventum.screen_contacts.presentation.sort.SortOrder
@@ -28,7 +30,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
     private val getContactsUseCase: GetContactsUseCase,
+    private val updateContactUseCase: UpdateContactUseCase,
     private val deleteContactUseCase: DeleteContactUseCase,
+    private val addContactUseCase: AddContactUseCase,
     private val userPreferences: UserPreferences
 ): ViewModel() {
     // navigation parameters
@@ -38,6 +42,8 @@ class ContactsViewModel @Inject constructor(
     private val _model = mutableStateOf(ContactsModel()) // mutable state of model
     val model: State<ContactsModel> = _model // immutable state of model to presentation layer
 
+    private var userId: Long = 0
+
     private val _sortOrder = MutableStateFlow(SortOrder.DATE_ASC)
     val sortOrder: StateFlow<SortOrder> = _sortOrder.asStateFlow()
     
@@ -45,12 +51,19 @@ class ContactsViewModel @Inject constructor(
         getContacts()
     }
 
+    private fun setUserId(id: Long) {
+        userId = id
+    }
+
     private fun getContacts() {
         userPreferences.userIdFlow // state of user Id
-            .onEach { userId -> if (userId == null)
-                navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_LOGIN_PAGE) } // it means no userId presented at the moment
+            .onEach { userId ->
+                if (userId == null) // it means no userId presented at the moment
+                    navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_LOGIN_PAGE)
+            }
             .filterNotNull()
             .flatMapLatest { userId ->
+                setUserId(userId)
                 getContactsUseCase(userId) // if id changes, contacts update
             }
             .onEach { result ->
@@ -71,11 +84,13 @@ class ContactsViewModel @Inject constructor(
 
 
     private fun editContact(contact: Contact) {
-        // start new screen of editable contact
+        viewModelScope.launch {
+            updateContactUseCase(contact)
+        }
     }
 
 
-    private suspend fun deleteContact(contactId: Long) {
+    private fun deleteContact(contactId: Long) {
         viewModelScope.launch {
             deleteContactUseCase(contactId)
         }
@@ -106,6 +121,14 @@ class ContactsViewModel @Inject constructor(
             is ContactsEvent.EditContactEvent -> editContact(event.contact)
             is ContactsEvent.SortContactsEvent -> changeSortOrder(event.order)
             is ContactsEvent.SortTagContactsEvent -> sortContactsByTag(event.tag)
+            is ContactsEvent.AddContactEvent -> addContact(event.contact)
+            is ContactsEvent.DeleteContactEvent -> deleteContact(event.contact.remoteId)
+        }
+    }
+
+    private fun addContact(contact: Contact) {
+        viewModelScope.launch {
+            addContactUseCase(userId, contact)
         }
     }
 

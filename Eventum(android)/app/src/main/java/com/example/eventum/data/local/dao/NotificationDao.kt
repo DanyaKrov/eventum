@@ -5,8 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.eventum.data.local.entity.EventEntity
-import com.example.eventum.data.local.entity.NotificationEntity
+import com.example.eventum.data.local.model.entity.EventEntity
+import com.example.eventum.data.local.model.entity.NotificationEntity
 
 @Dao
 interface NotificationDao {

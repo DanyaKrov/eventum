@@ -1,5 +1,6 @@
 package com.example.eventum.screen_contacts.data.service
 
+import com.example.eventum.data.remote.model.request.ContactRequest
 import com.example.eventum.screen_contacts.data.local.repository.ContactsLocalRepository
 import com.example.eventum.screen_contacts.data.remote.repository.ContactsRemoteRepository
 import com.example.eventum.screen_contacts.domain.model.Contact
@@ -20,10 +21,10 @@ class ContactsService @Inject constructor(
                 remoteContacts.forEach {localRepository.insert(mapper.fromModelToEntity(it))}
                 remoteContacts
             } catch (e: Exception) {
-                localRepository.getAll().map { mapper.fromEntityToModel(it) }
+                localRepository.getAll(userId).map { mapper.fromEntityToModel(it) }
             }
         } else {
-            val localEvents = localRepository.getAll().map { mapper.fromEntityToModel(it) }
+            val localEvents = localRepository.getAll(userId).map { mapper.fromEntityToModel(it) }
             if (localEvents.isNotEmpty()) {
                 localEvents
             } else {
@@ -44,8 +45,8 @@ class ContactsService @Inject constructor(
         return localRepository.updateContact(mapper.fromModelToEntity(contact))
     }
 
-    override suspend fun createContact(contact: Contact) {
-        val entity = remoteRepository.insert(contact)
+    override suspend fun createContact(userId: Long, contact: Contact) {
+        remoteRepository.insert(userId, mapper.fromModelToRequest(contact))
         localRepository.insert(mapper.fromModelToEntity(contact))
     }
 }

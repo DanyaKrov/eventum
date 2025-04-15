@@ -7,4 +7,6 @@ sealed class ContactsEvent {
     class SortTagContactsEvent(val tag: String): ContactsEvent()
     class SortContactsEvent(val order: SortOrder): ContactsEvent()
     class EditContactEvent(val contact: Contact): ContactsEvent()
+    class AddContactEvent(val contact: Contact): ContactsEvent()
+    class DeleteContactEvent(val contact: Contact): ContactsEvent()
 }

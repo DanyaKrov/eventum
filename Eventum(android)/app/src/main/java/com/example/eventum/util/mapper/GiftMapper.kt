@@ -1,11 +1,8 @@
 package com.example.eventum.util.mapper
 
-import com.example.eventum.data.local.entity.GiftEntity
-import com.example.eventum.data.local.entity.GiftListEntity
-import com.example.eventum.data.remote.model.GiftListRemote
-import com.example.eventum.data.remote.model.GiftRemote
+import com.example.eventum.data.local.model.entity.GiftEntity
+import com.example.eventum.data.remote.model.response.GiftRemote
 import com.example.eventum.screen_giftList.domain.model.Gift
-import com.example.eventum.screen_giftList.domain.model.GiftList
 import dagger.internal.DaggerGenerated
 
 @DaggerGenerated
@@ -16,7 +13,8 @@ class GiftMapper {
             presentId = giftRemote.present?.id,
             stateId = giftRemote.state?.id ?: 0, // I will correct it, when I will have a better vision of gift state
             title = giftRemote.title,
-            description = giftRemote.description
+            description = giftRemote.description,
+            contactRemoteId = giftRemote.contactId
         )
 
     fun fromEntityToModel(giftEntity: GiftEntity): Gift =
@@ -25,23 +23,35 @@ class GiftMapper {
             presentId = giftEntity.presentId,
             stateId = giftEntity.stateId,
             title = giftEntity.title,
-            description = giftEntity.description
+            description = giftEntity.description,
+            contactRemoteId = giftEntity.contactRemoteId
         )
 
-    fun fromModelToEntity(gift: Gift, giftListId: Long): GiftEntity =
+    fun fromModelToEntity(gift: Gift, contactRemoteId: Long): GiftEntity =
         GiftEntity(
             remoteId = gift.remoteId,
             presentId = gift.presentId,
             stateId = gift.stateId,
             title = gift.title,
             description = gift.description,
-            giftListId = giftListId
+            contactRemoteId = contactRemoteId
+        )
+
+    fun fromRemoteToEntity(gift: GiftRemote): GiftEntity =
+        GiftEntity(
+            remoteId = gift.id,
+            presentId = gift.present?.id,
+            stateId = gift.state?.id ?: 0,
+            title = gift.title,
+            description = gift.description,
+            contactRemoteId =gift.contactId
         )
 
     fun fromModelToRemote(gift: Gift): GiftRemote =
         GiftRemote(
             id = gift.remoteId,
             title = gift.title,
-            description = gift.description
+            description = gift.description,
+            contactId = gift.contactRemoteId
         )
 }

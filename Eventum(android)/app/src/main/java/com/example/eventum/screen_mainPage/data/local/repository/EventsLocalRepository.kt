@@ -1,6 +1,6 @@
 package com.example.eventum.screen_mainPage.data.local.repository
 
-import com.example.eventum.data.local.entity.EventEntity
+import com.example.eventum.data.local.model.entity.EventEntity
 
 interface EventsLocalRepository {
     suspend fun getEvents(): List<EventEntity>

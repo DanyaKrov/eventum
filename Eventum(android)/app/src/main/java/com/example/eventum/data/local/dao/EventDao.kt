@@ -6,8 +6,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.example.eventum.data.local.entity.EventEntity
-import com.example.eventum.data.local.entity.EventWithNotificationsEntity
+import com.example.eventum.data.local.model.entity.EventEntity
+import com.example.eventum.data.local.model.entity.EventWithNotificationsEntity
 
 @Dao
 interface EventDao {
@@ -18,10 +18,10 @@ interface EventDao {
     suspend fun update(event: EventEntity)
 
 
-    @Query("DELETE FROM event WHERE eventId=:id")
+    @Query("DELETE FROM event WHERE remoteId=:id")
     suspend fun delete(id: Long)
 
-    @Query("SELECT * FROM event WHERE eventId=:id")
+    @Query("SELECT * FROM event WHERE remoteId=:id")
     suspend fun getByRemoteId(id: Long): EventEntity
 
     @Query("DELETE FROM event")
@@ -31,6 +31,6 @@ interface EventDao {
     suspend fun getAll(): List<EventEntity>
 
     @Transaction
-    @Query("SELECT * FROM event WHERE eventId = :eventId")
+    @Query("SELECT * FROM event WHERE remoteId = :eventId")
     suspend fun getEventWithNotificationsEntity(eventId: Long): EventWithNotificationsEntity
 }

@@ -1,5 +1,6 @@
 package com.example.eventum.screen_contacts.data.remote.service
 
+import com.example.eventum.data.remote.model.request.ContactRequest
 import com.example.eventum.screen_contacts.data.remote.dataSource.ContactsRemoteDataSource
 import com.example.eventum.screen_contacts.data.remote.repository.ContactsRemoteRepository
 import com.example.eventum.screen_contacts.domain.model.Contact
@@ -12,7 +13,9 @@ class ContactsRemoteService @Inject constructor(
 
     override suspend fun delete(contactId: Long): String = dataSource.deleteById(contactId)
 
-    override suspend fun insert(contact: Contact): Contact = dataSource.create(contact)
+    override suspend fun insert(userId: Long, contact: ContactRequest) {
+        dataSource.create(userId, contact)
+    }
 
     override suspend fun update(id: Long, contact: Contact): String {
 

@@ -1,7 +1,7 @@
 package com.example.eventum.util.mapper
 
-import com.example.eventum.data.local.entity.WishListEntity
-import com.example.eventum.data.remote.model.WishListRemote
+import com.example.eventum.data.local.model.entity.WishListEntity
+import com.example.eventum.data.remote.model.response.WishListRemote
 import com.example.eventum.screen_presents.domain.model.Present
 import com.example.eventum.screen_wishList.domain.model.WishList
 import dagger.internal.DaggerGenerated

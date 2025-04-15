@@ -1,5 +1,6 @@
 package com.example.eventum.screen_contacts.data.remote.dataSource
 
+import com.example.eventum.data.remote.model.request.ContactRequest
 import com.example.eventum.screen_contacts.domain.model.Contact
 import com.example.eventum.screen_presents.domain.model.Present
 import retrofit2.http.Body
@@ -13,8 +14,8 @@ interface ContactsRemoteDataSource {
     @PUT("contacts/{id}")
     suspend fun updateById(@Path("id") id: Long, @Body contact: Contact): Contact
 
-    @POST("contacts")
-    suspend fun create(@Body contact: Contact): Contact
+    @POST("users/{id}/contacts")
+    suspend fun create(@Path("id") userId: Long, @Body contact: ContactRequest)
 
     @GET("contacts")
     suspend fun getAll(): List<Contact>

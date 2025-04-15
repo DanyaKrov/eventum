@@ -4,5 +4,5 @@ import com.example.eventum.domain.model.UiState
 
 data class GiftListModel (
     val uiState: UiState = UiState(),
-    val giftList: GiftList? = null
+    val gifts: MutableList<Gift>? = null
 )

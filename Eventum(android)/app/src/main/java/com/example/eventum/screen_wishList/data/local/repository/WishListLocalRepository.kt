@@ -1,8 +1,8 @@
 package com.example.eventum.screen_wishList.data.local.repository
 
-import com.example.eventum.data.local.entity.PresentEntity
-import com.example.eventum.data.local.entity.WishListEntity
-import com.example.eventum.data.local.entity.WishListWithPresents
+import com.example.eventum.data.local.model.entity.PresentEntity
+import com.example.eventum.data.local.model.entity.WishListEntity
+import com.example.eventum.data.local.model.entity.WishListWithPresents
 
 interface WishListLocalRepository {
     suspend fun getWishList(wishListRemoteId: Long): WishListWithPresents

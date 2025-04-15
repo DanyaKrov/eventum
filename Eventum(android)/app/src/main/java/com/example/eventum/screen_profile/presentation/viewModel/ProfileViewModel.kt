@@ -29,7 +29,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val updateUserUseCase: UpdateUserUseCase,
-    private val getCurrentUserUseCase: GetCurrentUserUseCase
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val userPreferences: UserPreferences
 ): ViewModel() {
     private val _model = mutableStateOf(ProfileModel())
     val model: State<ProfileModel> = _model
@@ -47,25 +48,28 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getUserInformation() {
-        getCurrentUserUseCase()
+        userPreferences.userIdFlow
             .filterNotNull()
-            .onEach { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        result.data?.let { user ->
-                            _model.value = ProfileModel(user = user)
+            .flatMapLatest { userRemoteId ->
+                getCurrentUserUseCase(userRemoteId)
+                    .filterNotNull()
+                    .onEach { result ->
+                        when (result) {
+                            is Resource.Success -> {
+                                result.data?.let { user ->
+                                    _model.value = ProfileModel(user = user)
+                                }
+                            }
+                            is Resource.Loading -> {
+                                _model.value = ProfileModel(uiState = UiState(isLoading = true))
+                            }
+                            is Resource.Error -> {
+                                _model.value = ProfileModel(
+                                    uiState = UiState(errorMessage = result.message ?: "An unexpected error occurred")
+                                )
+                            }
                         }
                     }
-                    is Resource.Loading -> {
-                        _model.value = ProfileModel(uiState = UiState(isLoading = true))
-                    }
-
-                    is Resource.Error -> {
-                        _model.value = ProfileModel(
-                            uiState = UiState(errorMessage = result.message ?: "An unexpected error occurred")
-                        )
-                    }
-                }
             }
             .launchIn(viewModelScope)
     }

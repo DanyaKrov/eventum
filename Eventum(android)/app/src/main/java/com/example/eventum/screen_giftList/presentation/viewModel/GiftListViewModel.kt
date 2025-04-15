@@ -8,7 +8,6 @@ import com.example.eventum.domain.model.Resource
 import com.example.eventum.domain.model.UiState
 import com.example.eventum.screen_giftList.domain.model.GiftListModel
 import com.example.eventum.screen_giftList.domain.useCase.RefreshGiftList
-import com.example.eventum.screen_wishList.domain.model.WishListModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,8 +40,8 @@ class GiftListViewModel @Inject constructor(
             .onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        result.data?.let { giftListResult ->
-                            _model.value = GiftListModel(giftList = giftListResult)
+                        result.data?.let { giftsResult ->
+                            _model.value = GiftListModel(gifts = giftsResult.toMutableList())
                         }
                     }
                     is Resource.Loading -> {

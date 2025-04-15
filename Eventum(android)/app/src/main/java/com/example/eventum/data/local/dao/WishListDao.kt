@@ -7,9 +7,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.example.eventum.data.local.entity.PresentEntity
-import com.example.eventum.data.local.entity.WishListEntity
-import com.example.eventum.data.local.entity.WishListWithPresents
+import com.example.eventum.data.local.model.entity.PresentEntity
+import com.example.eventum.data.local.model.entity.WishListEntity
+import com.example.eventum.data.local.model.entity.WishListWithPresents
 
 @Dao
 interface WishListDao {

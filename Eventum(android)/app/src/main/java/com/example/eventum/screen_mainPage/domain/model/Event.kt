@@ -7,5 +7,6 @@ data class Event(
     val description: String,
     val time: String,
     val picture: String?,
-    val tag: String?
+    val tag: String?,
+    val userRemoteId: Long
 )

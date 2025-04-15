@@ -1,11 +1,12 @@
 package com.example.eventum.screen_contacts.data.remote.repository
 
+import com.example.eventum.data.remote.model.request.ContactRequest
 import com.example.eventum.screen_contacts.domain.model.Contact
 import com.example.eventum.screen_presents.domain.model.Present
 
 interface ContactsRemoteRepository {
     suspend fun getAll(userId: Long): List<Contact>
     suspend fun delete(contactId: Long): String
-    suspend fun insert(contact: Contact): Contact
+    suspend fun insert(userId: Long, contact: ContactRequest)
     suspend fun update(id: Long, contact: Contact): String
 }

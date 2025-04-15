@@ -3,59 +3,46 @@ package com.example.eventum.screen_giftList.data.service
 import com.example.eventum.screen_giftList.data.local.repository.GiftListLocalRepository
 import com.example.eventum.screen_giftList.data.remote.repository.GiftListRemoteRepository
 import com.example.eventum.screen_giftList.domain.model.Gift
-import com.example.eventum.screen_giftList.domain.model.GiftList
 import com.example.eventum.screen_giftList.domain.repository.GiftListRepository
-import com.example.eventum.util.mapper.GiftListMapper
 import com.example.eventum.util.mapper.GiftMapper
 import javax.inject.Inject
 
 class GiftListService @Inject constructor(
     private val localRepository: GiftListLocalRepository,
     private val remoteRepository: GiftListRemoteRepository,
-    private val listMapper: GiftListMapper,
     private val giftMapper: GiftMapper
 
     ): GiftListRepository {
-    override suspend fun getGiftList(refresh: Boolean, remoteId: Long): GiftList {
-        return if(refresh) {
+    override suspend fun getGifts(contactId: Long, forceRefresh: Boolean): List<Gift> {
+        return if(forceRefresh) {
             try {
-                updateLocalEntity(remoteId)
+                updateLocalEntity(contactId)
             }
             catch (e: Exception) {
-                getModelFromLocalEntity(remoteId)
+                getModelFromLocalEntity(contactId)
             }
         }
         else {
             try {
-                getModelFromLocalEntity(remoteId)
+                getModelFromLocalEntity(contactId)
             }
             catch (e: Exception) {
-                updateLocalEntity(remoteId)
+                updateLocalEntity(contactId)
             }
         }
     }
 
-    private suspend fun getModelFromLocalEntity(remoteId: Long): GiftList {
-        val localGiftList = localRepository.getGiftListWithGifts(remoteId)
-        return listMapper.fromEntityToModel(localGiftList.giftList,
-            localGiftList.gifts.map { giftMapper.fromEntityToModel(it) })
+    private suspend fun getModelFromLocalEntity(contactRemoteId: Long): List<Gift> {
+        val localGifts = localRepository.getGifts(contactRemoteId)
+        return localGifts.map { giftMapper.fromEntityToModel(it) }
     }
 
-    private suspend fun updateLocalEntity(remoteId: Long): GiftList {
-        val remoteGiftList = remoteRepository.getGiftList(remoteId)
-        localRepository.updateGiftList(listMapper.fromRemoteToEntity(remoteGiftList))
-        return listMapper.fromRemoteToModel(remoteGiftList,
-            remoteGiftList.gifts.map {giftMapper.fromRemoteToModel(it)})
-    }
-
-    override suspend fun deleteGiftList(remoteId: Long): Boolean {
-        return try {
-            localRepository.deleteGiftList(remoteId) &&
-                    remoteRepository.deleteGiftList(remoteId)
+    private suspend fun updateLocalEntity(contactId: Long): List<Gift> {
+        val remoteGifts = remoteRepository.getGifts(contactId)
+        remoteGifts.forEach {
+            localRepository.updateGift(giftMapper.fromRemoteToEntity(it))
         }
-        catch (e: Exception) {
-            false
-        }
+        return remoteGifts.map {giftMapper.fromRemoteToModel(it)}
     }
 
     override suspend fun deleteGift(remoteId: Long): Boolean {

@@ -1,5 +1,5 @@
 package com.example.eventum.util.mapper
-import com.example.eventum.data.local.entity.NotificationEntity
+import com.example.eventum.data.local.model.entity.NotificationEntity
 import com.example.eventum.feature_notifications.model.Notification
 import com.example.eventum.screen_event.domain.model.NotificationModel
 import dagger.internal.DaggerGenerated

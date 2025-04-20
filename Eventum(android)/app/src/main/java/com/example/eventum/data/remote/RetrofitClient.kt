@@ -1,5 +1,6 @@
 package com.example.eventum.data.remote
 
+import com.example.eventum.BuildConfig
 import com.example.eventum.common.Constants
 import com.example.eventum.screen_contacts.data.remote.dataSource.ContactsRemoteDataSource
 import com.example.eventum.screen_giftList.data.remote.dataSource.GiftRemoteDataSource
@@ -8,7 +9,7 @@ import com.example.eventum.screen_mainPage.data.remote.dataSource.EventsRemoteDa
 import com.example.eventum.screen_presents.data.remote.dataSource.PresentsRemoteDataSource
 import com.example.eventum.screen_profile.data.remote.dataSource.ProfileRemoteDataSource
 import com.example.eventum.screen_settings.data.remote.dataSource.SettingsRemoteDataSource
-import com.example.eventum.screen_signUp.data.remote.dataSource.UsersRemoteDataSource
+import com.example.eventum.screen_signUp.data.remote.dataSource.SignUpRemoteDataSource
 import com.example.eventum.screen_wishList.data.remote.dataSource.WishListRemoteDataSource
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -16,7 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
     private val client = OkHttpClient.Builder()
-        .addInterceptor(BasicAuthInterceptor("root", "pass"))
+        .addInterceptor(BasicAuthInterceptor(BuildConfig.API_USER_NAME,
+            BuildConfig.API_USER_PASSWORD))
         .build()
 
     val instance: Retrofit by lazy {
@@ -27,8 +29,8 @@ object RetrofitClient {
             .build()
     }
 
-    fun createUsersInstance(): UsersRemoteDataSource {
-        return instance.create(UsersRemoteDataSource::class.java)
+    fun createSignUpRemoteDataSource(): SignUpRemoteDataSource {
+        return instance.create(SignUpRemoteDataSource::class.java)
     }
 
     fun createLoginInstance(): LoginRemoteDataSource {

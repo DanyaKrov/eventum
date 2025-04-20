@@ -28,8 +28,8 @@ class EventMapper {
             description=event.description,
             time=event.time,
             picture=event.picture,
-            tag=event.tag,
-            userRemoteId = event.userRemoteId
+            tag=event.tag.toString(),
+            userRemoteId = event.userId
         )
     }
 
@@ -40,7 +40,7 @@ class EventMapper {
             event.description,
             event.time,
             event.picture,
-            event.tag,
+            event.tag.toLong(),
             event.userRemoteId
         )
     }
@@ -50,7 +50,8 @@ class EventMapper {
             event.name,
             event.description,
             event.time,
-            event.picture ?: ""
+            event.picture ?: "",
+            0
         )
     }
 

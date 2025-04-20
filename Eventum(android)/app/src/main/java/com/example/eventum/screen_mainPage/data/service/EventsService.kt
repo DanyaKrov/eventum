@@ -13,11 +13,11 @@ class EventsService @Inject constructor(
     private val localRepository: EventsLocalRepository,
     private val mapper: EventMapper
 ): EventsRepository {
-    override suspend fun getEvents( eventsIds: List<Long>, forceRefresh: Boolean
+    override suspend fun getEvents(userRemoteId: Long, forceRefresh: Boolean
     ): List<Event> {
         if (forceRefresh) {
             try {
-                val remoteEvents = getRemoteEvents(eventsIds)
+                val remoteEvents = getRemoteEvents(userRemoteId)
                 localRepository.clearEvents()
                 localRepository.saveEvents(remoteEvents.map { mapper.responseToEntity(it) })
             } catch (e: Exception) {
@@ -28,7 +28,7 @@ class EventsService @Inject constructor(
             if (localEvents.isNotEmpty()) {
                 localRepository.getEvents().map { mapper.entityToPresentableModel(it) }
             } else {
-                val remoteEvents = getRemoteEvents(eventsIds)
+                val remoteEvents = getRemoteEvents(userRemoteId)
                 localRepository.saveEvents(remoteEvents.map { mapper.responseToEntity(it) })
             }
         }
@@ -40,7 +40,6 @@ class EventsService @Inject constructor(
         return remoteRepository.delete(event.remoteId)
     }
 
-    private suspend fun getRemoteEvents(eventsIds: List<Long>) = eventsIds.map {
-            remoteRepository.get(it)
-    }
+    private suspend fun getRemoteEvents(userRemoteId: Long) =
+        remoteRepository.getEvents(userRemoteId)
 }

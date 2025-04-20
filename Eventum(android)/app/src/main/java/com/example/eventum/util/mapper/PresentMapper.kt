@@ -1,6 +1,8 @@
 package com.example.eventum.util.mapper
 
 import com.example.eventum.data.local.model.entity.PresentEntity
+import com.example.eventum.data.remote.model.request.PresentRemoteRequest
+import com.example.eventum.data.remote.model.response.PresentRemoteResponse
 import com.example.eventum.screen_presents.domain.model.Present
 import dagger.internal.DaggerGenerated
 
@@ -14,15 +16,32 @@ class PresentMapper {
     )
 
     fun fromModelToEntity(present: Present): PresentEntity = PresentEntity(
-        presentId = present.id,
+        remoteId = present.remoteId,
         title = present.title,
         description = present.description,
         wishListParentId = present.wishListId
     )
 
+    fun fromRemoteToModel(present: PresentRemoteResponse): Present = Present(
+        id = present.id,
+        title = present.title,
+        description = present.description
+    )
+
+    fun fromModelToRemoteRequest(present: Present): PresentRemoteRequest = PresentRemoteRequest(
+        title = present.title,
+        description = present.description
+    )
+
+    fun fromRemoteToEntity(present: PresentRemoteResponse): PresentEntity = PresentEntity(
+        remoteId = present.id,
+        title = present.title,
+        description = present.description
+    )
+
     fun updateEntity(oldPresent: PresentEntity, newPresent: Present): PresentEntity = PresentEntity(
         newPresent.id,
-        oldPresent.presentId,
+        oldPresent.remoteId,
         oldPresent.wishListParentId,
         newPresent.title,
         newPresent.description

@@ -16,7 +16,7 @@ class ContactsService @Inject constructor(
     override suspend fun getContacts(userId: Long, forceRefresh: Boolean): List<Contact> {
         return if (forceRefresh) {
             try {
-                val remoteContacts = remoteRepository.getAll(userId)
+                val remoteContacts = remoteRepository.getAll(userId).map { mapper.fromRemoteToModel(it) }
                 localRepository.deleteAll()
                 remoteContacts.forEach {localRepository.insert(mapper.fromModelToEntity(it))}
                 remoteContacts
@@ -25,11 +25,10 @@ class ContactsService @Inject constructor(
             }
         } else {
             val localEvents = localRepository.getAll(userId).map { mapper.fromEntityToModel(it) }
-            if (localEvents.isNotEmpty()) {
-                localEvents
-            } else {
-                val remoteEvents = remoteRepository.getAll(userId)
-                remoteEvents.forEach {localRepository.insert(mapper.fromModelToEntity(it))}
+            localEvents.ifEmpty {
+                val remoteEvents =
+                    remoteRepository.getAll(userId).map { mapper.fromRemoteToModel(it) }
+                remoteEvents.forEach { localRepository.insert(mapper.fromModelToEntity(it)) }
                 remoteEvents
             }
         }
@@ -41,7 +40,7 @@ class ContactsService @Inject constructor(
     }
 
     override suspend fun editContact(contact: Contact): String {
-        remoteRepository.update(contact.id, contact)
+        remoteRepository.update(contact.id, mapper.fromModelToRequest(contact))
         return localRepository.updateContact(mapper.fromModelToEntity(contact))
     }
 

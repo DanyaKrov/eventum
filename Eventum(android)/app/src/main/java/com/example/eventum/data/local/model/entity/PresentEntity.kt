@@ -15,12 +15,12 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index("wishListParentId")]
+    indices = [Index("wishListParentId"), Index(value = ["remoteId"], unique = true)]
 )
 data class PresentEntity (
     @PrimaryKey val id: Long = 0,
-    val presentId: Long, // id of present from mysql database
-    val wishListParentId: Long, // id of wishList to whom belongs present
+    val remoteId: Long, // id of present from mysql database
+    val wishListParentId: Long? = null, // id of wishList to whom belongs present
     val title: String,
     val description: String
 )

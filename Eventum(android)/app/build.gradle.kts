@@ -1,3 +1,6 @@
+import org.gradle.internal.util.PropertiesUtils
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -16,6 +19,11 @@ android {
     namespace = "com.example.eventum"
     compileSdk = 34
 
+    val envFile = rootProject.file(".env.properties")
+    val props = Properties()
+    props.load(envFile.inputStream())
+
+
     defaultConfig {
         applicationId = "com.example.eventum"
         minSdk = 27
@@ -27,6 +35,9 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "API_USER_NAME", "\"${props["ANDROID_USER_NAME"]}\"")
+        buildConfigField("String", "API_USER_PASSWORD", "\"${props["ANDROID_USER_PASSWORD"]}\"")
     }
 
     buildTypes {
@@ -47,6 +58,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"

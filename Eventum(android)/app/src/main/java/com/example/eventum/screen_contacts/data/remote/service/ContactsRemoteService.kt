@@ -1,15 +1,18 @@
 package com.example.eventum.screen_contacts.data.remote.service
 
 import com.example.eventum.data.remote.model.request.ContactRequest
+import com.example.eventum.data.remote.model.response.ContactRemote
 import com.example.eventum.screen_contacts.data.remote.dataSource.ContactsRemoteDataSource
 import com.example.eventum.screen_contacts.data.remote.repository.ContactsRemoteRepository
 import com.example.eventum.screen_contacts.domain.model.Contact
+import com.example.eventum.util.mapper.ContactMapper
 import javax.inject.Inject
 
 class ContactsRemoteService @Inject constructor(
     private val dataSource: ContactsRemoteDataSource
 ): ContactsRemoteRepository {
-    override suspend fun getAll(userId: Long): List<Contact> = dataSource.getAll()
+    override suspend fun getAll(userId: Long): List<ContactRemote> =
+        dataSource.getUserContacts(userId)
 
     override suspend fun delete(contactId: Long): String = dataSource.deleteById(contactId)
 
@@ -17,7 +20,7 @@ class ContactsRemoteService @Inject constructor(
         dataSource.create(userId, contact)
     }
 
-    override suspend fun update(id: Long, contact: Contact): String {
+    override suspend fun update(id: Long, contact: ContactRequest): String {
 
         return try {
             dataSource.updateById(id, contact)

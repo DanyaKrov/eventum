@@ -10,6 +10,7 @@ import com.example.eventum.data.local.preferences.EventPreferences
 import com.example.eventum.data.local.preferences.UserPreferences
 import com.example.eventum.domain.model.Resource
 import com.example.eventum.domain.model.User
+import com.example.eventum.screen_contacts.domain.model.ContactsModel
 import com.example.eventum.screen_mainPage.domain.useCase.GetCurrentUserUseCase
 import com.example.eventum.screen_mainPage.domain.model.Event
 import com.example.eventum.screen_mainPage.domain.model.MainPageModel
@@ -46,32 +47,35 @@ class MainPageViewModel @Inject constructor(
     private val navigationStatus: MutableSharedFlow<String> = MutableStateFlow("")
     val navigationStatusRead: SharedFlow<String> = navigationStatus
 
+
     init {
-        userPreferences.userIdFlow
-            .filterNotNull()
-            .flatMapLatest { userRemoteId ->
-                getCurrentUserUseCase(userRemoteId)
-                    .filterNotNull()
-                    .onEach { result -> when(result) {
-                        is Resource.Success -> {
-                            refreshEvents(result.data?.events ?: listOf(), false)
-                        }
-                        is Resource.Loading -> {
-                            _model.value = MainPageModel(isLoading = true)
-                        }
-                        is Resource.Error -> {
-                            _model.value = MainPageModel(errorMessage = result.message ?: "An unexpected error occurred")
-                        }
-                    }
-                    }
-            }
-            .launchIn(viewModelScope)
+        getEvents()
     }
 
-    private suspend fun refreshEvents(eventsIds: List<Long>, refreshLocal: Boolean) {
-        _model.value.events.clear()
-        refreshEventsUseCase.invoke(eventsIds, refreshLocal).forEach {
-            _model.value.events.add(it) }
+    private fun getEvents() {
+        userPreferences.userIdFlow // state of user Id
+            .onEach { userId ->
+                if (userId == null) // it means no userId presented at the moment
+                    navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_LOGIN_PAGE)
+            }
+            .filterNotNull()
+            .flatMapLatest { userId ->
+                refreshEventsUseCase(userId, false) // if id changes, contacts update
+            }
+            .onEach { result ->
+                when(result) {
+                    is Resource.Success -> {
+                        _model.value = MainPageModel(events = result.data?.toMutableList() ?: mutableListOf())
+                    }
+                    is Resource.Loading -> {
+                        _model.value = MainPageModel(isLoading = true)
+                    }
+                    is Resource.Error -> {
+                        _model.value = MainPageModel(errorMessage = result.message ?: "An unexpected error occurred")
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     fun handleEvent(event: MainPageEvent) {

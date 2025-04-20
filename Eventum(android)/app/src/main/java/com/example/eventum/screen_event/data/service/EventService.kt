@@ -26,7 +26,7 @@ class EventService @Inject constructor(
             mapper.entityToPresentableModel(localRepository.getEvent(remoteId))
         }
         catch (e: Exception) { // if event isn't in local database, he need to be created
-            val event = remoteRepository.get(remoteId)
+            val event = remoteRepository.getEvent(remoteId)
             localRepository.createEvent(mapper.responseToEntity(event))
             mapper.entityToPresentableModel(localRepository.getEvent(remoteId))
         }

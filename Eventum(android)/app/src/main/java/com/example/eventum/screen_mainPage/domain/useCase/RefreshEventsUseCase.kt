@@ -1,14 +1,29 @@
 package com.example.eventum.screen_mainPage.domain.useCase
 
+import com.example.eventum.domain.model.Resource
 import com.example.eventum.screen_mainPage.domain.model.Event
 import com.example.eventum.screen_mainPage.domain.repository.EventsRepository
 import com.example.eventum.util.mapper.EventMapper
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import java.io.IOException
 import javax.inject.Inject
 
 class RefreshEventsUseCase @Inject constructor(
-    private val repository: EventsRepository,
-    private val mapper: EventMapper
+    private val repository: EventsRepository
 ) {
-    suspend operator fun invoke(eventsIds: List<Long>, refreshLocalDatabase: Boolean): List<Event> =
-        repository.getEvents(eventsIds, refreshLocalDatabase)
+    suspend operator fun invoke(userId: Long, refreshLocalDatabase: Boolean): Flow<Resource<List<Event>>> =
+        flow{
+            try {
+                emit(Resource.Loading())
+                val contacts = repository.getEvents(userId, refreshLocalDatabase).toMutableList()
+                emit(Resource.Success(contacts))
+            }
+            catch (e: IOException) {
+                emit(Resource.Error("Couldn't reach server"))
+            }
+            catch (e: Exception) {
+                emit(Resource.Error("Unexpected error occurred"))
+            }
+        }
 }

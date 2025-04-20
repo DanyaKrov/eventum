@@ -1,57 +1,58 @@
 package com.example.eventum.util.mapper
 
 import com.example.eventum.data.local.model.entity.GiftEntity
-import com.example.eventum.data.remote.model.response.GiftRemote
+import com.example.eventum.data.local.model.entity.GiftStateEntity
+import com.example.eventum.data.local.model.entity.PresentEntity
+import com.example.eventum.data.remote.model.request.CustomGiftRemoteRequest
+import com.example.eventum.data.remote.model.response.GiftRemoteResponse
 import com.example.eventum.screen_giftList.domain.model.Gift
+import com.example.eventum.screen_giftList.domain.model.GiftState
+import com.example.eventum.screen_presents.domain.model.Present
 import dagger.internal.DaggerGenerated
 
 @DaggerGenerated
 class GiftMapper {
-    fun fromRemoteToModel(giftRemote: GiftRemote): Gift =
+    fun fromRemoteToModel(giftRemote: GiftRemoteResponse, giftStateModel: GiftState? = null): Gift =
         Gift(
             remoteId = giftRemote.id,
-            presentId = giftRemote.present?.id,
-            stateId = giftRemote.state?.id ?: 0, // I will correct it, when I will have a better vision of gift state
-            title = giftRemote.title,
-            description = giftRemote.description,
-            contactRemoteId = giftRemote.contactId
+            presentId = giftRemote.presentId,
+            giftState = giftStateModel,
+            contactId = giftRemote.contactId,
+            giftCount = giftRemote.giftCount,
+            presentDescription = giftRemote.presentDescription,
+            presentTitle = giftRemote.presentTitle
         )
 
-    fun fromEntityToModel(giftEntity: GiftEntity): Gift =
+    fun fromEntityToModel(present: Present, giftEntity: GiftEntity, giftStateModel: GiftState? = null): Gift =
         Gift(
             remoteId = giftEntity.remoteId,
-            presentId = giftEntity.presentId,
-            stateId = giftEntity.stateId,
-            title = giftEntity.title,
-            description = giftEntity.description,
-            contactRemoteId = giftEntity.contactRemoteId
+            presentId = present.remoteId,
+            giftState = giftStateModel,
+            presentTitle = present.title,
+            presentDescription = present.description,
+            contactId = giftEntity.contactRemoteId,
+            giftCount = null // later on I will ad counting for gifts
         )
 
     fun fromModelToEntity(gift: Gift, contactRemoteId: Long): GiftEntity =
         GiftEntity(
             remoteId = gift.remoteId,
-            presentId = gift.presentId,
-            stateId = gift.stateId,
-            title = gift.title,
-            description = gift.description,
+            presentRemoteId = gift.presentId,
+            stateRemoteId = gift.giftState?.remoteId,
             contactRemoteId = contactRemoteId
         )
 
-    fun fromRemoteToEntity(gift: GiftRemote): GiftEntity =
+    fun fromRemoteToEntity(gift: GiftRemoteResponse): GiftEntity =
         GiftEntity(
             remoteId = gift.id,
-            presentId = gift.present?.id,
-            stateId = gift.state?.id ?: 0,
-            title = gift.title,
-            description = gift.description,
-            contactRemoteId =gift.contactId
+            presentRemoteId = gift.presentId,
+            stateRemoteId = gift.stateId,
+            contactRemoteId = gift.contactId
         )
 
-    fun fromModelToRemote(gift: Gift): GiftRemote =
-        GiftRemote(
-            id = gift.remoteId,
-            title = gift.title,
-            description = gift.description,
-            contactId = gift.contactRemoteId
+    fun fromModelToCustomRequest(gift: Gift): CustomGiftRemoteRequest =
+        CustomGiftRemoteRequest(
+            title = gift.presentTitle,
+            description = gift.presentDescription
         )
 }

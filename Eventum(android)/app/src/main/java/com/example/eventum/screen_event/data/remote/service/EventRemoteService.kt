@@ -19,5 +19,5 @@ class EventRemoteService @Inject constructor(
         }
     }
 
-    override suspend fun get(remoteId: Long): EventRemote = dataSource.getById(remoteId)
+    override suspend fun getEvent(eventRemoteId: Long): EventRemote = dataSource.getEvent(eventRemoteId)
 }

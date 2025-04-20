@@ -5,5 +5,5 @@ data class Present(
     val remoteId: Long = 0, // remote id from mysql database
     val title: String,
     val description: String,
-    val wishListId: Long
+    val wishListId: Long? = null
 )

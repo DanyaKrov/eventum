@@ -7,5 +7,4 @@ sealed class WishListEvent {
     class EditPresentEvent(val present: Present): WishListEvent()
     class CreatePresentEvent: WishListEvent()
     class ChangeVisibility: WishListEvent()
-    class CreateWishList: WishListEvent()
 }

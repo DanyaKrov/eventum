@@ -7,11 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.eventum.data.local.preferences.WishListPreferences
 import com.example.eventum.domain.model.Resource
 import com.example.eventum.domain.model.UiState
-import com.example.eventum.screen_profile.domain.model.ProfileModel
-import com.example.eventum.screen_signUp.domain.model.SignUpModel
 import com.example.eventum.screen_wishList.domain.model.WishListModel
-import com.example.eventum.screen_wishList.domain.repository.WishListRepository
-import com.example.eventum.screen_wishList.domain.useCase.CreateWishListUseCase
 import com.example.eventum.screen_wishList.domain.useCase.RefreshWishListUseCase
 import com.example.eventum.screen_wishList.presentation.event.WishListEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,8 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WishListViewModel @Inject constructor(
     private val wishListPreferences: WishListPreferences,
-    private val refreshWishListUseCase: RefreshWishListUseCase,
-    private val createWishListUseCase: CreateWishListUseCase
+    private val refreshWishListUseCase: RefreshWishListUseCase
 ): ViewModel() {
     // navigation parameters
     private val navigationStatus: MutableStateFlow<String> = MutableStateFlow("")
@@ -66,18 +61,11 @@ class WishListViewModel @Inject constructor(
     }
 
     fun handleEvent(event: WishListEvent) {
-        when(event) {
+        when (event) {
             is WishListEvent.ChangeOrderEvent -> TODO()
             is WishListEvent.ChangeVisibility -> TODO()
             is WishListEvent.CreatePresentEvent -> TODO()
             is WishListEvent.EditPresentEvent -> TODO()
-            is WishListEvent.CreateWishList -> createWishList()
-        }
-    }
-
-    private fun createWishList() {
-        viewModelScope.launch {
-            model.value.wishList?.let {wishList -> createWishListUseCase(wishList)}
         }
     }
 }

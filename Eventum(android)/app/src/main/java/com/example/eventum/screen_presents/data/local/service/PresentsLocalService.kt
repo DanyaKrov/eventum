@@ -1,27 +1,24 @@
 package com.example.eventum.screen_presents.data.local.service
 
 import com.example.eventum.data.local.dao.PresentDao
+import com.example.eventum.data.local.model.entity.PresentEntity
 import com.example.eventum.screen_presents.data.local.repository.PresentsLocalRepository
 import com.example.eventum.screen_presents.domain.model.Present
 import com.example.eventum.util.mapper.PresentMapper
 import javax.inject.Inject
 
 class PresentsLocalService @Inject constructor(
-    private val dao: PresentDao,
-    private val mapper: PresentMapper
+    private val dao: PresentDao
 ): PresentsLocalRepository {
-    override suspend fun insert(present: Present) {
-        TODO("Not yet implemented")
-    }
+    override suspend fun insert(present: PresentEntity) = dao.insert(present)
 
-    override suspend fun getPresents(wishListId: Long): List<Present> = dao.getAll(wishListId).map {
-        mapper.fromEntityToModel(it)
-    }
+    override suspend fun getPresents(wishListId: Long): List<PresentEntity> = dao.getAll(wishListId)
 
-    override suspend fun updatePresent(newPresent: Present): String {
+    override suspend fun getPresent(presentRemoteId: Long): PresentEntity = dao.get(presentRemoteId)
+
+    override suspend fun updatePresent(newPresent: PresentEntity): String {
         return try {
-            val oldPresent = dao.get(newPresent.id)
-            dao.update(mapper.updateEntity(oldPresent, newPresent))
+            dao.update(newPresent)
             "Updated with success"
         }
         catch (e: Exception) {

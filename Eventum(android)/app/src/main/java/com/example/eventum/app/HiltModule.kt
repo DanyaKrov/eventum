@@ -20,7 +20,7 @@ import com.example.eventum.screen_login.data.remote.dataSource.LoginRemoteDataSo
 import com.example.eventum.screen_presents.data.remote.dataSource.PresentsRemoteDataSource
 import com.example.eventum.screen_profile.data.remote.dataSource.ProfileRemoteDataSource
 import com.example.eventum.screen_settings.data.remote.dataSource.SettingsRemoteDataSource
-import com.example.eventum.screen_signUp.data.remote.dataSource.UsersRemoteDataSource
+import com.example.eventum.screen_signUp.data.remote.dataSource.SignUpRemoteDataSource
 import com.example.eventum.screen_wishList.data.remote.dataSource.WishListRemoteDataSource
 import com.example.eventum.util.reader.StringRepository
 import com.example.eventum.util.mapper.ContactMapper
@@ -75,8 +75,8 @@ object HiltModule { // dependency injection module for using StringRepository cl
 
     @Provides
     @Singleton
-    fun provideUsersRemoteDataSource(): UsersRemoteDataSource {
-        return RetrofitClient.createUsersInstance()
+    fun provideUsersRemoteDataSource(): SignUpRemoteDataSource {
+        return RetrofitClient.createSignUpRemoteDataSource()
     }
 
 

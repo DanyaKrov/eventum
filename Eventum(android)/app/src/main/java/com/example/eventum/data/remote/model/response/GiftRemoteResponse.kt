@@ -1,11 +1,11 @@
-package com.example.eventum.screen_giftList.domain.model
+package com.example.eventum.data.remote.model.response
 
-data class Gift(
-    val remoteId: Long = 0,
+data class GiftRemoteResponse (
+    val id: Long,
     val presentId: Long,
     val presentTitle: String,
     val presentDescription: String,
     val contactId: Long,
-    val giftState: GiftState?,
+    val stateId: Long,
     val giftCount: Long?
 )

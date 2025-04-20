@@ -5,5 +5,5 @@ import com.example.eventum.screen_mainPage.data.remote.entity.EventRequest
 
 interface EventRemoteRepository {
     suspend fun update(id: Long, event: EventRequest): Boolean
-    suspend fun get(remoteId: Long): EventRemote
+    suspend fun getEvent(remoteId: Long): EventRemote
 }

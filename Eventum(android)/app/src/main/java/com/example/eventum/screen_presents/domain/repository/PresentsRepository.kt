@@ -7,4 +7,5 @@ interface PresentsRepository {
     suspend fun deletePresent(present: Present): String
     suspend fun editPresent(present: Present): String
     suspend fun createPresent(present: Present)
+    suspend fun getPresent(remoteId: Long): Present
 }

@@ -39,18 +39,20 @@ class WishListService @Inject constructor(
             localWishList.presents.map { presentMapper.fromEntityToModel(it) })
     }
 
-    private suspend fun refreshLocalWishList(wishListId: Long): WishList  {
-        val remoteWishList = remoteRepository.getWishList(wishListId)
-        localRepository.deleteWishList(wishListId)
-        localRepository.createWishList(wishListMapper.fromResponseToEntity(remoteWishList),
-            remoteWishList.presents.map { presentMapper.fromModelToEntity(it) })
-        return wishListMapper.fromResponseToModel(remoteWishList)
+    private suspend fun refreshLocalWishList(userRemoteId: Long): WishList  {
+        val remoteWishList = remoteRepository.getWishList(userRemoteId)
+        localRepository.deleteWishList(userRemoteId)
+        localRepository.createWishList(wishListMapper.fromResponseToEntity(remoteWishList, userRemoteId),
+            remoteWishList.presents.map { presentMapper.fromRemoteToEntity(it) })
+        val presents = remoteWishList.presents.map { presentMapper.fromRemoteToModel(it) }
+        return wishListMapper.fromResponseToModel(remoteWishList, presents, userRemoteId)
     }
 
-    override suspend fun updateWishList(wishList: WishList): Boolean {
+    override suspend fun updateWishList(newAvailability: Boolean, wishList: WishList): Boolean {
         return try {
             // need to add update of presents in remote database
-            remoteRepository.updateWishList(wishListMapper.fromModelToResponse(wishList))
+            val presents = wishList.presents.map { presentMapper.fromModelToRemoteRequest(it) }
+            remoteRepository.updateWishList(wishList.userId,  wishListMapper.fromModelToRemoteRequest(newAvailability))
             localRepository.updateWishList(wishListMapper.fromModelToEntity(wishList),
                 wishList.presents.map { presentMapper.fromModelToEntity(it) })
         }
@@ -61,27 +63,5 @@ class WishListService @Inject constructor(
 
     override suspend fun changeVisibility(visibilityCode: String): Boolean {
         TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteWishList(wishListRemoteId: Long): Boolean {
-        return try {
-            remoteRepository.deleteWishList(wishListRemoteId)
-            localRepository.deleteWishList(wishListRemoteId)
-        }
-        catch (e: Exception) {
-            false
-        }
-    }
-
-    override suspend fun createWishList(wishList: WishList): Boolean {
-        return try {
-            val remoteId = remoteRepository.createWishList(wishListMapper.fromModelToResponse(wishList))
-            wishList.remoteId = remoteId
-            localRepository.createWishList(wishListMapper.fromModelToEntity(wishList),
-                wishList.presents.map { presentMapper.fromModelToEntity(it) })
-        }
-        catch (e: Exception) {
-            false
-        }
     }
 }

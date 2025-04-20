@@ -4,30 +4,32 @@ import com.example.eventum.screen_presents.data.local.repository.PresentsLocalRe
 import com.example.eventum.screen_presents.data.remote.repository.PresentsRemoteRepository
 import com.example.eventum.screen_presents.domain.model.Present
 import com.example.eventum.screen_presents.domain.repository.PresentsRepository
+import com.example.eventum.util.mapper.PresentMapper
 import javax.inject.Inject
 
 class PresentsService @Inject constructor(
     private val localRepository: PresentsLocalRepository,
-    private val remoteRepository: PresentsRemoteRepository
+    private val remoteRepository: PresentsRemoteRepository,
+    private val mapper: PresentMapper
 ): PresentsRepository {
     override suspend fun getPresents(wishListId: Long, forceRefresh: Boolean): List<Present> {
         return if (forceRefresh) {
             try {
                 val remoteEvents = remoteRepository.getAll(wishListId)
                 localRepository.deleteAll(wishListId)
-                remoteEvents.forEach {localRepository.insert(it)}
-                remoteEvents
+                remoteEvents.forEach {localRepository.insert(mapper.fromRemoteToEntity(it))}
+                remoteEvents.map { mapper.fromRemoteToModel(it) }
             } catch (e: Exception) {
-                localRepository.getPresents(wishListId)
+                localRepository.getPresents(wishListId).map { mapper.fromEntityToModel(it) }
             }
         } else {
             val localEvents = localRepository.getPresents(wishListId)
             if (localEvents.isNotEmpty()) {
-                localEvents
+                localEvents.map { mapper.fromEntityToModel(it) }
             } else {
                 val remoteEvents = remoteRepository.getAll(wishListId)
-                remoteEvents.forEach {localRepository.insert(it)}
-                remoteEvents
+                remoteEvents.forEach {localRepository.insert(mapper.fromRemoteToEntity(it))}
+                remoteEvents.map { mapper.fromRemoteToModel(it) }
             }
         }
     }
@@ -38,12 +40,21 @@ class PresentsService @Inject constructor(
     }
 
     override suspend fun editPresent(present: Present): String {
-        remoteRepository.update(present.id, present)
-        return localRepository.updatePresent(present)
+        remoteRepository.update(present.id, mapper.fromModelToRemoteRequest(present))
+        return localRepository.updatePresent(mapper.fromModelToEntity(present))
     }
 
     override suspend fun createPresent(present: Present) {
-        val presentWithId = remoteRepository.insert(present)
-        localRepository.insert(presentWithId)
+        // add remote present
+        localRepository.insert(mapper.fromModelToEntity(present))
+    }
+
+    override suspend fun getPresent(remoteId: Long): Present {
+        return try {
+           mapper.fromEntityToModel(localRepository.getPresent(remoteId))
+        }
+        catch (_: Exception) {
+            mapper.fromRemoteToModel(remoteRepository.get(remoteId))
+        }
     }
 }

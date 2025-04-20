@@ -10,15 +10,24 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface EventsRemoteDataSource {
+    @GET("users/{userId}/events")
+    suspend fun getUserEvents(@Path("userId") userId: Long): List<EventRemote>
+
     @GET("events/{id}")
-    suspend fun getById(@Path("id") id: Long): EventRemote
+    suspend fun getEvent(@Path("id") id: Long): EventRemote
 
     @PUT("events/{id}")
-    suspend fun updateById(@Path("id") id: Long, @Body event:EventRequest): EventRemote
+    suspend fun updateById(@Path("id") id: Long, @Body event: EventRequest): EventRemote
 
-    @POST("events")
-    suspend fun create(@Body event: EventRequest): EventRemote
+    @POST("users/{userId}/events")
+    suspend fun create(@Path("userId") userId: Long, @Body event: EventRequest): EventRemote
 
     @DELETE("events/{id}")
     suspend fun deleteById(@Path("id") id: Long): String
+
+    @PUT("events/{id}/contacts/{contactId}")
+    suspend fun addContact(@Path("id") id: Long, @Path("contactId") contactId: Long): EventRemote
+
+    @DELETE("events/{id}/contacts/{contactId}")
+    suspend fun removeContact(@Path("id") id: Long, @Path("contactId") contactId: Long): EventRemote
 }

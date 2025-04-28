@@ -1,6 +1,9 @@
 package com.example.eventum.screen_signUp.presentation.event
 
 sealed class SignUpEvent {
+    class NameChanged(val name: String):
+        SignUpEvent()
+
     class EmailChanged(val emailAddress: String):
         SignUpEvent()
 

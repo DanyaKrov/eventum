@@ -39,7 +39,7 @@ class PresentsService @Inject constructor(
         return localRepository.deletePresent(present.id)
     }
 
-    override suspend fun editPresent(present: Present): String {
+    override suspend fun editPresent(present: Present): Boolean {
         remoteRepository.update(present.id, mapper.fromModelToRemoteRequest(present))
         return localRepository.updatePresent(mapper.fromModelToEntity(present))
     }

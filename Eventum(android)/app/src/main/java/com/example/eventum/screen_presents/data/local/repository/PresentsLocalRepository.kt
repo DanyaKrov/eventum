@@ -9,7 +9,7 @@ interface PresentsLocalRepository {
     suspend fun insert(present: PresentEntity)
     suspend fun getPresents(wishListId: Long): List<PresentEntity>
     suspend fun getPresent(presentRemoteId: Long): PresentEntity
-    suspend fun updatePresent(newPresent: PresentEntity): String
+    suspend fun updatePresent(newPresent: PresentEntity): Boolean
     suspend fun deletePresent(id: Long): String
     suspend fun deleteAll(wishListId: Long): String
 }

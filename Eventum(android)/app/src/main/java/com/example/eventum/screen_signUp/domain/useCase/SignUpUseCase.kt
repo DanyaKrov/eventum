@@ -9,6 +9,6 @@ class SignUpUseCase @Inject constructor(
     private val signUpRepository: SignUpRepository
 ) {
     suspend operator fun invoke(model: SignUpModel) {
-        signUpRepository.signUp(SignUpRequest(model.name ?: "", model.email, model.password ?: ""))
+        signUpRepository.signUp(SignUpRequest(model.name, model.email, model.password ?: ""))
     }
 }

@@ -6,5 +6,5 @@ interface GiftListLocalRepository {
     suspend fun getGifts(contactRemoteId: Long): List<GiftEntity>
     suspend fun deleteGift(remoteId: Long): Boolean
     suspend fun updateGift(gift: GiftEntity): Boolean
-    suspend fun createGift(gift: GiftEntity): Boolean
+    suspend fun createCustomGift(gift: GiftEntity): Boolean
 }

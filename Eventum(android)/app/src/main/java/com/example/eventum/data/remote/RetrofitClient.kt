@@ -10,6 +10,7 @@ import com.example.eventum.screen_presents.data.remote.dataSource.PresentsRemote
 import com.example.eventum.screen_profile.data.remote.dataSource.ProfileRemoteDataSource
 import com.example.eventum.screen_settings.data.remote.dataSource.SettingsRemoteDataSource
 import com.example.eventum.screen_signUp.data.remote.dataSource.SignUpRemoteDataSource
+import com.example.eventum.screen_users.data.remote.dataSource.UserRemoteDataSource
 import com.example.eventum.screen_wishList.data.remote.dataSource.WishListRemoteDataSource
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -63,5 +64,9 @@ object RetrofitClient {
 
     fun createSettingsRemoteDataSource(): SettingsRemoteDataSource {
         return instance.create(SettingsRemoteDataSource::class.java)
+    }
+
+    fun createUserRemoteDataSource(): UserRemoteDataSource {
+        return instance.create(UserRemoteDataSource::class.java)
     }
 }

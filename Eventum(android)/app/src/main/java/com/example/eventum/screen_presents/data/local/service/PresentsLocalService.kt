@@ -16,13 +16,13 @@ class PresentsLocalService @Inject constructor(
 
     override suspend fun getPresent(presentRemoteId: Long): PresentEntity = dao.get(presentRemoteId)
 
-    override suspend fun updatePresent(newPresent: PresentEntity): String {
+    override suspend fun updatePresent(newPresent: PresentEntity): Boolean {
         return try {
             dao.update(newPresent)
-            "Updated with success"
+            true
         }
         catch (e: Exception) {
-            "Couldn't update this present"
+            false
         }
     }
 

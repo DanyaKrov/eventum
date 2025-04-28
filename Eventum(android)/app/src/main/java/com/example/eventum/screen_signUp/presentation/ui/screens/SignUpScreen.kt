@@ -49,6 +49,9 @@ fun SignUpScreen(navController: NavHostController = rememberNavController(),
         Column(modifier = Modifier.fillMaxSize()) {
             HeaderTextComponent(value = stringResource(id = R.string.create_account))
             BasicTextComponent(value = stringResource(id = R.string.hello))
+            BasicTextField(labelValue = stringResource(id = R.string.your_name)) {
+                signUpViewModel.handleEvent(SignUpEvent.NameChanged(it)) // handling link to function in viewModel
+            }
             BasicTextField(labelValue = stringResource(id = R.string.first_name)) {
                 signUpViewModel.handleEvent(SignUpEvent.EmailChanged(it)) // handling link to function in viewModel
             }

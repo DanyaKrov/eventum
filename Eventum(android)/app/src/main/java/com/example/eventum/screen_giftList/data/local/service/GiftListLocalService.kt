@@ -33,7 +33,7 @@ class GiftListLocalService @Inject constructor(
         }
     }
 
-    override suspend fun createGift(gift: GiftEntity): Boolean {
+    override suspend fun createCustomGift(gift: GiftEntity): Boolean {
         return try {
             giftDao.insert(gift)
             true

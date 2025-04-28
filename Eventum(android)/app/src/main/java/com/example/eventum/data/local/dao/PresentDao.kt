@@ -9,7 +9,7 @@ import com.example.eventum.data.local.model.entity.PresentEntity
 
 @Dao
 interface PresentDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     suspend fun insert(present: PresentEntity)
 
     @Update

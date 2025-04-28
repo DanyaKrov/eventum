@@ -30,7 +30,7 @@ import androidx.room.PrimaryKey
 data class GiftEntity (
     @PrimaryKey val id: Long = 0,
     val remoteId: Long,
-    val presentRemoteId: Long, // id of present based on which gift was created
+    val presentRemoteId: Long?, // id of present based on which gift was created
     val contactRemoteId: Long, // id of contact to who belongs gift
     val stateRemoteId: Long?, // remote id of gift state
 )

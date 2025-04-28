@@ -3,6 +3,7 @@
     // sign up page
     <string name="hello">Hello</string>
     <string name="create_account">Create an account</string>
+    <string name="your_name">Your name</string>
     <string name="first_name">Your email</string>
     <string name="second_name">Second name</string>
     <string name="enter_password">Password</string>

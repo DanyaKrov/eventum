@@ -34,10 +34,10 @@ class GiftMapper {
             giftCount = null // later on I will ad counting for gifts
         )
 
-    fun fromModelToEntity(gift: Gift, contactRemoteId: Long): GiftEntity =
+    fun fromModelToEntity(gift: Gift, contactRemoteId: Long, presentRemoteId: Long): GiftEntity =
         GiftEntity(
             remoteId = gift.remoteId,
-            presentRemoteId = gift.presentId,
+            presentRemoteId = presentRemoteId,
             stateRemoteId = gift.giftState?.remoteId,
             contactRemoteId = contactRemoteId
         )

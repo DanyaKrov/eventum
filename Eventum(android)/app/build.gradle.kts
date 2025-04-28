@@ -118,13 +118,16 @@ dependencies {
     // junit
     implementation("junit:junit:4.13.2")
     // testing
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation ("junit:junit:4.13.2")
     testImplementation ("androidx.test:core-ktx:1.6.1")
     testImplementation ("androidx.test.ext:junit-ktx:1.2.1")
     testImplementation("androidx.room:room-testing:2.6.1")
     testImplementation("org.robolectric:robolectric:4.7.3")
     testImplementation("androidx.test:core:1.6.1")
+
+    // coil
+    implementation("io.coil-kt:coil-compose:2.2.2")
 }
 
 kapt {

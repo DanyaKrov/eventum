@@ -28,6 +28,10 @@ class SignUpViewModel @Inject constructor(
     private val _model = mutableStateOf(SignUpModel())
     val model: State<SignUpModel> = _model
 
+    private fun updateName(name: String) {
+        _model.value.email = name
+    }
+
     private fun updateEmail(email: String) {
         _model.value.email = email
     }
@@ -72,6 +76,8 @@ class SignUpViewModel @Inject constructor(
             is SignUpEvent.MoveToLogin -> {
                 navigationStatus.value = Constants.NAVIGATION_MOVE_TO_LOGIN_PAGE
             }
+
+            is SignUpEvent.NameChanged -> updateName(signUpEvent.name)
         }
     }
 

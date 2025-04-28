@@ -50,8 +50,8 @@ class ProfileViewModel @Inject constructor(
     private fun getUserInformation() {
         userPreferences.userIdFlow
             .filterNotNull()
-            .flatMapLatest { userRemoteId ->
-                getCurrentUserUseCase(userRemoteId)
+            .flatMapLatest { characters ->
+                getCurrentUserUseCase(characters)
                     .filterNotNull()
                     .onEach { result ->
                         when (result) {

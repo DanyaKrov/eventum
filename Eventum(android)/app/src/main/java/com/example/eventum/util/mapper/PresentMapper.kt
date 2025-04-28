@@ -2,7 +2,9 @@ package com.example.eventum.util.mapper
 
 import com.example.eventum.data.local.model.entity.PresentEntity
 import com.example.eventum.data.remote.model.request.PresentRemoteRequest
+import com.example.eventum.data.remote.model.response.GiftRemoteResponse
 import com.example.eventum.data.remote.model.response.PresentRemoteResponse
+import com.example.eventum.screen_giftList.domain.model.Gift
 import com.example.eventum.screen_presents.domain.model.Present
 import dagger.internal.DaggerGenerated
 
@@ -20,6 +22,18 @@ class PresentMapper {
         title = present.title,
         description = present.description,
         wishListParentId = present.wishListId
+    )
+
+    fun fromGiftRemoteToEntity(gift: GiftRemoteResponse): PresentEntity = PresentEntity(
+        remoteId = gift.presentId,
+        title = gift.presentTitle,
+        description = gift.presentDescription
+    )
+
+    fun fromGiftModelToEntity(gift: Gift): PresentEntity = PresentEntity(
+        remoteId = gift.presentId!!, // maybe will do it in better way
+        title = gift.presentTitle,
+        description = gift.presentDescription
     )
 
     fun fromRemoteToModel(present: PresentRemoteResponse): Present = Present(

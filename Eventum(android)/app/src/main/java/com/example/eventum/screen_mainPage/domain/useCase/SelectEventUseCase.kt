@@ -9,6 +9,5 @@ class SelectEventUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(event: Event) {
         eventPreferences.saveEventId(event.remoteId)
-    // but need to handle situation, when event not already created was selected
     }
 }

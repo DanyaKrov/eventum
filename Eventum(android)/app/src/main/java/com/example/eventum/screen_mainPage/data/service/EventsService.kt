@@ -1,9 +1,11 @@
 package com.example.eventum.screen_mainPage.data.service
 
 
+import android.util.Log
 import com.example.eventum.screen_mainPage.data.local.repository.EventsLocalRepository
 import com.example.eventum.screen_mainPage.data.remote.repository.EventsRemoteRepository
 import com.example.eventum.screen_mainPage.domain.model.Event
+import com.example.eventum.screen_mainPage.domain.model.EventRequestModel
 import com.example.eventum.screen_mainPage.domain.repository.EventsRepository
 import com.example.eventum.util.mapper.EventMapper
 import javax.inject.Inject
@@ -15,31 +17,39 @@ class EventsService @Inject constructor(
 ): EventsRepository {
     override suspend fun getEvents(userRemoteId: Long, forceRefresh: Boolean
     ): List<Event> {
-        if (forceRefresh) {
-            try {
-                val remoteEvents = getRemoteEvents(userRemoteId)
-                localRepository.clearEvents()
-                localRepository.saveEvents(remoteEvents.map { mapper.responseToEntity(it) })
-            } catch (e: Exception) {
-                // handle it
-            }
+        if(forceRefresh) {
+            localRepository.clearEvents()
+            loadRemoteToLocalData(userRemoteId)
         } else {
-            val localEvents = localRepository.getEvents()
-            if (localEvents.isNotEmpty()) {
-                localRepository.getEvents().map { mapper.entityToPresentableModel(it) }
-            } else {
-                val remoteEvents = getRemoteEvents(userRemoteId)
-                localRepository.saveEvents(remoteEvents.map { mapper.responseToEntity(it) })
+            val localEvents = localRepository.getEvents(userRemoteId)
+            if (localEvents.isEmpty()) {
+                loadRemoteToLocalData(userRemoteId)
             }
         }
-        return localRepository.getEvents().map { mapper.entityToPresentableModel(it) }
+        return localRepository.getEvents(userRemoteId).map {
+            mapper.entityToPresentableModel(it) }
     }
 
-    override suspend fun deleteEvent(event: Event): String {
-        localRepository.deleteEvent(event.localId)
-        return remoteRepository.delete(event.remoteId)
+    private suspend fun loadRemoteToLocalData(userId: Long) {
+        val remoteCharacters = remoteRepository.getEvents(userId)
+        val entities = remoteCharacters.map {
+            mapper.responseToEntity(it)
+        }
+        localRepository.saveEvents(entities)
     }
 
-    private suspend fun getRemoteEvents(userRemoteId: Long) =
-        remoteRepository.getEvents(userRemoteId)
+    override suspend fun deleteEvent(event: Event): Boolean =
+        try {
+            localRepository.deleteEvent(event.remoteId)
+            remoteRepository.delete(event.remoteId)
+            true
+        }
+        catch (_: Exception) {
+            false
+        }
+
+    override suspend fun createEvent(userRemoteId: Long, event: EventRequestModel): Event {
+        val remoteEvent = remoteRepository.create(userRemoteId, mapper.requestFromModelToRemote(event))
+        return mapper.remoteToPresentableModel(remoteEvent)
+    }
 }

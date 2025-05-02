@@ -49,6 +49,7 @@ class LoginViewModel @Inject constructor(
                 val authRequest = AuthRequest(model.email, model.password)
                 try {
                     loginUseCase.execute(authRequest)
+
                     navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
                 }
                 catch (e: Exception) {

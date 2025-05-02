@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eventum.R
 import com.example.eventum.common.Constants
+import com.example.eventum.data.local.preferences.UserPreferences
 import com.example.eventum.screen_signUp.presentation.event.SignUpEvent
 import com.example.eventum.screen_signUp.domain.model.SignUpModel
 import com.example.eventum.screen_signUp.domain.useCase.SignUpUseCase
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val stringRepository: StringRepository, // repository for reading string
-    private val signUpUseCase: SignUpUseCase
+    private val signUpUseCase: SignUpUseCase,
+    private val userPreferences: UserPreferences
 ): ViewModel() {
     // navigation parameters
     private val navigationStatus: MutableStateFlow<String> = MutableStateFlow("")
@@ -49,7 +51,8 @@ class SignUpViewModel @Inject constructor(
             if (checkRequirements()) {
                 try {
                     // useCase of checking if email is already used in the system
-                    signUpUseCase(model.value)
+                    val createdUser = signUpUseCase(model.value)
+                    userPreferences.saveUserId(createdUser.remoteId)
                     navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
                 }
                 catch (e: Exception) {

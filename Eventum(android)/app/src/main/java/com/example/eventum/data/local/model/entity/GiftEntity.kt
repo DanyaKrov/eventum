@@ -28,7 +28,7 @@ import androidx.room.PrimaryKey
     indices = [Index(value = ["remoteId"], unique = true), Index("presentRemoteId"),
         Index("contactRemoteId"), Index("stateRemoteId")])
 data class GiftEntity (
-    @PrimaryKey val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val remoteId: Long,
     val presentRemoteId: Long?, // id of present based on which gift was created
     val contactRemoteId: Long, // id of contact to who belongs gift

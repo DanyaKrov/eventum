@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey
     indices = [Index("eventOwnerId")]
 )
 data class NotificationEntity (
-    @PrimaryKey val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val requestId: String, // id from workManager in order to cancel notification if need
     val title: String,
     val description: String,

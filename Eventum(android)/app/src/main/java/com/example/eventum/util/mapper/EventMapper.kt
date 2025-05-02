@@ -4,6 +4,7 @@ import com.example.eventum.data.remote.model.response.EventRemote
 import com.example.eventum.data.local.model.entity.EventEntity
 import com.example.eventum.screen_mainPage.data.remote.entity.EventRequest
 import com.example.eventum.screen_mainPage.domain.model.Event
+import com.example.eventum.screen_mainPage.domain.model.EventRequestModel
 import dagger.internal.DaggerGenerated
 
 @DaggerGenerated
@@ -18,6 +19,19 @@ class EventMapper {
             event.picture,
             event.tag,
             event.userRemoteId
+        )
+    }
+
+    fun remoteToPresentableModel(event: EventRemote): Event {
+        return Event(
+            0,
+            event.id,
+            event.name,
+            event.description,
+            event.time,
+            event.picture,
+            event.tag.toString(),
+            event.userId
         )
     }
 
@@ -64,5 +78,11 @@ class EventMapper {
         event.tag ?: "",
         event.picture ?: "",
         event.userRemoteId
+    )
+
+    fun requestFromModelToRemote(event: EventRequestModel) = EventRequest(
+        name = event.name,
+        description = event.description,
+        time = event.time
     )
 }

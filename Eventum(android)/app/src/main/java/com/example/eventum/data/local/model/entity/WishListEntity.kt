@@ -9,7 +9,7 @@ import androidx.room.Relation
 @Entity(tableName = "wishList",
     indices = [Index(value = ["remoteId"], unique = true)]) // need to make this field unique
 data class WishListEntity(
-    @PrimaryKey val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val remoteId: Long, // id from mysql database
     val userId: Long
 )

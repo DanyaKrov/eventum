@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
     indices = [Index(value = ["remoteId"], unique = true)]
 )
 data class GiftStateEntity(
-    @PrimaryKey val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val remoteId: Long,
     val name: String
 )

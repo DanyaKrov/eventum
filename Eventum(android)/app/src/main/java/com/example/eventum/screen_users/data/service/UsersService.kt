@@ -3,8 +3,9 @@ package com.example.eventum.screen_users.data.service
 import com.example.eventum.screen_users.data.local.repository.UsersLocalRepository
 import com.example.eventum.screen_users.domain.model.UserModel
 import com.example.eventum.screen_users.domain.repository.UsersRepository
+import javax.inject.Inject
 
-class UsersService(
+class UsersService @Inject constructor(
     private val localRepository: UsersLocalRepository,
 
 ): UsersRepository {

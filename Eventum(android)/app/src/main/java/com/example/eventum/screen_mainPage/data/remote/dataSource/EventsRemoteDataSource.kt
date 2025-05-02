@@ -23,7 +23,7 @@ interface EventsRemoteDataSource {
     suspend fun create(@Path("userId") userId: Long, @Body event: EventRequest): EventRemote
 
     @DELETE("events/{id}")
-    suspend fun deleteById(@Path("id") id: Long): String
+    suspend fun deleteById(@Path("id") id: Long)
 
     @PUT("events/{id}/contacts/{contactId}")
     suspend fun addContact(@Path("id") id: Long, @Path("contactId") contactId: Long): EventRemote

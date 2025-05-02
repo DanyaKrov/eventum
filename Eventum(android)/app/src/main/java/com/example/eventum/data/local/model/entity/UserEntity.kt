@@ -11,11 +11,9 @@ import androidx.room.Relation
 
 @Entity(tableName = "user",
     indices = [Index(value = ["remoteId"], unique = true)],
-    primaryKeys = ["id", "remoteId"])
+    primaryKeys = ["remoteId"])
 data class UserEntity(
-    val id: Long = 0,
-    @ColumnInfo("remoteId")
-    val remoteId: Long, // id from mysql database
+    @ColumnInfo("remoteId")  val remoteId: Long, // id from mysql database
     val name: String,
     val email: String,
     val picture: String

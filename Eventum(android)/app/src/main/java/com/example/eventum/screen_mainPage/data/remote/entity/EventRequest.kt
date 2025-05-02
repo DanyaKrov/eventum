@@ -5,6 +5,6 @@ data class EventRequest(
     var description: String = "",
     var time: String, // format "dd-MM-yyyy"
     var picture: String = "",
-    var tagId: Long,
+    var tagId: Long = 0,
     var contactsIds: List<Long> = listOf(), // contacts' ids, which target in event
     )

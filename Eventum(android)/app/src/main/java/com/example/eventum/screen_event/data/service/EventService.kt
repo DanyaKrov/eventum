@@ -22,7 +22,7 @@ class EventService @Inject constructor(
     private val notificationsLocalRepository: NotificationsLocalRepository
 ): EventRepository {
     override suspend fun getEvent(remoteId: Long): Event {
-        return  try {
+        return try {
             mapper.entityToPresentableModel(localRepository.getEvent(remoteId))
         }
         catch (e: Exception) { // if event isn't in local database, he need to be created

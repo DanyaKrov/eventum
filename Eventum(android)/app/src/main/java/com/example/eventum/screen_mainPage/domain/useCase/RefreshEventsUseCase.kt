@@ -1,5 +1,6 @@
 package com.example.eventum.screen_mainPage.domain.useCase
 
+import android.util.Log
 import com.example.eventum.domain.model.Resource
 import com.example.eventum.screen_mainPage.domain.model.Event
 import com.example.eventum.screen_mainPage.domain.repository.EventsRepository
@@ -16,8 +17,8 @@ class RefreshEventsUseCase @Inject constructor(
         flow{
             try {
                 emit(Resource.Loading())
-                val contacts = repository.getEvents(userId, refreshLocalDatabase).toMutableList()
-                emit(Resource.Success(contacts))
+                val events = repository.getEvents(userId, refreshLocalDatabase).toMutableList()
+                emit(Resource.Success(events))
             }
             catch (e: IOException) {
                 emit(Resource.Error("Couldn't reach server"))

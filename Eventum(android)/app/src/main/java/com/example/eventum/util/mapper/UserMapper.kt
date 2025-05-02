@@ -8,8 +8,14 @@ import dagger.internal.DaggerGenerated
 @DaggerGenerated
 class UserMapper {
     fun fromEntityToModel(user: UserEntity): User = User(
-        localId = user.id,
         remoteId = user.remoteId,
+        name = user.name,
+        email = user.email,
+        picture = user.picture
+    )
+
+    fun fromRemoteToModel(user: UserRemote): User = User(
+        remoteId = user.id,
         name = user.name,
         email = user.email,
         picture = user.picture
@@ -23,8 +29,14 @@ class UserMapper {
     )
 
     fun fromModelToEntity(user: User) = UserEntity(
-        id = user.localId,
         remoteId = user.remoteId,
+        name = user.name,
+        email = user.email,
+        picture = user.picture
+    )
+
+    fun fromRemoteToEntity(user: UserRemote) = UserEntity(
+        remoteId = user.id,
         name = user.name,
         email = user.email,
         picture = user.picture

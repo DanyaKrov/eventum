@@ -18,7 +18,7 @@ import androidx.room.Relation
         )
     ])
 data class EventEntity (
-    @PrimaryKey val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val remoteId: Long, // id from mysql database
     val name: String,
     val description: String,

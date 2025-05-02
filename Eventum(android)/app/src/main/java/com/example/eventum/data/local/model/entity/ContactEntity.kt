@@ -16,7 +16,7 @@ import androidx.room.PrimaryKey
     ],
     indices = [Index(value = ["remoteId"], unique = true), Index("userRemoteId")])
 data class ContactEntity(
-    @PrimaryKey val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val remoteId: Long = 0, // remote id from mysql database
     val name: String,
     val userRemoteId: Long,

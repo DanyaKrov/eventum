@@ -81,6 +81,9 @@ class SignUpViewModel @Inject constructor(
             is SignUpEvent.MoveToLogin -> {
                 navigationStatus.value = Constants.NAVIGATION_MOVE_TO_LOGIN_PAGE
             }
+            is SignUpEvent.MoveToHelloPage -> {
+                navigationStatus.value = Constants.NAVIGATION_MOVE_TO_HELLO_PAGE
+            }
 
             is SignUpEvent.NameChanged -> updateName(signUpEvent.name)
         }

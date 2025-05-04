@@ -19,4 +19,8 @@
     <string name="PasswordNotBlank">You need to enter password</string>
     <string name="EmailNotBlank">You need to enter email</string>
 
+    <string name="Welcome">Welcome to Eventum</string>
+    <string name="SignIn">Sign in</string>
+    <string name="SignUp">Sign up</string>
+
 </resources>

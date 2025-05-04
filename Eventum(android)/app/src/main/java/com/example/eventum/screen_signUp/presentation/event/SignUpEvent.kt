@@ -20,4 +20,5 @@ sealed class SignUpEvent {
 
     class SecondPasswordChanged(val password: String):
         SignUpEvent()
+    class MoveToHelloPage: SignUpEvent()
 }

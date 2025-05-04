@@ -6,6 +6,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface SignUpRemoteDataSource {
-    @POST("/register")
+    @POST("register")
     suspend fun createUser(@Body user: UserRemoteRequest): UserRemote
 }

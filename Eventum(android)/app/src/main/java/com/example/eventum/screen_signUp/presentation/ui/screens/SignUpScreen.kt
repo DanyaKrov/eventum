@@ -22,13 +22,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.eventum.R
 import com.example.eventum.common.Constants
+import com.example.eventum.screen_hello.presentation.ui.components.ButtonComponentType1
 import com.example.eventum.screen_signUp.domain.model.SignUpModel
 import com.example.eventum.screen_signUp.domain.model.SignUpRequest
 import com.example.eventum.screen_signUp.presentation.event.SignUpEvent
 import com.example.eventum.screen_signUp.presentation.ui.components.BasicTextComponent
 import com.example.eventum.screen_signUp.presentation.ui.components.HeaderTextComponent
 import com.example.eventum.screen_signUp.presentation.ui.components.BasicTextField
-import com.example.eventum.screen_signUp.presentation.ui.components.ButtonComponent
 import com.example.eventum.screen_signUp.presentation.ui.components.ErrorTextComponent
 import com.example.eventum.screen_signUp.presentation.ui.components.SecretTextField
 import com.example.eventum.screen_signUp.presentation.viewModel.SignUpViewModel
@@ -71,7 +71,7 @@ fun SignUpScreen(navController: NavHostController = rememberNavController(),
                 password = it }
             SecretTextField(labelValue = stringResource(id = R.string.repeat_password)) {
                 secondPassword = it }
-            ButtonComponent(labelvalue = stringResource(id = R.string.register)) {
+            ButtonComponentType1 (labelvalue = stringResource(id = R.string.register)) {
                 signUpViewModel.handleEvent(
                     SignUpEvent.SignUpFinished(
                         SignUpModel(
@@ -81,11 +81,8 @@ fun SignUpScreen(navController: NavHostController = rememberNavController(),
                 )
             }
             ErrorTextComponent()
-            ButtonComponent(labelvalue = stringResource(id = R.string.have_account)) {
-                signUpViewModel.handleEvent(
-                    SignUpEvent.MoveToLogin()
-                )
-            }
+
+
         }
     }
 }

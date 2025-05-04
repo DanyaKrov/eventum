@@ -1,5 +1,6 @@
 package com.example.eventum.screen_login.presentation.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eventum.R
@@ -32,6 +33,7 @@ class LoginViewModel @Inject constructor(
             is LoginEvent.PasswordChanged -> changePassword(loginEvent.password)
             is LoginEvent.LoginFinished -> finishLogin()
             is LoginEvent.MoveToSignUp -> moveToSignUp()
+            is LoginEvent.MoveToHello -> moveToHello()
         }
     }
 
@@ -48,18 +50,25 @@ class LoginViewModel @Inject constructor(
             if (checkRequirements()) {
                 val authRequest = AuthRequest(model.email, model.password)
                 try {
+                    println("Кнопка нажалась")
                     loginUseCase.execute(authRequest)
 
                     navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
+                    println("Все хорошо, ошибок нет")
                 }
                 catch (e: Exception) {
                     model.response.value = "Email or password is incorrect"
+                    Log.e(e.message,"smth wrong with auth",)
                 }
+
             }
         }
     }
 
     private fun moveToSignUp() {
+    }
+    private fun moveToHello(){
+        navigationStatus.value = Constants.NAVIGATION_MOVE_TO_HELLO_PAGE
     }
 
     private fun checkRequirements(): Boolean { // check requirements and change response in model if need

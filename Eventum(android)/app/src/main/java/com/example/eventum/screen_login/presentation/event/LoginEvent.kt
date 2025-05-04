@@ -5,4 +5,5 @@ sealed class LoginEvent {
     class PasswordChanged(val password: String): LoginEvent()
     class LoginFinished(): LoginEvent()
     class MoveToSignUp(): LoginEvent()
+    class MoveToHello(): LoginEvent()
 }

@@ -24,7 +24,7 @@ class InitialViewModel @Inject constructor(
         userPreferences.userIdFlow
             .onEach {
                 if (it == null)
-                    navigationStatus.value = Constants.NAVIGATION_MOVE_TO_SIGNUP_PAGE
+                    navigationStatus.value = Constants.NAVIGATION_MOVE_TO_HELLO_PAGE
                 else
                     navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
             }

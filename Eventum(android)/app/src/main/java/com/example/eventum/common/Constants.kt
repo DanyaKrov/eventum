@@ -20,4 +20,7 @@ object Constants {
     const val NAVIGATION_MOVE_TO_EVENT_PAGE = "move_to_event_page"
     const val NAVIGATION_MOVE_TO_SETTINGS_PAGE = "move_to_settings_page"
     const val NAVIGATION_MOVE_TO_CONTACTS_PAGE = "move_to_contacts_page"
+
+    // Для первого экрана
+    const val NAVIGATION_MOVE_TO_HELLO_PAGE = "move_to_hello_page"
 }

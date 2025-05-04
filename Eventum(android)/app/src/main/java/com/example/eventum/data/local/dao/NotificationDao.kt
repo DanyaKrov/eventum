@@ -17,8 +17,8 @@ interface NotificationDao {
     suspend fun update(notification: NotificationEntity)
 
 
-    @Query("DELETE FROM notification WHERE id=:id")
-    suspend fun delete(id: Long)
+    @Query("DELETE FROM notification WHERE requestId=:requestId")
+    suspend fun delete(requestId: String)
 
     @Query("SELECT * FROM notification WHERE id=:id")
     suspend fun get(id: Long): NotificationEntity

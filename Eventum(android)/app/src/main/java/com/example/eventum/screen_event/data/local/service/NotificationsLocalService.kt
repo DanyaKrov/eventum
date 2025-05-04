@@ -22,9 +22,9 @@ class NotificationsLocalService @Inject constructor(
         }
     }
 
-    override suspend fun delete(notificationId: Long): Boolean {
+    override suspend fun delete(requestId: String): Boolean {
         return try {
-            dao.delete(notificationId)
+            dao.delete(requestId)
             true
         }
         catch (e: Exception) {

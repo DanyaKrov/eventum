@@ -30,6 +30,7 @@ class NotificationMapper {
 
     fun fromEntityToModel(notification: NotificationEntity): NotificationModel =
         NotificationModel(
+            id = notification.id,
             requestId=notification.requestId,
             title=notification.title,
             description=notification.description,

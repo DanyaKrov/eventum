@@ -15,8 +15,8 @@ class GetNotificationsUseCase @Inject constructor(
     operator fun invoke(event: Event): Flow<Resource<MutableList<NotificationModel>>> = flow {
         try {
             emit(Resource.Loading())
-            val contacts = repository.getEventNotifications(event).toMutableList()
-            emit(Resource.Success(contacts))
+            val notifications = repository.getEventNotifications(event).toMutableList()
+            emit(Resource.Success(notifications))
         }
         catch (e: IOException) {
             emit(Resource.Error("Couldn't reach server"))

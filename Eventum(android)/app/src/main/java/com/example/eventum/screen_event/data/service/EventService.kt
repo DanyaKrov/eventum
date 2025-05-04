@@ -65,10 +65,11 @@ class EventService @Inject constructor(
         }
     }
 
-    override suspend fun deleteNotification(notification: NotificationModel): Boolean {
+    override suspend fun deleteNotification(notification: NotificationModel):
+            Boolean {
         return try {
             notificationsRepository.delete(notification.requestId)
-            notificationsLocalRepository.delete(notification.id)
+            notificationsLocalRepository.delete(notification.requestId)
             true
         }
         catch (e: Exception) {

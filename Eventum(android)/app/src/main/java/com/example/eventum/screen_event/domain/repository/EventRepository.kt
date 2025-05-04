@@ -13,4 +13,5 @@ interface EventRepository {
     suspend fun changeNotification(newNotification: NotificationModel): String // will return new request id
     suspend fun deleteNotification(notification: NotificationModel): Boolean
     suspend fun addNotification(notification: NotificationModel): String // will return request id
+
 }

@@ -47,11 +47,13 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun finishRegistration() {
+        Log.i("testing", model.toString())
         viewModelScope.launch {
             if (checkRequirements()) {
                 try {
                     // useCase of checking if email is already used in the system
                     val createdUser = signUpUseCase(model.value)
+                    Log.i("testing", createdUser.toString())
                     userPreferences.saveUserId(createdUser.remoteId)
                     navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
                 }

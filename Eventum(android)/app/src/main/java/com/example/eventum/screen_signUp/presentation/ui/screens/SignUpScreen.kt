@@ -9,6 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -19,6 +22,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.eventum.R
 import com.example.eventum.common.Constants
+import com.example.eventum.screen_signUp.domain.model.SignUpModel
+import com.example.eventum.screen_signUp.domain.model.SignUpRequest
 import com.example.eventum.screen_signUp.presentation.event.SignUpEvent
 import com.example.eventum.screen_signUp.presentation.ui.components.BasicTextComponent
 import com.example.eventum.screen_signUp.presentation.ui.components.HeaderTextComponent
@@ -40,6 +45,13 @@ fun SignUpScreen(navController: NavHostController = rememberNavController(),
         }
         catch (_: Exception) {}
     }
+
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var secondPassword by remember { mutableStateOf("") }
+
+
     Surface (
         modifier = Modifier
             .fillMaxSize()
@@ -50,20 +62,22 @@ fun SignUpScreen(navController: NavHostController = rememberNavController(),
             HeaderTextComponent(value = stringResource(id = R.string.create_account))
             BasicTextComponent(value = stringResource(id = R.string.hello))
             BasicTextField(labelValue = stringResource(id = R.string.your_name)) {
-                signUpViewModel.handleEvent(SignUpEvent.NameChanged(it)) // handling link to function in viewModel
+                name = it // handling link to function in viewModel
             }
             BasicTextField(labelValue = stringResource(id = R.string.first_name)) {
-                signUpViewModel.handleEvent(SignUpEvent.EmailChanged(it)) // handling link to function in viewModel
+                email = it // handling link to function in viewModel
             }
             SecretTextField(labelValue = stringResource(id = R.string.enter_password))  {
-                signUpViewModel.handleEvent(
-                    SignUpEvent.PasswordChanged(it)) }
+                password = it }
             SecretTextField(labelValue = stringResource(id = R.string.repeat_password)) {
-                signUpViewModel.handleEvent(
-                    SignUpEvent.SecondPasswordChanged(it)) }
+                secondPassword = it }
             ButtonComponent(labelvalue = stringResource(id = R.string.register)) {
                 signUpViewModel.handleEvent(
-                    SignUpEvent.SignUpFinished()
+                    SignUpEvent.SignUpFinished(
+                        SignUpModel(
+                        name, email, password, secondPassword
+                    )
+                    )
                 )
             }
             ErrorTextComponent()

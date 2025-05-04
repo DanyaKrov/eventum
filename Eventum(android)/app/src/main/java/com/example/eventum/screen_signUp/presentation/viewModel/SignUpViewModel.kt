@@ -46,14 +46,14 @@ class SignUpViewModel @Inject constructor(
         _model.value.secondPassword = password
     }
 
-    private fun finishRegistration() {
-        Log.i("testing", model.toString())
+    private fun finishRegistration(signUpModel: SignUpModel) {
+        Log.i("testing model", signUpModel.toString())
         viewModelScope.launch {
             if (checkRequirements()) {
                 try {
                     // useCase of checking if email is already used in the system
-                    val createdUser = signUpUseCase(model.value)
-                    Log.i("testing", createdUser.toString())
+                    val createdUser = signUpUseCase(signUpModel)
+                    Log.i("testing user", createdUser.toString())
                     userPreferences.saveUserId(createdUser.remoteId)
                     navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
                 }
@@ -76,7 +76,7 @@ class SignUpViewModel @Inject constructor(
                 updateSecondPassword(signUpEvent.password)
             }
             is SignUpEvent.SignUpFinished -> {
-                finishRegistration()
+                finishRegistration(signUpEvent.signUpModel)
             }
             is SignUpEvent.MoveToLogin -> {
                 navigationStatus.value = Constants.NAVIGATION_MOVE_TO_LOGIN_PAGE

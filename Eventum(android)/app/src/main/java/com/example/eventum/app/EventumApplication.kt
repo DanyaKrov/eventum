@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.eventum.common.Constants
 import com.example.eventum.screen_event.presentation.ui.screen.EventScreen
+import com.example.eventum.screen_hello.presentation.ui.screens.HelloScreen
 import com.example.eventum.screen_initial.presentation.ui.InitialScreen
 import com.example.eventum.screen_login.presentation.ui.screens.LoginScreen
 import com.example.eventum.screen_mainPage.presentation.ui.screens.EventsScreen
@@ -24,6 +25,7 @@ fun AppNavHost(navController: NavHostController) {
         composable(Constants.NAVIGATION_MOVE_TO_MAIN_PAGE) { EventsScreen(navController) }
         composable(Constants.NAVIGATION_MOVE_TO_INITIAL_PAGE) { InitialScreen(navController) }
         composable(Constants.NAVIGATION_MOVE_TO_EVENT_PAGE) { EventScreen(navController) }
+        composable(Constants.NAVIGATION_MOVE_TO_HELLO_PAGE) { HelloScreen(navController) }
 
     }
 }

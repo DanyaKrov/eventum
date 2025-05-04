@@ -13,3 +13,11 @@ val Pink40 = Color(0xFF7D5260)
 
 val PrimaryColor = Color(Color.White.toArgb())
 val TextColor = Color(Color.Black.toArgb())
+
+val SoftRed = Color(0xFFDA3456)
+val SoftLightRed = Color(0xFFEA7765)
+val SoftOrange = Color(0xFFEB9C7F)
+val SoftLightOrange = Color(0xFFF7C999)
+val BackGround = Color(0xFFEEEEEE)
+
+val LightGreyCustom = Color(0xFFA0A0A0)

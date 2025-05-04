@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SubdirectoryArrowLeft
@@ -103,7 +104,8 @@ fun BackButton(clickFunction: () -> Unit){
         IconButton (
             onClick = clickFunction,
             modifier = Modifier.size(75.dp)
-                .background(Color.White, shape = RoundedCornerShape(30.dp))
+                .background(Color.White, shape = RoundedCornerShape(30.dp)
+                )
 
         ) {
             // Inner content including an icon and a text label

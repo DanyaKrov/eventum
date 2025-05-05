@@ -54,6 +54,7 @@ fun EventScreen(
 
     var showAddDialog by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
+    var isEditingNotification by remember { mutableStateOf(false) }
 
     var editableTitle by remember { mutableStateOf("") }
     var editableDescription by remember { mutableStateOf("") }
@@ -218,7 +219,8 @@ fun EventScreen(
                             ) {
                             Text("Сохранить")
                         }
-                    } else {
+                    }
+                    else {
                         Card(
                             shape = RoundedCornerShape(16.dp),
                             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
@@ -340,7 +342,18 @@ fun EventScreen(
                             items(notificationsModel.notifications) { notification ->
                                 NotificationItem(
                                     notification = notification,
-                                    onEdit = { println("edit)") },
+                                    onEdit = {id, title, date ->
+                                        viewModel.handleEvent(EventPageEvent.EditNotification(
+                                            NotificationModel(
+                                                id = id,
+                                                title = title,
+                                                description = "",
+                                                time = date,
+                                                eventOwnerId = eventModel.event?.remoteId ?: 0
+                                            )
+                                        ))
+                                        println("Save notification: $title, $date")
+                                    },
                                     onDelete = {
                                         viewModel.handleEvent(EventPageEvent.DeleteNotification(it))
                                     }
@@ -399,6 +412,7 @@ fun EventScreen(
                         notificationTitle = ""
                         notificationDate = ""
                         showAddDialog = false
+                        println("создали напоминание")
                     }
                 }) {
                     Text("Добавить",
@@ -473,7 +487,3 @@ fun EventScreen(
     }
 }
 
-@Composable
-fun deleteNotification(notification: NotificationModel){
-
-}

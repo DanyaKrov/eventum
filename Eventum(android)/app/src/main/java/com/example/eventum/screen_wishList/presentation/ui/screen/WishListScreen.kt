@@ -2,11 +2,14 @@ package com.example.eventum.screen_wishList.presentation.ui.screen
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -54,7 +57,15 @@ import com.example.eventum.screen_wishList.presentation.viewModel.WishListViewMo
 import kotlinx.coroutines.launch
 import androidx.compose.material3.TextButton as TextButton
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import com.example.eventum.screen_presents.domain.model.Present
+import com.example.eventum.ui.theme.SoftLightOrange
+import com.example.eventum.ui.theme.SoftLightRed
+import com.example.eventum.ui.theme.SoftOrange
+import com.example.eventum.ui.theme.SoftRed
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,6 +73,7 @@ fun WishListScreen(
     navController: NavHostController = rememberNavController(),
     viewModel: WishListViewModel = hiltViewModel()
 ) {
+
     val model = viewModel.model
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -115,11 +127,6 @@ fun WishListScreen(
                             IconButton(onClick = { scope.launch { drawerState.open() } }) {
                                 Icon(Icons.Default.Menu, contentDescription = "Меню")
                             }
-                        },
-                        actions = {
-                            IconButton(onClick = { showAddDialog = true }) {
-                                Icon(Icons.Default.Add, contentDescription = "Добавить подарок")
-                            }
                         }
                     )
                 }
@@ -130,12 +137,28 @@ fun WishListScreen(
                         .padding(padding)
                         .padding(16.dp)
                 ) {
-                    if (model.value.wishList?.presents.isNullOrEmpty()) {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Text("Список подарков пуст", style = MaterialTheme.typography.bodyMedium)
-                        }
-                    } else {
-                        LazyColumn {
+                    Row(Modifier.fillMaxWidth()){
+                        if (viewModel.model.value.wishList.)
+                    }
+
+//                    if (model.value.wishList?.presents.isNullOrEmpty()) {
+//                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+//                            Text("Список подарков пуст", style = MaterialTheme.typography.bodyMedium)
+//                        }
+//                    }
+                        LazyColumn(Modifier.weight(1f)) {
+                            //временный подарок для проверки шаблона карточки
+                            item {
+                                PresentItem(
+                                    present =
+                                        Present(-1,
+                                            0,
+                                            "test",
+                                            "test desc"),
+                                    {},
+                                    {}
+                                )
+                            }
                             items(model.value.wishList?.presents ?: mutableListOf()) { present ->
                                 PresentItem(
                                     present = present,
@@ -148,7 +171,29 @@ fun WishListScreen(
                                 )
                             }
                         }
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    Button(
+                        onClick = {
+                            showAddDialog = true
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                            .background(
+                                Brush.horizontalGradient(
+                                colors = listOf(
+                                    SoftRed,
+                                    SoftLightRed
+                                )),
+                                shape = MaterialTheme.shapes.extraLarge),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+
+                    ) {
+                        Text("Добавить подарок",
+                            color = Color.DarkGray)
                     }
+//                    }
+
                 }
 
                 if (showAddDialog) {

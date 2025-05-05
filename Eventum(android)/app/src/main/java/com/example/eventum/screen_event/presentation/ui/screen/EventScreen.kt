@@ -125,6 +125,13 @@ fun EventScreen(
             ) {
                 eventModel.event?.let { event ->
                     if (isEditing) {
+                        Spacer(Modifier.height(10.dp))
+                        Text("Редактирование события",
+                            fontFamily = Montserrat,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.DarkGray,
+                            fontSize = 25.sp)
+                        Spacer(Modifier.height(10.dp))
                         OutlinedTextField(
                             value = editableTitle,
                             onValueChange = { editableTitle = it },
@@ -170,6 +177,7 @@ fun EventScreen(
                                 focusedLabelColor = Color.Gray,
                                 unfocusedLabelColor = Color.LightGray
                             ),
+                            modifier =  Modifier.fillMaxWidth(),
                             trailingIcon = {
                                 IconButton(onClick = {
                                     DatePickerDialog(
@@ -332,7 +340,7 @@ fun EventScreen(
                             items(notificationsModel.notifications) { notification ->
                                 NotificationItem(
                                     notification = notification,
-                                    onEdit = { },
+                                    onEdit = { println("edit)") },
                                     onDelete = {
                                         viewModel.handleEvent(EventPageEvent.DeleteNotification(it))
                                     }

@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.sharp.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -103,11 +104,16 @@ fun EventScreen(
 //                }
 //            )
 //        },
-//        floatingActionButton = {
-//            FloatingActionButton(onClick = { showAddDialog = true }) {
-//                Icon(Icons.Default.Add, contentDescription = "Добавить уведомление")
-//            }
-//        }
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    viewModel.handleNavigationEvent(EventPageNavigationEvent.MoveBack())
+                },
+                containerColor = Color.White)
+            {
+                Icon(Icons.Sharp.ArrowBack, contentDescription = "Добавить уведомление")
+            }
+        }
     ) { padding ->
         if (eventModel.uiState.isLoading) {
             Box(
@@ -221,98 +227,99 @@ fun EventScreen(
                         }
                     }
                     else {
-                        Card(
-                            shape = RoundedCornerShape(16.dp),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .padding(8.dp)
-                                .background(Color.White)
-                        ) {
-                            Box(Modifier.fillMaxWidth().background(
-                                Brush.horizontalGradient(
-                                    colors = listOf(
-                                        SoftRed,
-                                        SoftLightRed
+                        Column(Modifier.fillMaxWidth()) {
+                            Card(
+                                shape = RoundedCornerShape(16.dp),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .padding(8.dp)
+                                    .background(Color.White)
+                            ) {
+                                Box(Modifier.fillMaxWidth().background(
+                                    Brush.horizontalGradient(
+                                        colors = listOf(
+                                            SoftRed,
+                                            SoftLightRed
+                                        )
                                     )
                                 )
-                            )
-                                .padding(16.dp)
-                            )
-                            {
-                                Column {
-                                    Text(
-                                        text = "Название",
-                                        fontFamily = Montserrat,
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 17.sp,
-                                        color = Color.White
-                                    )
-                                    Text(text = event.name,
-                                        fontFamily = Montserrat,
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 35.sp,
-                                        color = Color.White)
-                                }
-
-                            }
-                            Box(Modifier.fillMaxWidth()
-                                .background(Color.White)
-                            )
-                            {
-                                Column(
-                                    Modifier.fillMaxWidth().padding(16.dp).background(Color.White)
-                                ) {
-                                    Text(
-                                        text = "Описание",
-                                        fontFamily = Montserrat,
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 17.sp,
-                                        color = Color.DarkGray
-                                    )
-                                    Text(
-                                        text = event.description,
-                                        fontFamily = Montserrat,
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 21.sp,
-                                        color = Color.DarkGray
-                                    )
-                                    Spacer(modifier = Modifier.height(24.dp))
-                                    Text(
-                                        text = "Дата",
-                                        fontFamily = Montserrat,
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 17.sp,
-                                        color = Color.DarkGray
-                                    )
-                                    Text(
-                                        text = event.time,
-                                        fontFamily = Montserrat,
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 21.sp,
-                                        color = Color.DarkGray
-                                    )
-                                    Spacer(modifier = Modifier.height(24.dp))
-                                    Button(
-                                        onClick = {
-                                            isEditing = true
-                                        },
-                                        modifier = Modifier.fillMaxWidth()
-                                            .background(Brush.horizontalGradient(
-                                                colors = listOf(
-                                                    SoftRed,
-                                                    SoftLightRed
-                                                )),
-                                                shape = MaterialTheme.shapes.extraLarge),
-                                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-
-                                    ) {
-                                        Text("Редактировать",
+                                    .padding(16.dp)
+                                )
+                                {
+                                    Column {
+                                        Text(
+                                            text = "Название",
+                                            fontFamily = Montserrat,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 17.sp,
+                                            color = Color.White
+                                        )
+                                        Text(text = event.name,
+                                            fontFamily = Montserrat,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 35.sp,
                                             color = Color.White)
                                     }
+
                                 }
-                            }
+                                Box(Modifier.fillMaxWidth()
+                                    .background(Color.White)
+                                )
+                                {
+                                    Column(
+                                        Modifier.fillMaxWidth().padding(16.dp).background(Color.White)
+                                    ) {
+                                        Text(
+                                            text = "Описание",
+                                            fontFamily = Montserrat,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 17.sp,
+                                            color = Color.DarkGray
+                                        )
+                                        Text(
+                                            text = event.description,
+                                            fontFamily = Montserrat,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 21.sp,
+                                            color = Color.DarkGray
+                                        )
+                                        Spacer(modifier = Modifier.height(24.dp))
+                                        Text(
+                                            text = "Дата",
+                                            fontFamily = Montserrat,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 17.sp,
+                                            color = Color.DarkGray
+                                        )
+                                        Text(
+                                            text = event.time,
+                                            fontFamily = Montserrat,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 21.sp,
+                                            color = Color.DarkGray
+                                        )
+                                        Spacer(modifier = Modifier.height(24.dp))
+                                        Button(
+                                            onClick = {
+                                                isEditing = true
+                                            },
+                                            modifier = Modifier.fillMaxWidth()
+                                                .background(Brush.horizontalGradient(
+                                                    colors = listOf(
+                                                        SoftRed,
+                                                        SoftLightRed
+                                                    )),
+                                                    shape = MaterialTheme.shapes.extraLarge),
+                                            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+
+                                        ) {
+                                            Text("Редактировать",
+                                                color = Color.White)
+                                        }
+                                    }
+                                }
 
 //                            Text(
 //                                text = "Описание: ${event.description}",
@@ -327,51 +334,62 @@ fun EventScreen(
 //                            }
 
 
-                        }
-                        Spacer(modifier = Modifier.height(20.dp))
-                        Text("Уведомления",
-                            modifier = Modifier.fillMaxWidth(),
-                            fontFamily = Montserrat,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 21.sp,
-                            color = Color.DarkGray,
-                            textAlign = TextAlign.Center
-                        )
 
-                        LazyColumn {
-                            items(notificationsModel.notifications) { notification ->
-                                NotificationItem(
-                                    notification = notification,
-                                    onEdit = {
-                                        viewModel.handleEvent(EventPageEvent.EditNotification(it))
-                                    },
-                                    onDelete = {
-                                        viewModel.handleEvent(EventPageEvent.DeleteNotification(it))
-                                    }
-                                )
-//                                Divider()
-                                Spacer(modifier = Modifier.height(10.dp))
                             }
-                        }
-                        Spacer(modifier = Modifier.height(24.dp))
-                        Button(
-                            onClick = {
-                                showAddDialog = true
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                                .background(Brush.horizontalGradient(
-                                    colors = listOf(
-                                        SoftOrange,
-                                        SoftLightOrange
-                                    )),
-                                    shape = MaterialTheme.shapes.extraLarge),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+                            Spacer(modifier = Modifier.height(17.dp))
 
-                        ) {
-                            Text("Добавить напоминание",
-                                color = Color.DarkGray)
+
+                            LazyColumn() {
+                                item{
+                                    Text("Уведомления",
+                                        modifier = Modifier.fillMaxWidth(),
+                                        fontFamily = Montserrat,
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 21.sp,
+                                        color = Color.DarkGray,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+                                items(notificationsModel.notifications) { notification ->
+                                    NotificationItem(
+                                        notification = notification,
+                                        onEdit = {
+                                            viewModel.handleEvent(EventPageEvent.EditNotification(it))
+                                        },
+                                        onDelete = {
+                                            viewModel.handleEvent(EventPageEvent.DeleteNotification(it))
+                                        }
+                                    )
+//                                Divider()
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                }
+                                item {
+                                    Spacer(modifier = Modifier.height(14.dp))
+                                    Button(
+                                        onClick = {
+                                            showAddDialog = true
+                                        },
+                                        modifier = Modifier.fillMaxWidth()
+                                            .background(Brush.horizontalGradient(
+                                                colors = listOf(
+                                                    SoftOrange,
+                                                    SoftLightOrange
+                                                )),
+                                                shape = MaterialTheme.shapes.extraLarge),
+                                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+
+                                    ) {
+                                        Text("Добавить напоминание",
+                                            color = Color.DarkGray)
+                                    }
+                                }
+                            }
+
                         }
-                        BackButton { viewModel.handleNavigationEvent(EventPageNavigationEvent.MoveBack()) }
+
+
+
+//                        BackButton { viewModel.handleNavigationEvent(EventPageNavigationEvent.MoveBack()) }
 
                     }
                 }

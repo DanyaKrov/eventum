@@ -50,6 +50,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Divider
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -79,6 +80,9 @@ fun ContactsScreen(
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+    var showAddDialog by remember { mutableStateOf(false) }
+    var newName by remember { mutableStateOf("") }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -115,6 +119,11 @@ fun ContactsScreen(
                             }
                         }
                     )
+                },
+                floatingActionButton = {
+                    FloatingActionButton(onClick = { showAddDialog = true }) {
+                        Text("+")
+                    }
                 }
             ) { padding ->
                 Column(
@@ -125,6 +134,7 @@ fun ContactsScreen(
                 ) {
                     if (model.value.isLoading) {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            // show something while loading main data
                         }
                     } else if (model.value.contacts.isEmpty()) {
                         Text("Список контактов пуст", style = MaterialTheme.typography.bodyMedium)
@@ -146,6 +156,49 @@ fun ContactsScreen(
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(text = model.value.errorMessage, color = Color.Red)
                     }
+                }
+
+                // start of adding new contact
+                if (showAddDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showAddDialog = false },
+                        title = { Text("Создать контакт") },
+                        text = {
+                            OutlinedTextField(
+                                value = newName,
+                                onValueChange = { newName = it },
+                                label = { Text("Имя контакта") },
+                                singleLine = true,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                if (newName.isNotBlank()) {
+                                    viewModel.handleEvent(
+                                        ContactsEvent.AddContactEvent(
+                                            Contact(
+                                                name = newName,
+                                                userRemoteId = 0
+                                            )
+                                        )
+                                    )
+                                    newName = ""
+                                    showAddDialog = false
+                                }
+                            }) {
+                                Text("Создать")
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = {
+                                showAddDialog = false
+                                newName = ""
+                            }) {
+                                Text("Отмена")
+                            }
+                        }
+                    )
                 }
             }
         }

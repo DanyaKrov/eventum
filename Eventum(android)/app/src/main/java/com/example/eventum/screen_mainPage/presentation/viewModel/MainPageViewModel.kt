@@ -106,7 +106,7 @@ class MainPageViewModel @Inject constructor(
                 when(result) {
                     is Resource.Success -> {
                         _eventCreationStatus.value = DomainState(isSuccess = true)
-                        getEvents()
+                        getEvents() // reload model
                     }
                     is Resource.Loading -> {
                         // just wait, but need to handle if it takes too long
@@ -116,7 +116,6 @@ class MainPageViewModel @Inject constructor(
                     }
                 }
             }.launchIn(viewModelScope)
-        getEvents() // reload model
     }
 
     private fun expandEventView(selectedEvent: Event) {
@@ -151,12 +150,6 @@ class MainPageViewModel @Inject constructor(
     private fun navigateToProfilePage() {
         viewModelScope.launch {
             navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_PROFILE_PAGE)
-        }
-    }
-
-    private fun navigateToEventPage() {
-        viewModelScope.launch {
-            navigationStatus.value = Constants.NAVIGATION_MOVE_TO_EVENT_PAGE
         }
     }
 

@@ -10,7 +10,7 @@ import javax.inject.Inject
 class DeleteContactUseCase @Inject constructor(
     private val repository: ContactsRepository
 ) {
-    suspend operator fun invoke(contactId: Long): Flow<Operation> = flow{
+    operator fun invoke(contactId: Long): Flow<Operation> = flow{
         try {
             emit(Operation.Loading())
             repository.deleteContact(contactId)

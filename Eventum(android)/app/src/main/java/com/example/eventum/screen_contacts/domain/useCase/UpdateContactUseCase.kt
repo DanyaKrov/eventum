@@ -11,7 +11,7 @@ import javax.inject.Inject
 class UpdateContactUseCase @Inject constructor(
     private val repository: ContactsRepository
 ) {
-    suspend operator fun invoke(contact: Contact): Flow<Operation> = flow{
+    operator fun invoke(contact: Contact): Flow<Operation> = flow{
         try {
             emit(Operation.Loading())
             repository.editContact(contact)

@@ -71,7 +71,7 @@ fun CreateEvent (
     val rounding = 40.dp
 
 
-    LaunchedEffect(creationStatus.value)  { // idk but this is not working right now(
+    LaunchedEffect(creationStatus.value)  {
         creationStatus.value.isSuccess?.let {
             if (it) {
                 snackbarHostState.showSnackbar("Событие создано успешно")
@@ -207,12 +207,8 @@ fun CreateEvent (
                         time = selectedDate,
                     )
                     onCreate(newEvent)
-
-                    coroutineScope.launch {
-                        name = ""
-                        description = ""
-                        snackbarHostState.showSnackbar("Событие создано успешно")
-                    }
+                    name = ""
+                    description = ""
                 } else {
                     // show text on how it is incorrect
                 }

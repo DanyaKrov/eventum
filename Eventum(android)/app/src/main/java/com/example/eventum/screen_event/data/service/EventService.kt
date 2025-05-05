@@ -1,5 +1,6 @@
 package com.example.eventum.screen_event.data.service
 
+import android.util.Log
 import com.example.eventum.domain.model.User
 import com.example.eventum.feature_notifications.model.Notification
 import com.example.eventum.feature_notifications.repository.NotificationsRepository
@@ -56,7 +57,7 @@ class EventService @Inject constructor(
         return try {
             val newRequestId = notificationsRepository.update(newNotification.requestId,
                 notificationMapper.fromModelToWork(newNotification))
-            notificationsLocalRepository.update(notificationMapper.fromModelToEntity(
+            notificationsLocalRepository.update(notificationMapper.fromModelToEntityRequest(
                 newNotification, newRequestId))
             newRequestId
         }

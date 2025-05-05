@@ -1,5 +1,6 @@
 package com.example.eventum.screen_event.presentation.viewModel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -201,14 +202,14 @@ class EventViewModel @Inject constructor(
 
                     is Operation.Loading -> {
                         _eventModel.value = EventModel(
-                            event = updatedEvent,
+                            event = eventModel.value.event,
                             uiState = UiState(isLoading = true)
                         )
                     }
 
                     is Operation.Error -> {
                         _eventModel.value = EventModel(
-                            event = updatedEvent,
+                            event = eventModel.value.event,
                             uiState = UiState(isLoading = false,
                                 errorMessage = result.message ?: "An unexpected error occurred")
                         )

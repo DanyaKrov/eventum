@@ -184,6 +184,13 @@ class ContactsViewModel @Inject constructor(
         when(event) {
             is ContactsNavigationEvent.NavigateToMainPage -> navigateToMainPage()
             is ContactsNavigationEvent.NavigateToProfilePage -> navigateToProfilePage()
+            is ContactsNavigationEvent.NavigateToWishListPage -> navigateToWishListPage()
+        }
+    }
+
+    private fun navigateToWishListPage() {
+        viewModelScope.launch {
+            navigationStatus.value = Constants.NAVIGATION_MOVE_TO_WISHLIST_PAGE
         }
     }
 

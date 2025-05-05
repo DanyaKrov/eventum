@@ -22,7 +22,6 @@ class EventsService @Inject constructor(
             loadRemoteToLocalData(userRemoteId)
         } else {
             val localEvents = localRepository.getEvents(userRemoteId)
-            Log.i("testing", "localEvents $localEvents")
             if (localEvents.isEmpty()) {
                 loadRemoteToLocalData(userRemoteId)
             }
@@ -33,7 +32,6 @@ class EventsService @Inject constructor(
 
     private suspend fun loadRemoteToLocalData(userId: Long) {
         val remoteEvents = remoteRepository.getEvents(userId)
-        Log.i("testing", "remoteEvents $remoteEvents")
         val entities = remoteEvents.map {
             mapper.responseToEntity(it)
         }

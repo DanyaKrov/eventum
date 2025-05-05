@@ -138,8 +138,16 @@ class MainPageViewModel @Inject constructor(
             is MainPageNavigationEvent.ChangeToCalendarView -> changeToCalendarView()
             is MainPageNavigationEvent.NavigateToProfilePage -> navigateToProfilePage()
             is MainPageNavigationEvent.NavigateToContactsPage -> navigateToContactsPage()
+            is MainPageNavigationEvent.NavigateToWishListPage -> navigateToWishListPage()
         }
     }
+
+    private fun navigateToWishListPage() {
+        viewModelScope.launch {
+            navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_WISHLIST_PAGE)
+        }
+    }
+
 
     private fun navigateToContactsPage() {
         viewModelScope.launch {

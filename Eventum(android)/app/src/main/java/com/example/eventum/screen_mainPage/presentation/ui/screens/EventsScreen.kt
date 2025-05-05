@@ -82,6 +82,9 @@ fun EventsScreen(
                     onNavigateToProfileScreen = {
                         viewModel.handleNavigation(MainPageNavigationEvent.NavigateToProfilePage())
                     },
+                    onNavigateToWishListScreen = {
+                        viewModel.handleNavigation(MainPageNavigationEvent.NavigateToWishListPage())
+                    },
                     onCloseNavigator = { scope.launch { drawerState.close() } }
                 )
             }

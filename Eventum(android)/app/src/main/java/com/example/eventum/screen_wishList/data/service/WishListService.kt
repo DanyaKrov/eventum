@@ -48,19 +48,6 @@ class WishListService @Inject constructor(
         return wishListMapper.fromResponseToModel(remoteWishList, presents, userRemoteId)
     }
 
-    override suspend fun updateWishList(newAvailability: Boolean, wishList: WishList): Boolean {
-        return try {
-            // need to add update of presents in remote database
-            val presents = wishList.presents.map { presentMapper.fromModelToRemoteRequest(it) }
-            remoteRepository.updateWishList(wishList.userId,  wishListMapper.fromModelToRemoteRequest(newAvailability))
-            localRepository.updateWishList(wishListMapper.fromModelToEntity(wishList),
-                wishList.presents.map { presentMapper.fromModelToEntity(it) })
-        }
-        catch (e: Exception) {
-            false
-        }
-    }
-
     override suspend fun changeVisibility(visibilityCode: String): Boolean {
         TODO("Not yet implemented")
     }

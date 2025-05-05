@@ -17,8 +17,8 @@ class PresentMapper {
         wishListId = presentEntity.wishListParentId
     )
 
-    fun fromModelToEntity(present: Present): PresentEntity = PresentEntity(
-        remoteId = present.remoteId,
+    fun fromModelToEntity(present: Present, remoteId: Long): PresentEntity = PresentEntity(
+        remoteId = remoteId,
         title = present.title,
         description = present.description,
         wishListParentId = present.wishListId

@@ -1,5 +1,10 @@
 package com.example.eventum.screen_wishList.presentation.event
 
+import com.example.eventum.screen_contacts.presentation.event.ContactsNavigationEvent
+
 sealed class WishListNavigationEvent {
-    class MoveToProfileNavigationEvent:  WishListNavigationEvent()
+    class NavigateToProfilePage(): WishListNavigationEvent()
+
+    class NavigateToMainPage(): WishListNavigationEvent()
+    class NavigateToContactsPage(): WishListNavigationEvent()
 }

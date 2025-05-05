@@ -22,6 +22,7 @@ fun ScreenNavigator(
     onNavigateToMainScreen: () -> Unit = {},
     onNavigateToContactsScreen: () -> Unit = {},
     onNavigateToProfileScreen: () -> Unit = {},
+    onNavigateToWishListScreen: () -> Unit = {},
     onCloseNavigator: () -> Unit = {}
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -55,6 +56,19 @@ fun ScreenNavigator(
             onClick = {
                 if (currentScreen != Constants.NAVIGATION_MOVE_TO_PROFILE_PAGE) {
                     onNavigateToProfileScreen()
+                    onCloseNavigator()
+                }
+            }
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        NavigationItem(
+            title = "Вишлист",
+            isSelected = currentScreen == Constants.NAVIGATION_MOVE_TO_WISHLIST_PAGE,
+            onClick = {
+                if (currentScreen != Constants.NAVIGATION_MOVE_TO_WISHLIST_PAGE) {
+                    onNavigateToWishListScreen()
                     onCloseNavigator()
                 }
             }

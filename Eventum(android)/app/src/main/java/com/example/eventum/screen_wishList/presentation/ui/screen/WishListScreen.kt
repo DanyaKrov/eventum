@@ -1,26 +1,33 @@
-package com.example.eventum.screen_contacts.presentation.ui.screens
+package com.example.eventum.screen_wishList.presentation.ui.screen
 
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,35 +44,23 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.eventum.common.Constants
-import com.example.eventum.screen_contacts.domain.model.Contact
 import com.example.eventum.screen_contacts.presentation.event.ContactsNavigationEvent
-import com.example.eventum.screen_contacts.presentation.viewModel.ContactsViewModel
-import com.example.eventum.screen_mainPage.presentation.event.MainPageNavigationEvent
+import com.example.eventum.screen_event.presentation.viewModel.EventViewModel
 import com.example.eventum.screen_mainPage.presentation.ui.components.ScreenNavigator
-import com.example.eventum.screen_mainPage.presentation.viewModel.MainPageViewModel
+import com.example.eventum.screen_wishList.presentation.event.WishListEvent
+import com.example.eventum.screen_wishList.presentation.event.WishListNavigationEvent
+import com.example.eventum.screen_wishList.presentation.ui.component.PresentItem
+import com.example.eventum.screen_wishList.presentation.viewModel.WishListViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.material3.TextButton as TextButton
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Divider
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.ui.graphics.Color
-import com.example.eventum.screen_contacts.presentation.event.ContactsEvent
-import com.example.eventum.screen_contacts.presentation.ui.components.ContactItem
+import com.example.eventum.screen_presents.domain.model.Present
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContactsScreen(
+fun WishListScreen(
     navController: NavHostController = rememberNavController(),
-    viewModel: ContactsViewModel = hiltViewModel()
+    viewModel: WishListViewModel = hiltViewModel()
 ) {
     val model = viewModel.model
     val snackbarHostState = remember { SnackbarHostState() }
@@ -74,15 +69,15 @@ fun ContactsScreen(
     LaunchedEffect(navigationStatus) {
         try {
             navController.navigate(navigationStatus)
-        } catch (_: Exception) {
-        }
+        } catch (_: Exception) {}
     }
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
     var showAddDialog by remember { mutableStateOf(false) }
-    var newName by remember { mutableStateOf("") }
+    var newTitle by remember { mutableStateOf("") }
+    var newDescription by remember { mutableStateOf("") }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -96,15 +91,15 @@ fun ContactsScreen(
             ) {
                 ScreenNavigator(
                     currentScreen = navController.currentDestination?.route
-                        ?: Constants.NAVIGATION_MOVE_TO_CONTACTS_PAGE,
+                        ?: Constants.NAVIGATION_MOVE_TO_WISHLIST_PAGE,
                     onNavigateToMainScreen = {
-                        viewModel.handleNavigation(ContactsNavigationEvent.NavigateToMainPage())
+                        viewModel.handleNavigation(WishListNavigationEvent.NavigateToMainPage())
                     },
                     onNavigateToProfileScreen = {
-                        viewModel.handleNavigation(ContactsNavigationEvent.NavigateToProfilePage())
+                        viewModel.handleNavigation(WishListNavigationEvent.NavigateToProfilePage())
                     },
-                    onNavigateToWishListScreen = {
-                        viewModel.handleNavigation(ContactsNavigationEvent.NavigateToWishListPage())
+                    onNavigateToContactsScreen = {
+                        viewModel.handleNavigation(WishListNavigationEvent.NavigateToContactsPage())
                     },
                     onCloseNavigator = { scope.launch { drawerState.close() } }
                 )
@@ -115,18 +110,18 @@ fun ContactsScreen(
                 snackbarHost = { SnackbarHost(snackbarHostState) },
                 topBar = {
                     SmallTopAppBar(
-                        title = { Text("Контакты") },
+                        title = { Text("Мой вишлист") },
                         navigationIcon = {
                             IconButton(onClick = { scope.launch { drawerState.open() } }) {
                                 Icon(Icons.Default.Menu, contentDescription = "Меню")
                             }
+                        },
+                        actions = {
+                            IconButton(onClick = { showAddDialog = true }) {
+                                Icon(Icons.Default.Add, contentDescription = "Добавить подарок")
+                            }
                         }
                     )
-                },
-                floatingActionButton = {
-                    FloatingActionButton(onClick = { showAddDialog = true }) {
-                        Text("+")
-                    }
                 }
             ) { padding ->
                 Column(
@@ -135,70 +130,68 @@ fun ContactsScreen(
                         .padding(padding)
                         .padding(16.dp)
                 ) {
-                    if (model.value.isLoading) {
+                    if (model.value.wishList?.presents.isNullOrEmpty()) {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            // show something while loading main data
+                            Text("Список подарков пуст", style = MaterialTheme.typography.bodyMedium)
                         }
-                    } else if (model.value.contacts.isEmpty()) {
-                        Text("Список контактов пуст", style = MaterialTheme.typography.bodyMedium)
                     } else {
                         LazyColumn {
-                            items(model.value.contacts) { contact ->
-                                ContactItem(
-                                    contact = contact,
+                            items(model.value.wishList?.presents ?: mutableListOf()) { present ->
+                                PresentItem(
+                                    present = present,
                                     onEdit = {
-                                        viewModel.handleEvent(ContactsEvent.EditContactEvent(it))
+                                        viewModel.handleEvent(WishListEvent.UpdatePresent(it))
+                                    },
+                                    onDelete = {
+                                        viewModel.handleEvent(WishListEvent.DeletePresent(it))
                                     }
                                 )
-                                Divider()
                             }
                         }
                     }
-
-                    if (model.value.errorMessage.isNotBlank()) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(text = model.value.errorMessage, color = Color.Red)
-                    }
                 }
 
-                // start of adding new contact
                 if (showAddDialog) {
                     AlertDialog(
                         onDismissRequest = { showAddDialog = false },
-                        title = { Text("Создать контакт") },
+                        title = { Text("Добавить подарок") },
                         text = {
-                            OutlinedTextField(
-                                value = newName,
-                                onValueChange = { newName = it },
-                                label = { Text("Имя контакта") },
-                                singleLine = true,
-                                modifier = Modifier.fillMaxWidth()
-                            )
+                            Column {
+                                OutlinedTextField(
+                                    value = newTitle,
+                                    onValueChange = { newTitle = it },
+                                    label = { Text("Название") }
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                OutlinedTextField(
+                                    value = newDescription,
+                                    onValueChange = { newDescription = it },
+                                    label = { Text("Описание") }
+                                )
+                            }
                         },
                         confirmButton = {
-                            TextButton(onClick = {
-                                if (newName.isNotBlank()) {
-                                    viewModel.handleEvent(
-                                        ContactsEvent.AddContactEvent(
-                                            Contact(
-                                                name = newName,
-                                                userRemoteId = 0
+                            TextButton(
+                                onClick = {
+                                    if (newTitle.isNotBlank()) {
+                                        viewModel.handleEvent(
+                                            WishListEvent.CreatePresent(Present(
+                                                title = newTitle,
+                                                description = newDescription)
                                             )
                                         )
-                                    )
-                                    newName = ""
-                                    showAddDialog = false
+                                        showAddDialog = false
+                                        newTitle = ""
+                                        newDescription = ""
+                                    }
                                 }
-                            }) {
+                            ) {
                                 Text("Создать")
                             }
                         },
                         dismissButton = {
-                            TextButton(onClick = {
-                                showAddDialog = false
-                                newName = ""
-                            }) {
-                                Text("Отмена")
+                            TextButton(onClick = { showAddDialog = false }) {
+                                Text(text = "Отмена")
                             }
                         }
                     )

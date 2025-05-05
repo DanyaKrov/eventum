@@ -5,4 +5,6 @@ sealed class MainPageNavigationEvent {
     class NavigateToProfilePage(): MainPageNavigationEvent()
 
     class NavigateToContactsPage(): MainPageNavigationEvent()
+
+    class NavigateToWishListPage(): MainPageNavigationEvent()
 }

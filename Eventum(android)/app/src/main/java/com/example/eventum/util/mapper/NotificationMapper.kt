@@ -19,6 +19,16 @@ class NotificationMapper {
             eventOwnerId=notification.eventOwnerId
         )
 
+    fun fromModelToEntityRequest(notification: NotificationModel, requestId: String): NotificationEntity =
+        NotificationEntity(
+            id=notification.id,
+            requestId=requestId,
+            title=notification.title,
+            description=notification.description,
+            time=notification.time,
+            eventOwnerId=notification.eventOwnerId
+        )
+
     fun fromModelToWork(notification: NotificationModel): Notification = Notification(
         notification.id,
         notification.title,

@@ -342,17 +342,8 @@ fun EventScreen(
                             items(notificationsModel.notifications) { notification ->
                                 NotificationItem(
                                     notification = notification,
-                                    onEdit = {id, title, date ->
-                                        viewModel.handleEvent(EventPageEvent.EditNotification(
-                                            NotificationModel(
-                                                id = id,
-                                                title = title,
-                                                description = "",
-                                                time = date,
-                                                eventOwnerId = eventModel.event?.remoteId ?: 0
-                                            )
-                                        ))
-                                        println("Save notification: $title, $date")
+                                    onEdit = {
+                                        viewModel.handleEvent(EventPageEvent.EditNotification(it))
                                     },
                                     onDelete = {
                                         viewModel.handleEvent(EventPageEvent.DeleteNotification(it))

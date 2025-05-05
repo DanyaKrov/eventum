@@ -1,6 +1,7 @@
 package com.example.eventum.screen_event.presentation.ui.component
 
 import android.app.DatePickerDialog
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -56,7 +57,7 @@ import java.util.Locale
 @Composable
 fun NotificationItem(
     notification: NotificationModel,
-    onEdit: (Long, String, String) -> Unit,
+    onEdit: (notification: NotificationModel) -> Unit,
     onDelete: (notification: NotificationModel) -> Unit,
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -123,7 +124,10 @@ fun NotificationItem(
             confirmButton = {
                 TextButton(onClick = {
                     if (editableTitle.isNotBlank() && editableDate.isNotBlank()) {
-                        onEdit(notification.id, editableTitle, editableDate)
+                        onEdit(notification.copy(
+                            title = editableTitle,
+                            time = editableDate
+                        ))
                         showEditDialog = false
                     }
                 }) {

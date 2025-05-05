@@ -6,4 +6,5 @@ sealed class ContactsNavigationEvent {
     class NavigateToProfilePage(): ContactsNavigationEvent()
 
     class NavigateToMainPage(): ContactsNavigationEvent()
+    class NavigateToWishListPage(): ContactsNavigationEvent()
 }

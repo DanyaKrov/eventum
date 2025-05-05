@@ -41,12 +41,12 @@ class PresentsService @Inject constructor(
 
     override suspend fun editPresent(present: Present): Boolean {
         remoteRepository.update(present.id, mapper.fromModelToRemoteRequest(present))
-        return localRepository.updatePresent(mapper.fromModelToEntity(present))
+        return localRepository.updatePresent(mapper.fromModelToEntity(present, present.remoteId))
     }
 
-    override suspend fun createPresent(present: Present) {
-        // add remote present
-        localRepository.insert(mapper.fromModelToEntity(present))
+    override suspend fun createPresent(userId: Long, present: Present) {
+        val createdPresent = remoteRepository.insert(userId, mapper.fromModelToRemoteRequest(present))
+        localRepository.insert(mapper.fromModelToEntity(present, createdPresent.id))
     }
 
     override suspend fun getPresent(remoteId: Long): Present {

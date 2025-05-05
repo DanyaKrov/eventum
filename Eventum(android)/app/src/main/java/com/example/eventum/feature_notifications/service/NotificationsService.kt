@@ -1,6 +1,7 @@
 package com.example.eventum.feature_notifications.service
 
 import android.content.Context
+import android.util.Log
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -42,7 +43,7 @@ class NotificationsService @Inject constructor(
     override fun update(requestId: String, notification: Notification): String {
         return try {
             WorkManager.getInstance(context).cancelWorkById(UUID.fromString(requestId)) // cancel old request
-            createNotification(notification).toString() // create new one and return new requestId
+            create(notification) // create new one and return new requestId
         } catch (e: Exception) {
             "Error occurred while updating request and notification"
         }

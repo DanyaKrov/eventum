@@ -86,6 +86,7 @@ fun WishListScreen(
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val visibility = true
 
     var showAddDialog by remember { mutableStateOf(false) }
     var newTitle by remember { mutableStateOf("") }
@@ -138,7 +139,9 @@ fun WishListScreen(
                         .padding(16.dp)
                 ) {
                     Row(Modifier.fillMaxWidth()){
-                        if (viewModel.model.value.wishList.)
+                        Text("Видимость",
+                            )
+
                     }
 
 //                    if (model.value.wishList?.presents.isNullOrEmpty()) {
@@ -190,7 +193,7 @@ fun WishListScreen(
 
                     ) {
                         Text("Добавить подарок",
-                            color = Color.DarkGray)
+                            color = Color.White)
                     }
 //                    }
 

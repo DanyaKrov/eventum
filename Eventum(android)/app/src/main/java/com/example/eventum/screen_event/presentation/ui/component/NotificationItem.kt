@@ -14,8 +14,10 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +45,7 @@ fun NotificationItem(
     onDelete: (notification: NotificationModel) -> Unit,
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showEditDialog by remember { mutableStateOf(false) }
 
     if (showDeleteDialog) {
         AlertDialog(
@@ -84,7 +87,16 @@ fun NotificationItem(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(8.dp)
-//            .background(Color.DarkGray)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap  = {
+                        showEditDialog = true
+                    },
+                    onLongPress = {
+                        showDeleteDialog = true
+                    }
+                )
+            }
     ){
         Box(Modifier.fillMaxWidth().background(
             Brush.horizontalGradient(
@@ -105,16 +117,7 @@ fun NotificationItem(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .pointerInput(Unit) {
-                        detectTapGestures(
-                            onTap = {
-                                onEdit()
-                            },
-                            onPress = {
-                                showDeleteDialog = true
-                            }
-                        )
-                    }
+
                     .padding(16.dp)
             ) {
 

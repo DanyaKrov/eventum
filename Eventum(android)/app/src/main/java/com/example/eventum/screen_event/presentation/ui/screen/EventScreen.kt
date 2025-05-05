@@ -63,6 +63,8 @@ fun EventScreen(
     var notificationDate by remember { mutableStateOf("") }
     val calendar = remember { Calendar.getInstance() }
 
+    val rounding = 40.dp
+
     val navigationStatus by viewModel.navigationStatus.collectAsState()
     LaunchedEffect(navigationStatus) {
         try {
@@ -126,15 +128,34 @@ fun EventScreen(
                         OutlinedTextField(
                             value = editableTitle,
                             onValueChange = { editableTitle = it },
-                            label = { Text("Название") },
-                            modifier = Modifier.fillMaxWidth()
+                            label = { Text("Название",
+                                        fontFamily = Montserrat,
+                                        fontWeight = FontWeight.Medium,
+                                    )},
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(rounding),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = Color.Gray,
+                                unfocusedBorderColor = Color.LightGray,
+                                focusedLabelColor = Color.Gray,
+                                unfocusedLabelColor = Color.LightGray
+                            )
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         OutlinedTextField(
                             value = editableDescription,
                             onValueChange = { editableDescription = it },
-                            label = { Text("Описание") },
-                            modifier = Modifier.fillMaxWidth()
+                            label = { Text("Описание",
+                                fontFamily = Montserrat,
+                                fontWeight = FontWeight.Medium) },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(rounding),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = Color.Gray,
+                                unfocusedBorderColor = Color.LightGray,
+                                focusedLabelColor = Color.Gray,
+                                unfocusedLabelColor = Color.LightGray
+                            )
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         OutlinedTextField(
@@ -142,6 +163,13 @@ fun EventScreen(
                             onValueChange = {},
                             label = { Text("Дата (yyyy-MM-dd)") },
                             readOnly = true,
+                            shape = RoundedCornerShape(rounding),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = Color.Gray,
+                                unfocusedBorderColor = Color.LightGray,
+                                focusedLabelColor = Color.Gray,
+                                unfocusedLabelColor = Color.LightGray
+                            ),
                             trailingIcon = {
                                 IconButton(onClick = {
                                     DatePickerDialog(
@@ -170,7 +198,16 @@ fun EventScreen(
                                 )
                             ))
                             isEditing = false
-                        }) {
+                        },
+                            modifier = Modifier.fillMaxWidth()
+                                .background(Brush.horizontalGradient(
+                                    colors = listOf(
+                                        SoftRed,
+                                        SoftLightRed
+                                    )),
+                                    shape = MaterialTheme.shapes.extraLarge),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+                            ) {
                             Text("Сохранить")
                         }
                     } else {
@@ -301,6 +338,7 @@ fun EventScreen(
                                     }
                                 )
 //                                Divider()
+                                Spacer(modifier = Modifier.height(10.dp))
                             }
                         }
                         Spacer(modifier = Modifier.height(24.dp))
@@ -355,27 +393,46 @@ fun EventScreen(
                         showAddDialog = false
                     }
                 }) {
-                    Text("Добавить")
+                    Text("Добавить",
+                        fontFamily = Montserrat,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.DarkGray)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showAddDialog = false }) {
-                    Text("Отмена")
+                    Text("Отмена",
+                        fontFamily = Montserrat,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.DarkGray)
                 }
             },
-            title = { Text("Новое уведомление") },
+            title = { Text("Новое уведомление",
+                fontFamily = Montserrat,
+                fontWeight = FontWeight.Medium,) },
             text = {
                 Column {
                     OutlinedTextField(
                         value = notificationTitle,
                         onValueChange = { notificationTitle = it },
-                        label = { Text("Заголовок") }
+                        label = { Text("Заголовок",
+                            fontFamily = Montserrat,
+                            fontWeight = FontWeight.Medium) },
+                        shape = RoundedCornerShape(rounding),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color.Gray,
+                            unfocusedBorderColor = Color.LightGray,
+                            focusedLabelColor = Color.Gray,
+                            unfocusedLabelColor = Color.LightGray
+                        )
                     )
                     Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
                         value = notificationDate,
                         onValueChange = {},
-                        label = { Text("Дата (yyyy-MM-dd)") },
+                        label = { Text("Дата (yyyy-MM-dd)",
+                            fontFamily = Montserrat,
+                            fontWeight = FontWeight.Medium,) },
                         readOnly = true,
                         trailingIcon = {
                             IconButton(onClick = {
@@ -393,10 +450,22 @@ fun EventScreen(
                             }) {
                                 Icon(Icons.Default.CalendarToday, contentDescription = null)
                             }
-                        }
+                        },
+                        shape = RoundedCornerShape(rounding),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color.Gray,
+                            unfocusedBorderColor = Color.LightGray,
+                            focusedLabelColor = Color.Gray,
+                            unfocusedLabelColor = Color.LightGray
+                        )
                     )
                 }
             }
         )
     }
+}
+
+@Composable
+fun deleteNotification(notification: NotificationModel){
+
 }

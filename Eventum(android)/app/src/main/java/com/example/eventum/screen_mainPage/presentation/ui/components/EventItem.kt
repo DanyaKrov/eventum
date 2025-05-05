@@ -50,19 +50,31 @@ fun EventItem(event: Event,
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
-            title = { Text("Удалить событие?") },
-            text = { Text("Вы уверены, что хотите удалить \"${event.name}\"?") },
+            title = { Text("Удалить событие?",
+                fontFamily = Montserrat,
+                fontWeight = FontWeight.Medium,
+                color = Color.DarkGray) },
+            text = { Text("Вы уверены, что хотите удалить \"${event.name}\"?",
+                fontFamily = Montserrat,
+                fontWeight = FontWeight.Medium,
+                color = Color.DarkGray) },
             confirmButton = {
                 TextButton(onClick = {
                     onLongClick(event)
                     showDialog = false
                 }) {
-                    Text("Удалить")
+                    Text("Удалить",
+                        fontFamily = Montserrat,
+                        fontWeight = FontWeight.Medium,
+                        color = SoftRed)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDialog = false }) {
-                    Text("Отмена")
+                    Text("Отмена",
+                        fontFamily = Montserrat,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.DarkGray)
                 }
             }
         )

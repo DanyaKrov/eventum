@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.eventum.common.Constants
 import com.example.eventum.data.local.preferences.UserPreferences
 import com.example.eventum.data.local.preferences.WishListPreferences
 import com.example.eventum.domain.model.Operation
@@ -113,9 +114,10 @@ class WishListViewModel @Inject constructor(
 
     fun handleNavigation(event: WishListNavigationEvent) {
         when(event) {
-            is WishListNavigationEvent.NavigateToContactsPage -> TODO()
-            is WishListNavigationEvent.NavigateToMainPage -> TODO()
-            is WishListNavigationEvent.NavigateToProfilePage -> TODO()
+            is WishListNavigationEvent.NavigateToContactsPage -> navigationStatus.value = Constants.NAVIGATION_MOVE_TO_CONTACTS_PAGE
+            is WishListNavigationEvent.NavigateToMainPage -> navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
+            is WishListNavigationEvent.NavigateToProfilePage -> navigationStatus.value = Constants.NAVIGATION_MOVE_TO_PROFILE_PAGE
         }
     }
+
 }

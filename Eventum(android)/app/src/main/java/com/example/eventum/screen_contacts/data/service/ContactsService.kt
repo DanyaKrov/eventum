@@ -1,5 +1,6 @@
 package com.example.eventum.screen_contacts.data.service
 
+import android.util.Log
 import com.example.eventum.data.remote.model.request.ContactRequest
 import com.example.eventum.screen_contacts.data.local.repository.ContactsLocalRepository
 import com.example.eventum.screen_contacts.data.remote.repository.ContactsRemoteRepository
@@ -40,7 +41,7 @@ class ContactsService @Inject constructor(
     }
 
     override suspend fun editContact(contact: Contact): String {
-        remoteRepository.update(contact.id, mapper.fromModelToRequest(contact))
+        remoteRepository.update(contact.remoteId, mapper.fromModelToRequest(contact))
         return localRepository.updateContact(mapper.fromModelToEntity(contact))
     }
 

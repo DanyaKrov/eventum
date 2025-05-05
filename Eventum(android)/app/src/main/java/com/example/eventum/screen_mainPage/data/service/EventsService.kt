@@ -22,6 +22,7 @@ class EventsService @Inject constructor(
             loadRemoteToLocalData(userRemoteId)
         } else {
             val localEvents = localRepository.getEvents(userRemoteId)
+            Log.i("testing", "local events" + localEvents.toString())
             if (localEvents.isEmpty()) {
                 loadRemoteToLocalData(userRemoteId)
             }
@@ -50,6 +51,7 @@ class EventsService @Inject constructor(
 
     override suspend fun createEvent(userRemoteId: Long, event: EventRequestModel): Event {
         val remoteEvent = remoteRepository.create(userRemoteId, mapper.requestFromModelToRemote(event))
+        localRepository.createEvent(mapper.responseToEntity(remoteEvent))
         return mapper.remoteToPresentableModel(remoteEvent)
     }
 }

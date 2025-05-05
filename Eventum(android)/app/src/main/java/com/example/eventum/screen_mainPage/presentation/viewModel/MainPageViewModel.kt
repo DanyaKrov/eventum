@@ -105,10 +105,8 @@ class MainPageViewModel @Inject constructor(
             .onEach { result ->
                 when(result) {
                     is Resource.Success -> {
-                        result.data?.let {
-                            _model.value.events.add(it)
-                        }
                         _eventCreationStatus.value = DomainState(isSuccess = true)
+                        getEvents()
                     }
                     is Resource.Loading -> {
                         // just wait, but need to handle if it takes too long
@@ -139,8 +137,14 @@ class MainPageViewModel @Inject constructor(
     fun handleNavigation(event: MainPageNavigationEvent) {
         when(event){
             is MainPageNavigationEvent.ChangeToCalendarView -> changeToCalendarView()
-            is MainPageNavigationEvent.NavigateToEventPage -> navigateToEventPage()
             is MainPageNavigationEvent.NavigateToProfilePage -> navigateToProfilePage()
+            is MainPageNavigationEvent.NavigateToContactsPage -> navigateToContactsPage()
+        }
+    }
+
+    private fun navigateToContactsPage() {
+        viewModelScope.launch {
+            navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_CONTACTS_PAGE)
         }
     }
 

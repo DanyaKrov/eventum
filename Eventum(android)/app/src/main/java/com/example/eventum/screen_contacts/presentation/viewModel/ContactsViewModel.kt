@@ -135,7 +135,9 @@ class ContactsViewModel @Inject constructor(
 
     fun handleNavigation(event: ContactsNavigationEvent) {
         when(event) {
-            is ContactsNavigationEvent.MoveBackEvent -> navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
+            is ContactsNavigationEvent.ChangeToCalendarView -> TODO()
+            is ContactsNavigationEvent.NavigateToMainPage -> TODO()
+            is ContactsNavigationEvent.NavigateToProfilePage -> TODO()
         }
     }
 }

@@ -7,6 +7,7 @@ import com.example.eventum.screen_mainPage.domain.model.Event
 sealed class EventPageEvent {
     class AddContact(val contact: Contact): EventPageEvent()
     class CreateNotification(val notification: NotificationModel): EventPageEvent()
+    class EditNotification(val updatedNotification: NotificationModel): EventPageEvent()
     class DeleteNotification(val notification: NotificationModel): EventPageEvent()
     class EditEvent(val event: Event): EventPageEvent()
 }

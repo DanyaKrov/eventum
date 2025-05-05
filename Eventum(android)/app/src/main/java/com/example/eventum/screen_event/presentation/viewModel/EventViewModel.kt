@@ -39,7 +39,7 @@ class EventViewModel @Inject constructor(
     private val createNotificationUseCase: CreateNotificationUseCase,
     private val deleteNotificationUseCase: DeleteNotificationUseCase,
     private val updateEventUseCase: UpdateEventUseCase,
-    private val updateNotificationsUseCase: UpdateNotificationUseCase,
+    private val updateNotificationUseCase: UpdateNotificationUseCase,
     private val eventPreferences: EventPreferences,
 ): ViewModel() {
     // navigation parameters
@@ -103,8 +103,37 @@ class EventViewModel @Inject constructor(
             is EventPageEvent.DeleteNotification -> deleteNotification(event.notification)
             is EventPageEvent.EditEvent -> editEvent(event.event)
             is EventPageEvent.CreateNotification -> createNotification(event.notification)
+            is EventPageEvent.EditNotification -> updateNotification(event.updatedNotification)
         }
     }
+
+    private fun updateNotification(updatedNotification: NotificationModel) {
+        updateNotificationUseCase(updatedNotification)
+            .filterNotNull()
+            .onEach { result ->
+                when (result) {
+                    is Operation.Success -> {
+                        setModel()
+                    }
+
+                    is Operation.Loading -> {
+                        _notificationsModel.value = NotificationsModel(
+                            notifications = notificationsModel.value.notifications,
+                            uiState = UiState(isLoading = true)
+                        )
+                    }
+
+                    is Operation.Error -> {
+                        _notificationsModel.value = NotificationsModel(
+                            notifications = notificationsModel.value.notifications,
+                            uiState = UiState(isLoading = false,
+                                errorMessage = result.message ?: "An unexpected error occurred")
+                        )
+                    }
+                }
+            }.launchIn(viewModelScope)
+    }
+
 
     private fun deleteNotification(notification: NotificationModel) {
         deleteNotificationUseCase(notification)

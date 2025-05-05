@@ -3,12 +3,18 @@ package com.example.eventum.screen_mainPage.presentation.ui.components
 import android.app.DatePickerDialog
 import android.content.Context
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material3.*
@@ -22,11 +28,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.eventum.domain.model.DomainState
 import com.example.eventum.screen_mainPage.domain.model.EventRequestModel
 import com.example.eventum.screen_mainPage.presentation.viewModel.MainPageViewModel
+import com.example.eventum.ui.theme.BackGround
+import com.example.eventum.ui.theme.Montserrat
+import com.example.eventum.ui.theme.SoftLightOrange
+import com.example.eventum.ui.theme.SoftLightRed
+import com.example.eventum.ui.theme.SoftOrange
+import com.example.eventum.ui.theme.SoftRed
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -49,6 +67,8 @@ fun CreateEvent (
     val coroutineScope = rememberCoroutineScope()
 
     val calendar = remember { Calendar.getInstance() }
+    val padding = 16.dp
+    val rounding = 40.dp
 
 
     LaunchedEffect(creationStatus.value)  { // idk but this is not working right now(
@@ -77,23 +97,58 @@ fun CreateEvent (
             calendar.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(8.dp)
+            .background(Color.White)
+    ){
+        Box(Modifier.fillMaxWidth()
+            .background(
+                Brush.horizontalGradient(
+                    colors = listOf(
+                        SoftRed,
+                        SoftLightRed
+                    )
+                ))
+            .padding(padding)
+        )
+        {
+            Text(
+                text = "Создать событие",
+                fontFamily = Montserrat,
+                fontWeight = FontWeight.Medium,
+                fontSize = 25.sp,
+                modifier = Modifier.padding(bottom = 16.dp),
+                textAlign = TextAlign.Center,
+                color = Color.White
+            )
+        }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .background(Color.White)
+            .padding(padding)
     ) {
-        Text(
-            text = "Создать событие",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
 
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text("Название события") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Название события",
+                fontFamily = Montserrat,
+                fontWeight = FontWeight.Medium) },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(rounding),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Gray,
+                unfocusedBorderColor = Color.LightGray,
+                focusedLabelColor = Color.Gray,
+                unfocusedLabelColor = Color.LightGray
+            ),
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -101,8 +156,18 @@ fun CreateEvent (
         OutlinedTextField(
             value = description,
             onValueChange = { description = it },
-            label = { Text("Описание") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Описание",
+                fontFamily = Montserrat,
+                fontWeight = FontWeight.Medium) },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(rounding),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Gray,
+                unfocusedBorderColor = Color.LightGray,
+                focusedLabelColor = Color.Gray,
+                unfocusedLabelColor = Color.LightGray
+            ),
+
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -110,14 +175,25 @@ fun CreateEvent (
         OutlinedTextField(
             value = selectedDate,
             onValueChange = {},
-            label = { Text("Время события") },
+            label = { Text("Даты события",
+                fontFamily = Montserrat,
+                fontWeight = FontWeight.Medium) },
             readOnly = true,
             trailingIcon = {
-                IconButton(onClick = { openDateTimePicker() }) {
-                    Icon(Icons.Default.CalendarToday, contentDescription = "Выбрать дату и время")
+                IconButton(onClick = {
+                    openDateTimePicker()
+                }) {
+                    Icon(Icons.Default.CalendarToday, contentDescription = "Выбрать дату")
                 }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(rounding),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Gray,
+                unfocusedBorderColor = Color.LightGray,
+                focusedLabelColor = Color.Gray,
+                unfocusedLabelColor = Color.LightGray
+            ),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -142,8 +218,18 @@ fun CreateEvent (
                 }
             },
             modifier = Modifier.fillMaxWidth()
+                .background(Brush.horizontalGradient(
+                    colors = listOf(
+                        SoftRed,
+                        SoftLightRed
+                    )),
+                    shape = MaterialTheme.shapes.extraLarge),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+
         ) {
-            Text("Создать событие")
+            Text("Создать событие",
+                color = Color.White)
         }
+    }
     }
 }

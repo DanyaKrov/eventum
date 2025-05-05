@@ -5,6 +5,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,13 +25,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.eventum.screen_mainPage.domain.model.Event
+import com.example.eventum.ui.theme.Montserrat
+import com.example.eventum.ui.theme.SoftLightOrange
+import com.example.eventum.ui.theme.SoftOrange
+import com.example.eventum.ui.theme.SoftRed
 
 @Composable
 fun EventItem(event: Event,
@@ -84,35 +92,51 @@ fun EventItem(event: Event,
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.surface)
         ) {
-            event.picture?.let { imageUrl ->
-                AsyncImage(
-                    model = imageUrl,
-                    contentDescription = event.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(180.dp)
-                )
-            }
-
-            Column(modifier = Modifier.padding(16.dp)) {
+//            Box(Modifier.fillMaxWidth().background(SoftRed))
+//            {
+//                event.picture?.let { imageUrl ->
+//                    AsyncImage(
+//                        model = imageUrl,
+//                        contentDescription = event.name,
+//                        contentScale = ContentScale.Crop,
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(180.dp)
+//                    )
+//                }
+//            }
+            Box(Modifier.fillMaxWidth().background(
+                Brush.horizontalGradient(
+                colors = listOf(
+                    SoftOrange,
+                    SoftLightOrange
+                )))
+                .padding(16.dp)
+            )
+            {
                 Text(
                     text = event.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = Montserrat,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 25.sp
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+            }
+            Column(modifier = Modifier.padding(16.dp)) {
+
                 Text(
                     text = event.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 2,
+                    fontFamily = Montserrat,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 15.sp,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = event.time,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary
+                    fontFamily = Montserrat,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 15.sp,
+                    color = Color.Gray
                 )
             }
         }

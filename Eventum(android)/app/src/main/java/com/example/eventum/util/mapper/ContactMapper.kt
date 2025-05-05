@@ -21,11 +21,17 @@ class ContactMapper {
         authorisedStatus = (contactEntity.friendUser != null)
     )
 
-    fun fromModelToEntity(contact: Contact): ContactEntity = ContactEntity(
+    fun fromModelToEntity(contact: Contact, remoteId: Long): ContactEntity = ContactEntity(
         id = contact.id,
-        remoteId = contact.remoteId,
+        remoteId = remoteId,
         name = contact.name,
         userRemoteId = contact.userRemoteId
+    )
+
+    fun fromRemoteToEntity(contact: ContactRemote): ContactEntity = ContactEntity(
+        remoteId = contact.id,
+        name = contact.name,
+        userRemoteId = contact.hostUserId
     )
 
     fun fromModelToRequest(contact: Contact): ContactRequest = ContactRequest(

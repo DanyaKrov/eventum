@@ -15,24 +15,23 @@ class ContactsService @Inject constructor(
     private val mapper: ContactMapper
 ): ContactsRepository {
     override suspend fun getContacts(userId: Long, forceRefresh: Boolean): List<Contact> {
-        return if (forceRefresh) {
+        if (forceRefresh) {
             try {
-                val remoteContacts = remoteRepository.getAll(userId).map { mapper.fromRemoteToModel(it) }
+                val remoteContacts = remoteRepository.getAll(userId)
                 localRepository.deleteAll()
-                remoteContacts.forEach {localRepository.insert(mapper.fromModelToEntity(it))}
-                remoteContacts
+                remoteContacts.forEach { localRepository.insert(mapper.fromRemoteToEntity(it)) }
             } catch (e: Exception) {
                 localRepository.getAll(userId).map { mapper.fromEntityToModel(it) }
             }
         } else {
-            val localEvents = localRepository.getAll(userId).map { mapper.fromEntityToModel(it) }
-            localEvents.ifEmpty {
-                val remoteEvents =
-                    remoteRepository.getAll(userId).map { mapper.fromRemoteToModel(it) }
-                remoteEvents.forEach { localRepository.insert(mapper.fromModelToEntity(it)) }
-                remoteEvents
+            val localContacts = localRepository.getAll(userId).map { mapper.fromEntityToModel(it) }
+            localContacts.ifEmpty {
+                val remoteContacts = remoteRepository.getAll(userId)
+                remoteContacts.forEach { localRepository.insert(mapper.fromRemoteToEntity(it)) }
             }
         }
+        return localRepository.getAll(userId).map { mapper.fromEntityToModel(it) }
+
     }
 
     override suspend fun deleteContact(contactId: Long): String {
@@ -42,11 +41,11 @@ class ContactsService @Inject constructor(
 
     override suspend fun editContact(contact: Contact): String {
         remoteRepository.update(contact.remoteId, mapper.fromModelToRequest(contact))
-        return localRepository.updateContact(mapper.fromModelToEntity(contact))
+        return localRepository.updateContact(mapper.fromModelToEntity(contact, contact.remoteId))
     }
 
     override suspend fun createContact(userId: Long, contact: Contact) {
-        remoteRepository.insert(userId, mapper.fromModelToRequest(contact))
-        localRepository.insert(mapper.fromModelToEntity(contact))
+        val createdContact = remoteRepository.insert(userId, mapper.fromModelToRequest(contact))
+        localRepository.insert(mapper.fromModelToEntity(contact, createdContact.id))
     }
 }

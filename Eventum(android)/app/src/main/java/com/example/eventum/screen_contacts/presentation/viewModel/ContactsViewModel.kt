@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.eventum.common.Constants
 import com.example.eventum.domain.model.Resource
 import com.example.eventum.data.local.preferences.UserPreferences
+import com.example.eventum.domain.model.DomainState
+import com.example.eventum.domain.model.Operation
 import com.example.eventum.screen_contacts.domain.model.Contact
 import com.example.eventum.screen_contacts.domain.model.ContactsModel
 import com.example.eventum.screen_contacts.domain.useCase.AddContactUseCase
@@ -46,6 +48,9 @@ class ContactsViewModel @Inject constructor(
 
     private val _sortOrder = MutableStateFlow(SortOrder.DATE_ASC)
     val sortOrder: StateFlow<SortOrder> = _sortOrder.asStateFlow()
+
+    private val _contactOperationStatus = mutableStateOf(DomainState())
+    val contactOperationnStatus: State<DomainState> = _contactOperationStatus
     
     init {
         getContacts()
@@ -84,16 +89,44 @@ class ContactsViewModel @Inject constructor(
 
 
     private fun editContact(contact: Contact) {
-        viewModelScope.launch {
-            updateContactUseCase(contact)
-        }
+        updateContactUseCase(contact)
+            .filterNotNull()
+            .onEach { result ->
+                when(result) {
+                    is Operation.Success -> {
+                        _contactOperationStatus.value = DomainState(isSuccess = true)
+                        getContacts()
+                    }
+                    is Operation.Loading -> {
+                        // just wait, but need to handle if it takes too long
+                    }
+                    is Operation.Error -> {
+                        _contactOperationStatus.value = DomainState(isSuccess = false)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        getContacts() // reload model
     }
 
 
-    private fun deleteContact(contactId: Long) {
-        viewModelScope.launch {
-            deleteContactUseCase(contactId)
-        }
+    private fun deleteContact(contactId: Long) { // its pretty much the same as creation method
+        deleteContactUseCase(contactId) // but what to do else? for now its optimal
+            .filterNotNull()
+            .onEach { result ->
+                when(result) {
+                    is Operation.Success -> {
+                        _contactOperationStatus.value = DomainState(isSuccess = true)
+                        getContacts()
+                    }
+                    is Operation.Loading -> {
+                        // just wait, but need to handle if it takes too long
+                    }
+                    is Operation.Error -> {
+                        _contactOperationStatus.value = DomainState(isSuccess = false)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        getContacts() // reload model
     }
 
 
@@ -127,17 +160,42 @@ class ContactsViewModel @Inject constructor(
     }
 
     private fun addContact(contact: Contact) {
-        viewModelScope.launch {
-            addContactUseCase(userId, contact)
-        }
+        addContactUseCase(userId, contact)
+            .filterNotNull()
+            .onEach { result ->
+                when(result) {
+                    is Operation.Success -> {
+                        _contactOperationStatus.value = DomainState(isSuccess = true)
+                        getContacts()
+                    }
+                    is Operation.Loading -> {
+                        // just wait, but need to handle if it takes too long
+                    }
+                    is Operation.Error -> {
+                        _contactOperationStatus.value = DomainState(isSuccess = false)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        getContacts() // reload model
     }
 
 
     fun handleNavigation(event: ContactsNavigationEvent) {
         when(event) {
-            is ContactsNavigationEvent.ChangeToCalendarView -> TODO()
-            is ContactsNavigationEvent.NavigateToMainPage -> TODO()
-            is ContactsNavigationEvent.NavigateToProfilePage -> TODO()
+            is ContactsNavigationEvent.NavigateToMainPage -> navigateToMainPage()
+            is ContactsNavigationEvent.NavigateToProfilePage -> navigateToProfilePage()
+        }
+    }
+
+    private fun navigateToMainPage() {
+        viewModelScope.launch {
+            navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
+        }
+    }
+
+    private fun navigateToProfilePage() {
+        viewModelScope.launch {
+            navigationStatus.value = Constants.NAVIGATION_MOVE_TO_PROFILE_PAGE
         }
     }
 }

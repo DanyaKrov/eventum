@@ -15,6 +15,8 @@ import androidx.compose.material.icons.filled.SubdirectoryArrowLeft
 import androidx.compose.material.icons.sharp.Man
 import androidx.compose.material.icons.sharp.SubdirectoryArrowLeft
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 //import androidx.compose.material.icons.sharp.SubdirectoryArrowLeft
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -98,22 +100,29 @@ fun ButtonComponentType2(labelvalue: String,
 fun BackButton(clickFunction: () -> Unit){
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomEnd
+        contentAlignment = Alignment.BottomEnd,
     )
     {
-        IconButton (
-            onClick = clickFunction,
-            modifier = Modifier.size(75.dp)
-                .background(Color.White, shape = RoundedCornerShape(30.dp)
-                )
+            Button (
+                onClick = clickFunction,
+                modifier = Modifier.size(75.dp)
+                    .background(Color.White, shape = RoundedCornerShape(30.dp)
+                    ),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White,
+                    contentColor = Color.DarkGray
+                ),
+                elevation = ButtonDefaults.buttonElevation(8.dp)
 
-        ) {
-            // Inner content including an icon and a text label
-            Icon(
-                imageVector = Icons.Default.SubdirectoryArrowLeft,
-                contentDescription = "back"
-            )
-        }
+            ) {
+                // Inner content including an icon and a text label
+                Icon(
+                    imageVector = Icons.Default.SubdirectoryArrowLeft,
+                    contentDescription = "back"
+                )
+            }
+
+
     }
 
 }

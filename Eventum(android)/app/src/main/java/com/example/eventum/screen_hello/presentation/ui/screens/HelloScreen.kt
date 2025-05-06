@@ -50,13 +50,13 @@ fun HelloScreen(navController: NavHostController = rememberNavController(),
             Spacer(modifier = Modifier.height(150.dp))
             HeaderTextComponent(value = stringResource(id = R.string.Welcome))
             Spacer(modifier = Modifier.height(100.dp))
-            ButtonComponentType1 (labelvalue = stringResource(id = R.string.SignIn)) {
+            ButtonComponentType1 (stringResource(id = R.string.SignIn)) {
                 helloViewModel.handleEvent(
                     HelloEvent.MoveToLogin()
                 )
             }
             Spacer(modifier = Modifier.height(44.dp))
-            ButtonComponentType2(labelvalue = stringResource(id = R.string.SignUp)) {
+            ButtonComponentType2(stringResource(id = R.string.SignUp)) {
                 helloViewModel.handleEvent(
                     HelloEvent.MoveToSignUp()
                 )

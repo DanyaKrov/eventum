@@ -68,7 +68,7 @@ fun LoginScreen(navController: NavHostController = rememberNavController(),
                 viewModel.handleEvent(LoginEvent.PasswordChanged(it))
             }
             ErrorTextComponent()
-            ButtonComponentType1(labelvalue = stringResource(id = R.string.login)) {
+            ButtonComponentType1(stringResource(id = R.string.login)) {
                 viewModel.handleEvent(LoginEvent.LoginFinished())
             }
         }

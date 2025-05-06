@@ -1,9 +1,10 @@
 package com.example.eventum.screen_event.presentation.ui.component
 
-import androidx.benchmark.perfetto.ExperimentalPerfettoTraceProcessorApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import com.example.eventum.screen_contacts.domain.model.Contact
 import com.example.eventum.screen_contacts.domain.model.ContactsModel
 import com.example.eventum.ui.theme.Montserrat
+import com.example.eventum.ui.theme.SoftLightOrange
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -75,18 +78,29 @@ fun EventContactsSection(
                         ),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
-                    Column(modifier = Modifier.padding(12.dp)) {
-                        Text(
-                            text = contact.name,
-                            style = MaterialTheme.typography.titleSmall
-                        )
-                        if (contact.tag.isNotBlank()) {
-                            Text(
-                                text = "Тэг: ${contact.tag}",
-                                style = MaterialTheme.typography.bodySmall
+                    Box(Modifier.fillMaxWidth().background(
+                        Brush.linearGradient(
+                            colors = listOf(
+                                SoftLightOrange,
+                                Color.White
                             )
+                        )
+                    ))
+                    {
+                        Column(modifier = Modifier.padding(12.dp)) {
+                            Text(
+                                text = contact.name,
+                                style = MaterialTheme.typography.titleSmall
+                            )
+                            if (contact.tag.isNotBlank()) {
+                                Text(
+                                    text = "Тэг: ${contact.tag}",
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
                         }
                     }
+
                 }
             }
         }

@@ -35,6 +35,8 @@ import com.example.eventum.screen_event.presentation.ui.component.EventContactsS
 import com.example.eventum.screen_event.presentation.ui.component.NotificationItem
 import com.example.eventum.screen_event.presentation.viewModel.EventViewModel
 import com.example.eventum.screen_hello.presentation.ui.components.BackButton
+import com.example.eventum.screen_hello.presentation.ui.components.ButtonComponentType1
+import com.example.eventum.screen_hello.presentation.ui.components.ButtonComponentType2
 import com.example.eventum.ui.theme.BackGround
 import com.example.eventum.ui.theme.Montserrat
 import com.example.eventum.ui.theme.SoftLightOrange
@@ -157,27 +159,108 @@ fun EventScreen(
                         )
 
                         Spacer(Modifier.height(16.dp))
-                        Button(
-                            onClick = {
-                                viewModel.handleEvent(EventPageEvent.EditEvent(event.copy(
-                                    name = editableTitle,
-                                    description = editableDescription,
-                                    time = editableDate
-                                )))
-                                isEditing = false
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Сохранить")
+                        ButtonComponentType1("Сохранить") {
+                            viewModel.handleEvent(EventPageEvent.EditEvent(event.copy(
+                                name = editableTitle,
+                                description = editableDescription,
+                                time = editableDate
+                            )))
+                            isEditing = false
                         }
                     } else {
-                        Text("Название: ${event.name}", fontSize = 20.sp, fontWeight = FontWeight.Medium)
-                        Text("Описание: ${event.description}")
-                        Text("Дата: ${event.time}")
-                        Spacer(Modifier.height(12.dp))
+                        Card(
+                            shape = RoundedCornerShape(16.dp),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(8.dp)
+                                .background(Color.White)
+                        )
+                        {
+                            Box(
+                                Modifier.fillMaxWidth().background(
+                                    Brush.horizontalGradient(
+                                        colors = listOf(
+                                            SoftRed,
+                                            SoftLightRed
+                                        )
+                                    )
+                                )
+                                    .padding(16.dp)
+                            )
+                            {
+                                Column {
+                                    Text(
+                                        text = "Название",
+                                        fontFamily = Montserrat,
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 17.sp,
+                                        color = Color.White
+                                    )
+                                    Text(
+                                        text = event.name,
+                                        fontFamily = Montserrat,
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 35.sp,
+                                        color = Color.White
+                                    )
+                                }
 
-                        Button(onClick = { isEditing = true }, modifier = Modifier.fillMaxWidth()) {
-                            Text("Редактировать")
+                            }
+                            Box(
+                                Modifier.fillMaxWidth()
+                                    .background(Color.White)
+                            )
+                            {
+                                Column(
+                                    Modifier.fillMaxWidth().padding(16.dp).background(Color.White)
+                                ) {
+                                    Text(
+                                        text = "Описание",
+                                        fontFamily = Montserrat,
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 17.sp,
+                                        color = Color.DarkGray
+                                    )
+                                    Text(
+                                        text = event.description,
+                                        fontFamily = Montserrat,
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 21.sp,
+                                        color = Color.DarkGray
+                                    )
+                                    Spacer(modifier = Modifier.height(24.dp))
+                                    Text(
+                                        text = "Дата",
+                                        fontFamily = Montserrat,
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 17.sp,
+                                        color = Color.DarkGray
+                                    )
+                                    Text(
+                                        text = event.time,
+                                        fontFamily = Montserrat,
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 21.sp,
+                                        color = Color.DarkGray
+                                    )
+                                    Spacer(modifier = Modifier.height(24.dp))
+                                    ButtonComponentType1(
+                                        "Редактировать"
+                                    ) {
+                                        isEditing = true
+                                    }
+                                }
+                            }
+//                        Text("Название: ${event.name}", fontSize = 20.sp, fontWeight = FontWeight.Medium)
+//                        Text("Описание: ${event.description}")
+//                        Text("Дата: ${event.time}")
+//                        Spacer(Modifier.height(12.dp))
+
+//                        Button(onClick = { isEditing = true }, modifier = Modifier.fillMaxWidth()) {
+//                            Text("Редактировать")
+//                        }
                         }
 
                         Spacer(Modifier.height(20.dp))
@@ -194,7 +277,7 @@ fun EventScreen(
 
                         EventContactsSection(
                             contacts = contactsModel.contacts,
-                            modifier = Modifier.padding(top = 16.dp),
+                            modifier = Modifier.padding(8.dp),
                             onRemove = {
                                 viewModel.handleEvent(EventPageEvent.RemoveContact(it)) }
                         )
@@ -216,11 +299,8 @@ fun EventScreen(
 
                             item {
                                 Spacer(Modifier.height(8.dp))
-                                Button(
-                                    onClick = { showAddDialog = true },
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text("Добавить напоминание")
+                                ButtonComponentType2("Добавить напоминание") {
+                                    showAddDialog = true
                                 }
                             }
                         }

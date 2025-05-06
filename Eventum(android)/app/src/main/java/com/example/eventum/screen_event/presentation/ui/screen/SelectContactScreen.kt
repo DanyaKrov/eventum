@@ -27,17 +27,28 @@ import com.example.eventum.screen_contacts.domain.model.Contact
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.eventum.screen_contacts.domain.model.ContactsModel
 import com.example.eventum.screen_event.presentation.ui.component.ContactSelectItem
+import com.example.eventum.screen_hello.presentation.ui.components.ButtonComponentType1
+import com.example.eventum.screen_hello.presentation.ui.components.ButtonComponentType2
+import com.example.eventum.ui.theme.Montserrat
+import com.example.eventum.ui.theme.SoftLightOrange
+import com.example.eventum.ui.theme.SoftLightRed
+import com.example.eventum.ui.theme.SoftOrange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,13 +66,8 @@ fun SelectContactScreen(
     }
 
     Column(modifier = modifier) {
-        Button(
-            onClick = {
-                showDropdown = !showDropdown
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Добавить контакты")
+        ButtonComponentType2("Добавить контакты") {
+            showDropdown = !showDropdown
         }
 
         AnimatedVisibility(visible = showDropdown) {
@@ -71,7 +77,9 @@ fun SelectContactScreen(
                     .background(Color(0xFFF8F8F8), RoundedCornerShape(12.dp))
                     .padding(12.dp)
             ) {
-                Text("Выберите контакты:")
+                Text("Выберите контакты:",
+                    fontFamily = Montserrat,
+                    fontWeight = FontWeight.Medium)
                 Spacer(modifier = Modifier.height(8.dp))
 
                 availableContacts.forEach { contact ->
@@ -86,7 +94,10 @@ fun SelectContactScreen(
                                     selectedIds + contact.remoteId
                                 else
                                     selectedIds - contact.remoteId
-                            }
+                            },
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = SoftLightRed
+                            )
                         )
                         Text(contact.name, fontSize = 16.sp)
                     }
@@ -104,8 +115,18 @@ fun SelectContactScreen(
                         showDropdown = false
                     },
                     modifier = Modifier.align(Alignment.End)
+                        .background(
+                            Brush.horizontalGradient(
+                                colors = listOf(
+                                    SoftOrange,
+                                    SoftLightOrange
+                                )),
+                            shape = MaterialTheme.shapes.extraLarge),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
                 ) {
-                    Text("Прикрепить")
+                    Text("Прикрепить",
+                        fontFamily = Montserrat,
+                        fontWeight = FontWeight.Medium)
                 }
             }
         }

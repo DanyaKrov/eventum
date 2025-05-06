@@ -9,18 +9,18 @@ import com.example.eventum.data.local.model.entity.PresentEntity
 
 @Dao
 interface PresentDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(present: PresentEntity)
 
     @Update
     suspend fun update(present: PresentEntity)
 
 
-    @Query("DELETE FROM present WHERE id=:id")
-    suspend fun delete(id: Long)
+    @Query("DELETE FROM present WHERE remoteId=:remoteId")
+    suspend fun delete(remoteId: Long)
 
-    @Query("SELECT * FROM present WHERE id=:id")
-    suspend fun get(id: Long): PresentEntity
+    @Query("SELECT * FROM present WHERE remoteId=:remoteId")
+    suspend fun get(remoteId: Long): PresentEntity
 
     @Query("DELETE FROM present WHERE wishListParentId=:wishListId")
     suspend fun deleteAll(wishListId: Long)

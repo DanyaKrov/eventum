@@ -188,18 +188,6 @@ fun WishListScreen(
 //                        }
 //                    }
                         LazyColumn(Modifier.weight(1f)) {
-                            //временный подарок для проверки шаблона карточки
-                            item {
-                                PresentItem(
-                                    present =
-                                        Present(-1,
-                                            0,
-                                            "test",
-                                            "test desc"),
-                                    {},
-                                    {}
-                                )
-                            }
                             items(model.value.wishList?.presents ?: mutableListOf()) { present ->
                                 PresentItem(
                                     present = present,

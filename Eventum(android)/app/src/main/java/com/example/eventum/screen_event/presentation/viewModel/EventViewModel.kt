@@ -157,6 +157,7 @@ class EventViewModel @Inject constructor(
             is EventPageEvent.EditEvent -> editEvent(event.event)
             is EventPageEvent.CreateNotification -> createNotification(event.notification)
             is EventPageEvent.EditNotification -> updateNotification(event.updatedNotification)
+            is EventPageEvent.RemoveContact -> removeContact(event.contact)
         }
     }
 

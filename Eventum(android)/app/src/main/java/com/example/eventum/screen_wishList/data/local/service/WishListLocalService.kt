@@ -1,5 +1,7 @@
 package com.example.eventum.screen_wishList.data.local.service
 
+import android.util.Log
+import com.example.eventum.data.local.dao.PresentDao
 import com.example.eventum.data.local.dao.WishListDao
 import com.example.eventum.data.local.model.entity.PresentEntity
 import com.example.eventum.data.local.model.entity.WishListEntity
@@ -8,7 +10,8 @@ import com.example.eventum.screen_wishList.data.local.repository.WishListLocalRe
 import javax.inject.Inject
 
 class WishListLocalService @Inject constructor(
-    private val dao: WishListDao
+    private val dao: WishListDao,
+    private val presentDao: PresentDao
 ): WishListLocalRepository {
     override suspend fun getWishList(wishListRemoteId: Long): WishListWithPresents =
         dao.getWishListWithPresents(wishListRemoteId)
@@ -42,7 +45,9 @@ class WishListLocalService @Inject constructor(
     ): Boolean {
         return try {
             dao.insertWishList(wishList)
-            dao.insertPresents(presents)
+            presents.onEach {
+                presentDao.insert(it)
+            }
             true
         }
         catch (e: Exception) {

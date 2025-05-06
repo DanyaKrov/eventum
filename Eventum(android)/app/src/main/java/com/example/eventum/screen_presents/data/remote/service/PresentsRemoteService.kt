@@ -17,7 +17,7 @@ class PresentsRemoteService @Inject constructor(
 
     override suspend fun get(presentId: Long): PresentRemoteResponse = dataSource.getById(presentId)
 
-    override suspend fun delete(presentId: Long): String = dataSource.deleteById(presentId)
+    override suspend fun delete(presentId: Long) = dataSource.deleteById(presentId)
 
     override suspend fun insert(userId: Long, present: PresentRemoteRequest): PresentRemoteResponse =
         dataSource.create(userId, present)

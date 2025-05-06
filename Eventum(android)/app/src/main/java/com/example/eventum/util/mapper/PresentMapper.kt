@@ -11,7 +11,7 @@ import dagger.internal.DaggerGenerated
 @DaggerGenerated
 class PresentMapper {
     fun fromEntityToModel(presentEntity: PresentEntity): Present = Present(
-        id = presentEntity.id,
+        remoteId = presentEntity.remoteId,
         title = presentEntity.title,
         description = presentEntity.description,
         wishListId = presentEntity.wishListParentId
@@ -37,7 +37,7 @@ class PresentMapper {
     )
 
     fun fromRemoteToModel(present: PresentRemoteResponse): Present = Present(
-        id = present.id,
+        remoteId = present.id,
         title = present.title,
         description = present.description
     )
@@ -47,17 +47,10 @@ class PresentMapper {
         description = present.description
     )
 
-    fun fromRemoteToEntity(present: PresentRemoteResponse): PresentEntity = PresentEntity(
+    fun fromRemoteToEntity(present: PresentRemoteResponse, wishListId: Long): PresentEntity = PresentEntity(
         remoteId = present.id,
         title = present.title,
-        description = present.description
-    )
-
-    fun updateEntity(oldPresent: PresentEntity, newPresent: Present): PresentEntity = PresentEntity(
-        newPresent.id,
-        oldPresent.remoteId,
-        oldPresent.wishListParentId,
-        newPresent.title,
-        newPresent.description
+        description = present.description,
+        wishListParentId = wishListId
     )
 }

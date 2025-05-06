@@ -14,10 +14,10 @@ import com.example.eventum.data.local.model.entity.WishListWithPresents
 @Dao
 interface WishListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWishList(user: WishListEntity): Long
+    suspend fun insertWishList(user: WishListEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPresents(events: List<PresentEntity>)
+    suspend fun insertPresents(presents: List<PresentEntity>)
 
     @Update
     suspend fun updateWishList(wishList: WishListEntity)

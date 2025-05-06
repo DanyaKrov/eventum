@@ -97,7 +97,9 @@ fun EventScreen(
         }
     ) { padding ->
         if (eventModel.uiState.isLoading) {
-            Box(modifier = Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {}
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(padding), contentAlignment = Alignment.Center) {}
         } else {
             Column(
                 modifier = Modifier
@@ -182,12 +184,19 @@ fun EventScreen(
 
                         SelectContactScreen(
                             allContacts = availableContactsModel.contacts,
-                            attachedContacts = contactsModel.contacts ?: emptyList(),
+                            attachedContacts = contactsModel.contacts,
                             onAttachContacts = { contacts ->
                                 contacts.forEach {
                                     viewModel.handleEvent(EventPageEvent.AddContact(it))
                                 }
                             }
+                        )
+
+                        EventContactsSection(
+                            contacts = contactsModel.contacts,
+                            modifier = Modifier.padding(top = 16.dp),
+                            onRemove = {
+                                viewModel.handleEvent(EventPageEvent.RemoveContact(it)) }
                         )
 
                         Spacer(Modifier.height(20.dp))
@@ -220,7 +229,7 @@ fun EventScreen(
 
                 if (eventModel.uiState.errorMessage?.isNotBlank() == true) {
                     Spacer(Modifier.height(16.dp))
-                    eventModel.uiState.errorMessage?.let { Text(it, color = Color.Red) }
+                    eventModel.uiState.errorMessage.let { Text(it, color = Color.Red) }
                 }
             }
         }

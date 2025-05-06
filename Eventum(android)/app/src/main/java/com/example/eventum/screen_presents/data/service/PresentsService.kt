@@ -1,5 +1,6 @@
 package com.example.eventum.screen_presents.data.service
 
+import android.util.Log
 import com.example.eventum.screen_presents.data.local.repository.PresentsLocalRepository
 import com.example.eventum.screen_presents.data.remote.repository.PresentsRemoteRepository
 import com.example.eventum.screen_presents.domain.model.Present
@@ -15,10 +16,12 @@ class PresentsService @Inject constructor(
     override suspend fun getPresents(wishListId: Long, forceRefresh: Boolean): List<Present> {
         return if (forceRefresh) {
             try {
-                val remoteEvents = remoteRepository.getAll(wishListId)
+                val remotePresents = remoteRepository.getAll(wishListId)
                 localRepository.deleteAll(wishListId)
-                remoteEvents.forEach {localRepository.insert(mapper.fromRemoteToEntity(it))}
-                remoteEvents.map { mapper.fromRemoteToModel(it) }
+                remotePresents.forEach {
+                    localRepository.insert(mapper.fromRemoteToEntity(it, wishListId))
+                }
+                remotePresents.map { mapper.fromRemoteToModel(it) }
             } catch (e: Exception) {
                 localRepository.getPresents(wishListId).map { mapper.fromEntityToModel(it) }
             }
@@ -28,19 +31,19 @@ class PresentsService @Inject constructor(
                 localEvents.map { mapper.fromEntityToModel(it) }
             } else {
                 val remoteEvents = remoteRepository.getAll(wishListId)
-                remoteEvents.forEach {localRepository.insert(mapper.fromRemoteToEntity(it))}
+                remoteEvents.forEach {localRepository.insert(mapper.fromRemoteToEntity(it, wishListId))}
                 remoteEvents.map { mapper.fromRemoteToModel(it) }
             }
         }
     }
 
     override suspend fun deletePresent(present: Present): String {
-        remoteRepository.delete(present.id)
-        return localRepository.deletePresent(present.id)
+        remoteRepository.delete(present.remoteId)
+        return localRepository.deletePresent(present.remoteId)
     }
 
     override suspend fun editPresent(present: Present): Boolean {
-        remoteRepository.update(present.id, mapper.fromModelToRemoteRequest(present))
+        remoteRepository.update(present.remoteId, mapper.fromModelToRemoteRequest(present))
         return localRepository.updatePresent(mapper.fromModelToEntity(present, present.remoteId))
     }
 

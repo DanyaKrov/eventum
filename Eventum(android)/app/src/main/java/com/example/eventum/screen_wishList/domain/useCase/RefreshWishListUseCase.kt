@@ -12,7 +12,7 @@ import javax.inject.Inject
 class RefreshWishListUseCase @Inject constructor(
     private val repository: WishListRepository
 ) {
-    operator fun invoke(userId: Long, refreshLocalDatabase: Boolean = false): Flow<Resource<WishList>> =
+    operator fun invoke(userId: Long, refreshLocalDatabase: Boolean = true): Flow<Resource<WishList>> =
         flow{
             try {
                 emit(Resource.Loading())

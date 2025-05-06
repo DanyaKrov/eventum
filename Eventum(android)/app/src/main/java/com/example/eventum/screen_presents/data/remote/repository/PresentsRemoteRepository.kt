@@ -9,7 +9,7 @@ import retrofit2.http.Body
 interface PresentsRemoteRepository {
     suspend fun getAll(userId: Long): List<PresentRemoteResponse>
     suspend fun get(presentId: Long): PresentRemoteResponse
-    suspend fun delete(presentId: Long): String
+    suspend fun delete(presentId: Long)
     suspend fun insert(userId: Long, present: PresentRemoteRequest): PresentRemoteResponse
     suspend fun update(id: Long, present: PresentRemoteRequest): String
 }

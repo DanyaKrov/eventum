@@ -23,7 +23,7 @@ data class EventEntity (
     @ColumnInfo("remoteId") val remoteId: Long, // id from mysql database
     val name: String,
     val description: String,
-    val time: String, // "yyyy-MM-dd format
+    val time: String, // yyyy-MM-dd format
     val picture: String,
     val tag: String, // tag of event
     val userRemoteId: Long

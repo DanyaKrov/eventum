@@ -21,7 +21,6 @@ class LoginUseCase @Inject constructor(
             if (result.isFailure)
                 return result
             result.getOrThrow()?.let {
-                Log.i("testing", it.toString())
                 userPreferences.saveUserId(it.id)
                 // if user authorised, he needs to be saved to local database
                 roomUserLocalRepository.insertUser(userMapper.createEntity(it))

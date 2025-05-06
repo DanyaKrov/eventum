@@ -19,7 +19,7 @@ interface PresentsRemoteDataSource {
             PresentRemoteResponse
 
     @DELETE("presents/{id}")
-    suspend fun deleteById(@Path("id") id: Long): String
+    suspend fun deleteById(@Path("id") id: Long)
 
     @GET("wishList/{wishListId}/presents") // later on fix it
     suspend fun getById(@Path("id") presentRemoteId: Long): PresentRemoteResponse

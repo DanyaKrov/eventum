@@ -9,14 +9,14 @@ import kotlinx.coroutines.flow.flow
 import java.io.IOException
 import javax.inject.Inject
 
-class UpdatePresentUseCase @Inject constructor(
+class DeletePresentUseCase @Inject constructor(
     private val repository: PresentsRepository
 ) {
     operator fun invoke(present: Present): Flow<Operation> =
         flow{
             try {
                 emit(Operation.Loading())
-                repository.editPresent(present)
+                repository.deletePresent(present)
                 emit(Operation.Success())
             }
             catch (e: IOException) {

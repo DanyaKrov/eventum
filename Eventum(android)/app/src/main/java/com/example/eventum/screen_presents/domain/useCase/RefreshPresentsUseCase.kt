@@ -16,7 +16,7 @@ import javax.inject.Inject
 class RefreshPresentsUseCase @Inject constructor(
     private val repository: PresentsRepository
 ) {
-    operator fun invoke(wishListId: Long, refreshLocalDatabase: Boolean): Flow<Resource<MutableList<Present>>> =
+    operator fun invoke(wishListId: Long, refreshLocalDatabase: Boolean ): Flow<Resource<MutableList<Present>>> =
         flow{
             try {
                 emit(Resource.Loading())

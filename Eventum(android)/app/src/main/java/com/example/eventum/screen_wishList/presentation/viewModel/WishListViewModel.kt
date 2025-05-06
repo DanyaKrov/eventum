@@ -1,5 +1,6 @@
 package com.example.eventum.screen_wishList.presentation.viewModel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -16,10 +17,13 @@ import com.example.eventum.screen_event.domain.model.NotificationsModel
 import com.example.eventum.screen_presents.domain.model.Present
 import com.example.eventum.screen_wishList.domain.model.WishListModel
 import com.example.eventum.screen_wishList.domain.useCase.AddPresentUseCase
+import com.example.eventum.screen_wishList.domain.useCase.DeletePresentUseCase
 import com.example.eventum.screen_wishList.domain.useCase.RefreshWishListUseCase
+import com.example.eventum.screen_wishList.domain.useCase.UpdatePresentUseCase
 import com.example.eventum.screen_wishList.presentation.event.WishListEvent
 import com.example.eventum.screen_wishList.presentation.event.WishListNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -33,7 +37,9 @@ import javax.inject.Inject
 class WishListViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val refreshWishListUseCase: RefreshWishListUseCase,
-    private val addPresentUseCase: AddPresentUseCase
+    private val addPresentUseCase: AddPresentUseCase,
+    private val deletePresentUseCase: DeletePresentUseCase,
+    private val updatePresentUseCase: UpdatePresentUseCase
 ): ViewModel() {
     // navigation parameters
     private val navigationStatus: MutableStateFlow<String> = MutableStateFlow("")
@@ -46,10 +52,14 @@ class WishListViewModel @Inject constructor(
     }
 
     private fun getWishList() {
-        userPreferences.userIdFlow
+        userPreferences.userIdFlow // state of user Id
+            .onEach { userId ->
+                if (userId == null) // it means no userId presented at the moment
+                    navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_LOGIN_PAGE)
+            }
             .filterNotNull()
             .flatMapLatest { userId ->
-                refreshWishListUseCase(userId)
+                refreshWishListUseCase(userId) // if id changes, contacts update
             }
             .onEach { result ->
                 when (result) {
@@ -68,7 +78,7 @@ class WishListViewModel @Inject constructor(
                         )
                     }
                 }
-            }
+            }.launchIn(viewModelScope)
     }
 
     fun handleEvent(event: WishListEvent) {
@@ -76,9 +86,41 @@ class WishListViewModel @Inject constructor(
             is WishListEvent.ChangeOrderEvent -> TODO()
             is WishListEvent.ChangeVisibility -> TODO()
             is WishListEvent.CreatePresent -> createPresent(event.present)
-            is WishListEvent.DeletePresent -> TODO()
-            is WishListEvent.UpdatePresent -> TODO()
+            is WishListEvent.DeletePresent -> deletePresent(event.present)
+            is WishListEvent.UpdatePresent -> updatePresent(event.present)
         }
+    }
+
+    private fun updatePresent(present: Present) {
+        updatePresentUseCase(present)
+            .filterNotNull()
+            .onEach { result ->
+                when (result) {
+                    is Operation.Success -> {
+                        getWishList()
+                    }
+
+                    is Operation.Loading -> {
+                        _model.value = WishListModel(
+                            wishList = model.value.wishList,
+                            uiState = UiState(isLoading = true)
+                        )
+                    }
+
+                    is Operation.Error -> {
+                        _model.value = WishListModel(
+                            wishList = model.value.wishList,
+                            uiState = UiState(isLoading = false,
+                                errorMessage = result.message ?: "An unexpected error occurred")
+                        )
+                    }
+                }
+            }.launchIn(viewModelScope)
+    }
+
+
+    private fun deletePresent(present: Present) {
+        executeOperation(deletePresentUseCase(present))
     }
 
     private fun createPresent(present: Present) {
@@ -109,6 +151,34 @@ class WishListViewModel @Inject constructor(
                                 }
                             }
                         }
+            }.launchIn(viewModelScope)
+    }
+
+
+    private fun executeOperation(flow: Flow<Operation>) {
+        flow
+            .filterNotNull()
+            .onEach { result ->
+                when (result) {
+                    is Operation.Success -> {
+                        getWishList()
+                    }
+
+                    is Operation.Loading -> {
+                        _model.value = WishListModel(
+                            wishList = model.value.wishList,
+                            uiState = UiState(isLoading = true)
+                        )
+                    }
+
+                    is Operation.Error -> {
+                        _model.value = WishListModel(
+                            wishList = model.value.wishList,
+                            uiState = UiState(isLoading = false,
+                                errorMessage = result.message ?: "An unexpected error occurred")
+                        )
+                    }
+                }
             }.launchIn(viewModelScope)
     }
 

@@ -50,11 +50,11 @@ class LoginViewModel @Inject constructor(
             if (checkRequirements()) {
                 val authRequest = AuthRequest(model.email, model.password)
                 try {
-                    println("Кнопка нажалась")
-                    loginUseCase.execute(authRequest)
-
-                    navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
-                    println("Все хорошо, ошибок нет")
+                    val result = loginUseCase.execute(authRequest)
+                    if (result.isSuccess)
+                        navigationStatus.value = Constants.NAVIGATION_MOVE_TO_MAIN_PAGE
+                    else
+                        model.response.value = "Email or password is incorrect"
                 }
                 catch (e: Exception) {
                     model.response.value = "Email or password is incorrect"

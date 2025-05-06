@@ -1,5 +1,6 @@
 package com.example.eventum.data.local.model.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -15,11 +16,11 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index("wishListParentId"), Index(value = ["remoteId"], unique = true)]
+    indices = [Index("wishListParentId"), Index(value = ["remoteId"], unique = true)],
+    primaryKeys = ["remoteId"]
 )
 data class PresentEntity (
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val remoteId: Long, // id of present from mysql database
+    @ColumnInfo("remoteId") val remoteId: Long, // id of present from mysql database
     val wishListParentId: Long? = null, // id of wishList to whom belongs present
     val title: String,
     val description: String

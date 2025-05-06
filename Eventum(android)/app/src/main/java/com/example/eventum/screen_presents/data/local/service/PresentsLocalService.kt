@@ -1,5 +1,6 @@
 package com.example.eventum.screen_presents.data.local.service
 
+import android.util.Log
 import com.example.eventum.data.local.dao.PresentDao
 import com.example.eventum.data.local.model.entity.PresentEntity
 import com.example.eventum.screen_presents.data.local.repository.PresentsLocalRepository
@@ -17,6 +18,7 @@ class PresentsLocalService @Inject constructor(
     override suspend fun getPresent(presentRemoteId: Long): PresentEntity = dao.get(presentRemoteId)
 
     override suspend fun updatePresent(newPresent: PresentEntity): Boolean {
+        Log.i("testing", newPresent.toString())
         return try {
             dao.update(newPresent)
             true
@@ -26,9 +28,9 @@ class PresentsLocalService @Inject constructor(
         }
     }
 
-    override suspend fun deletePresent(id: Long): String {
+    override suspend fun deletePresent(remoteId: Long): String {
         return try {
-            dao.delete(id)
+            dao.delete(remoteId)
             "Deleted with success"
         }
         catch (e: Exception) {

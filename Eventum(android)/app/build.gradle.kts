@@ -84,6 +84,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.test:core-ktx:1.6.1")
+    implementation("androidx.benchmark:benchmark-macro:1.3.4")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
@@ -131,6 +132,7 @@ dependencies {
 
     // material design
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.compose.foundation:foundation:1.6.1")
     
 }
 

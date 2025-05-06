@@ -16,11 +16,11 @@ interface ContactDao {
     suspend fun update(contact: ContactEntity)
 
 
-    @Query("DELETE FROM contact WHERE id=:id")
-    suspend fun delete(id: Long)
+    @Query("DELETE FROM contact WHERE remoteId=:remoteId")
+    suspend fun delete(remoteId: Long)
 
-    @Query("SELECT * FROM contact WHERE id=:id")
-    suspend fun get(id: Long): ContactEntity
+    @Query("SELECT * FROM contact WHERE remoteId=:remoteId")
+    suspend fun get(remoteId: Long): ContactEntity
 
     @Query("DELETE FROM contact")
     suspend fun deleteAll()

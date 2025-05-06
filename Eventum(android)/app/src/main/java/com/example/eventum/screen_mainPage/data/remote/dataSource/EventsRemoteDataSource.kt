@@ -1,5 +1,6 @@
 package com.example.eventum.screen_mainPage.data.remote.dataSource
 
+import com.example.eventum.data.remote.model.response.ContactRemote
 import com.example.eventum.data.remote.model.response.EventRemote
 import com.example.eventum.screen_mainPage.data.remote.entity.EventRequest
 import retrofit2.http.DELETE
@@ -24,6 +25,10 @@ interface EventsRemoteDataSource {
 
     @DELETE("events/{id}")
     suspend fun deleteById(@Path("id") id: Long)
+
+    @GET("events/{id}/contacts")
+    suspend fun getContacts(@Path("id") id: Long): List<ContactRemote>
+
 
     @PUT("events/{id}/contacts/{contactId}")
     suspend fun addContact(@Path("id") id: Long, @Path("contactId") contactId: Long): EventRemote

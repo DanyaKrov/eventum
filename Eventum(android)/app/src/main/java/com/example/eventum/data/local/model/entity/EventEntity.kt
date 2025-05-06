@@ -1,5 +1,6 @@
 package com.example.eventum.data.local.model.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -16,15 +17,14 @@ import androidx.room.Relation
             childColumns = ["userRemoteId"],
             onDelete = ForeignKey.CASCADE
         )
-    ])
+    ],
+    primaryKeys = ["remoteId"])
 data class EventEntity (
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val remoteId: Long, // id from mysql database
+    @ColumnInfo("remoteId") val remoteId: Long, // id from mysql database
     val name: String,
     val description: String,
     val time: String, // "yyyy-MM-dd format
     val picture: String,
     val tag: String, // tag of event
     val userRemoteId: Long
-    // list of contacts associated
 )

@@ -6,6 +6,6 @@ interface ContactsLocalRepository {
     suspend fun insert(contact: ContactEntity)
     suspend fun getAll(userId: Long): List<ContactEntity>
     suspend fun updateContact(newContact: ContactEntity): String
-    suspend fun deleteContact(id: Long): String
+    suspend fun deleteContact(remoteId: Long): String
     suspend fun deleteAll(): String
 }

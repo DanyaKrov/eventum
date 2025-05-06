@@ -13,7 +13,11 @@ data class EventWithContacts(
     @Relation(
         parentColumn = "remoteId",
         entityColumn = "remoteId",
-        associateBy = Junction(EventContactsCrossRef::class)
+        associateBy = Junction(
+            value = EventContactsCrossRef::class,
+            parentColumn = "eventId",
+            entityColumn = "contactId"
+        )
     )
     val contacts: List<ContactEntity>
 )

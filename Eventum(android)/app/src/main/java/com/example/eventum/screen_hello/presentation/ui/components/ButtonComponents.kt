@@ -20,6 +20,7 @@ import androidx.compose.material3.Card
 //import androidx.compose.material.icons.sharp.SubdirectoryArrowLeft
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -41,59 +42,52 @@ import com.example.eventum.ui.theme.SoftOrange
 
 
 @Composable
-fun ButtonComponentType1(labelvalue: String,
+fun ButtonComponentType1(labelValue: String,
                     clickFunction: () -> Unit) {
-    Text(
-        text = labelvalue,
-        style = TextStyle(color = Color.White),
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(48.dp)
-            .clickable(onClick = clickFunction)
+    Button(
+        onClick = clickFunction,
+        modifier = Modifier.fillMaxWidth()
             .background(
-                Brush.linearGradient(
+                Brush.horizontalGradient(
                     colors = listOf(
                         SoftRed,
                         SoftLightRed
-                    )
-                ),
-                shape = RoundedCornerShape(50.dp)
-            )
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Medium,
-        fontFamily = Montserrat,
-        textAlign = TextAlign.Center
-    )
+                    )),
+                shape = MaterialTheme.shapes.extraLarge),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+
+    ) {
+        Text(labelValue,
+            color = Color.White,
+            fontFamily = Montserrat,
+            fontWeight = FontWeight.Medium,
+            fontSize = 20.sp)
+    }
 
     }
 
 @Composable
-fun ButtonComponentType2(labelvalue: String,
+fun ButtonComponentType2(labelValue: String,
                          clickFunction: () -> Unit) {
-//    Spacer(modifier = Modifier.height(20.dp))
-    Text(
-        text = labelvalue,
-        style = TextStyle(color = Color.Black),
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(54.dp)
-            .clickable(onClick = clickFunction)
+    Button(
+        onClick = clickFunction,
+        modifier = Modifier.fillMaxWidth()
             .background(
-                Brush.verticalGradient(
+                Brush.horizontalGradient(
                     colors = listOf(
                         SoftOrange,
                         SoftLightOrange
-                    )
-                ),
-                shape = RoundedCornerShape(50.dp)
-            )
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Medium,
-        fontFamily = Montserrat,
-        textAlign = TextAlign.Center
-    )
+                    )),
+                shape = MaterialTheme.shapes.extraLarge),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+
+    ) {
+        Text(labelValue,
+            color = Color.DarkGray,
+            fontFamily = Montserrat,
+            fontWeight = FontWeight.Medium,
+            fontSize = 20.sp)
+    }
 }
 
 @Composable

@@ -1,21 +1,26 @@
 package com.example.eventum.screen_profile.presentation.viewModel
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eventum.common.Constants
 import com.example.eventum.data.local.preferences.UserPreferences
+import com.example.eventum.domain.model.Operation
 import com.example.eventum.domain.model.Resource
 import com.example.eventum.domain.model.UiState
+import com.example.eventum.domain.model.User
 import com.example.eventum.screen_mainPage.domain.useCase.GetCurrentUserUseCase
 import com.example.eventum.screen_presents.domain.model.PresentsModel
 import com.example.eventum.screen_profile.domain.model.ProfileModel
 import com.example.eventum.screen_profile.domain.useCase.UpdateUserUseCase
 import com.example.eventum.screen_profile.presentation.event.ProfileEvent
 import com.example.eventum.screen_profile.presentation.event.ProfileNavigationEvent
+import com.example.eventum.screen_wishList.domain.model.WishListModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -59,6 +64,7 @@ class ProfileViewModel @Inject constructor(
                                 result.data?.let { user ->
                                     _model.value = ProfileModel(user = user)
                                 }
+                                Log.i("info", model.value.toString())
                             }
                             is Resource.Loading -> {
                                 _model.value = ProfileModel(uiState = UiState(isLoading = true))
@@ -76,10 +82,12 @@ class ProfileViewModel @Inject constructor(
 
     fun handleEvent(event: ProfileEvent) {
         when(event) {
-            is ProfileEvent.EditEmail -> editEmail(event.email)
-            is ProfileEvent.EditName -> editName(event.name)
-            is ProfileEvent.EditPicture -> editPicture()
+            is ProfileEvent.UpdateUser -> updateUser(event.user)
         }
+    }
+
+    private fun updateUser(user: User) {
+        executeOperation(updateUserUseCase(user))
     }
 
     private fun editPicture() {
@@ -93,25 +101,15 @@ class ProfileViewModel @Inject constructor(
         // saving pictures for users. At remote and local levels
     }
 
-    private fun editName(newName: String) {
-        _model.value.user?.let { user ->
-            user.name = newName
-        }
-    }
-
-    private fun editEmail(newEmail: String) {
-        _model.value.user?.let { user ->
-            user.email = newEmail
-        }
-    }
-
     fun handleNavigationEvent(event: ProfileNavigationEvent) {
         viewModelScope.launch {
             when(event) {
                 is ProfileNavigationEvent.NavigateToContactsPage ->
                     navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_CONTACTS_PAGE)
-                is ProfileNavigationEvent.NavigateToLogInPage ->
-                    navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_LOGIN_PAGE)
+                is ProfileNavigationEvent.ExitFromAccount -> {
+                    navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_HELLO_PAGE)
+                    userPreferences.clearUserId()
+                }
                 is ProfileNavigationEvent.NavigateToMainPage ->
                     navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_MAIN_PAGE)
                 is ProfileNavigationEvent.NavigateToSettingsPage ->
@@ -120,5 +118,32 @@ class ProfileViewModel @Inject constructor(
                     navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_WISHLIST_PAGE)
             }
         }
+    }
+
+    private fun executeOperation(flow: Flow<Operation>) {
+        flow
+            .filterNotNull()
+            .onEach { result ->
+                when (result) {
+                    is Operation.Success -> {
+                        getUserInformation()
+                    }
+
+                    is Operation.Loading -> {
+                        _model.value = ProfileModel(
+                            user = model.value.user,
+                            uiState = UiState(isLoading = true)
+                        )
+                    }
+
+                    is Operation.Error -> {
+                        _model.value = ProfileModel(
+                            user = model.value.user,
+                            uiState = UiState(isLoading = false,
+                                errorMessage = result.message ?: "An unexpected error occurred")
+                        )
+                    }
+                }
+            }.launchIn(viewModelScope)
     }
 }

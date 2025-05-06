@@ -1,7 +1,7 @@
 package com.example.eventum.screen_profile.presentation.event
 
+import com.example.eventum.domain.model.User
+
 sealed class ProfileEvent {
-    class EditName(val name: String): ProfileEvent()
-    class EditEmail(val email: String): ProfileEvent()
-    class EditPicture(): ProfileEvent()
+    class UpdateUser(val user: User): ProfileEvent()
 }

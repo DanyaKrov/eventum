@@ -92,30 +92,7 @@ class WishListViewModel @Inject constructor(
     }
 
     private fun updatePresent(present: Present) {
-        updatePresentUseCase(present)
-            .filterNotNull()
-            .onEach { result ->
-                when (result) {
-                    is Operation.Success -> {
-                        getWishList()
-                    }
-
-                    is Operation.Loading -> {
-                        _model.value = WishListModel(
-                            wishList = model.value.wishList,
-                            uiState = UiState(isLoading = true)
-                        )
-                    }
-
-                    is Operation.Error -> {
-                        _model.value = WishListModel(
-                            wishList = model.value.wishList,
-                            uiState = UiState(isLoading = false,
-                                errorMessage = result.message ?: "An unexpected error occurred")
-                        )
-                    }
-                }
-            }.launchIn(viewModelScope)
+        executeOperation(updatePresentUseCase(present))
     }
 
 

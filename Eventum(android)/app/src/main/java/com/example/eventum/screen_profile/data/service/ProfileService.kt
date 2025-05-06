@@ -15,7 +15,8 @@ class ProfileService @Inject constructor(
 ): ProfileRepository {
     override suspend fun updateUser(user: User): Boolean {
         return if (localRepository.updateUser(mapper.fromModelToEntity(user))) {
-            val response = remoteRepository.updateUser(mapper.fromModelToRemoteEntity(user))
+            val response = remoteRepository.updateUser(user.remoteId,
+                mapper.fromModelToRemoteUpdate(user))
             response.isSuccessful // need to handle errors better
         }
         else

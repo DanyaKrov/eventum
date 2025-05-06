@@ -22,8 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -34,6 +36,7 @@ import com.example.eventum.common.Constants
 import com.example.eventum.screen_hello.presentation.ui.components.ButtonComponentType1
 import com.example.eventum.screen_hello.presentation.ui.components.ButtonComponentType2
 import com.example.eventum.screen_mainPage.presentation.ui.components.ScreenNavigator
+import com.example.eventum.screen_profile.presentation.event.ProfileEvent
 import com.example.eventum.screen_profile.presentation.event.ProfileNavigationEvent
 import com.example.eventum.screen_profile.presentation.ui.component.ProfileCard
 import com.example.eventum.screen_profile.presentation.viewModel.ProfileViewModel
@@ -47,6 +50,7 @@ fun ProfileScreen(
 ) {
     val model = viewModel.model
     val snackbarHostState = remember { SnackbarHostState() }
+    var isEditing by remember { mutableStateOf(false) }
 
     val navigationStatus by viewModel.navigationStatusRead.collectAsState()
     LaunchedEffect(navigationStatus) {
@@ -119,11 +123,11 @@ fun ProfileScreen(
                 Spacer(Modifier.height(17.dp))
                 ButtonComponentType2("Редактировать",)
                 {
-                    TODO()
+                    isEditing = true
                 }
                 Spacer(Modifier.height(20.dp))
                 ButtonComponentType1("Выйти из аккаунта") {
-                    TODO()
+                    viewModel.handleNavigationEvent(ProfileNavigationEvent.ExitFromAccount())
                 }
 
             }
@@ -131,4 +135,5 @@ fun ProfileScreen(
 
         }
     }
+
 }

@@ -2,6 +2,7 @@ package com.example.eventum.util.mapper
 
 import com.example.eventum.data.remote.model.response.UserRemote
 import com.example.eventum.data.local.model.entity.UserEntity
+import com.example.eventum.data.remote.model.request.update.UserRemoteUpdateRequest
 import com.example.eventum.domain.model.User
 import dagger.internal.DaggerGenerated
 
@@ -44,6 +45,12 @@ class UserMapper {
 
     fun fromModelToRemoteEntity(user: User) = UserRemote(
         id = user.remoteId,
+        name = user.name,
+        email = user.email,
+        picture = user.picture
+    )
+
+    fun fromModelToRemoteUpdate(user: User) = UserRemoteUpdateRequest(
         name = user.name,
         email = user.email,
         picture = user.picture

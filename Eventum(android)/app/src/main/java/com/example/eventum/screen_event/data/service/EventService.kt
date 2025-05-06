@@ -39,9 +39,9 @@ class EventService @Inject constructor(
         }
     }
 
-    override suspend fun addContact(event: Event, contact: Contact): Boolean {
-        return localRepository.addContact(event.remoteId, contact.remoteId) &&
-                remoteRepository.addContact(event.remoteId, contact.remoteId)
+    override suspend fun addContact(event: Event, contact: Contact) {
+        localRepository.addContact(event.remoteId, contact.remoteId)
+        remoteRepository.addContact(event.remoteId, contact.remoteId)
     }
 
     override suspend fun removeContact(event: Event, contact: Contact): Boolean =

@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
     indices = [Index(value = ["remoteId"], unique = true), Index("userRemoteId")],
     primaryKeys = ["remoteId"])
 data class ContactEntity(
-    @ColumnInfo("remoteId") val remoteId: Long = 0, // remote id from mysql database
+    @ColumnInfo("remoteId") val remoteId: Long, // remote id from mysql database
     val name: String,
     val userRemoteId: Long,
     val authorisedStatus: Boolean = false, // is contact authorised or not

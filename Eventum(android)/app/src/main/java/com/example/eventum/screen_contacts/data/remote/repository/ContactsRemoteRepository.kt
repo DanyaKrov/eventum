@@ -7,7 +7,7 @@ import com.example.eventum.screen_presents.domain.model.Present
 
 interface ContactsRemoteRepository {
     suspend fun getAll(userId: Long): List<ContactRemote>
-    suspend fun delete(contactId: Long): String
+    suspend fun delete(contactId: Long)
     suspend fun insert(userId: Long, contact: ContactRequest): ContactRemote
     suspend fun update(id: Long, contact: ContactRequest): String
 }

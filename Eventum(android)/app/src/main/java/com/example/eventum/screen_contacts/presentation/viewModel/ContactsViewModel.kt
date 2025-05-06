@@ -1,5 +1,6 @@
 package com.example.eventum.screen_contacts.presentation.viewModel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -105,7 +106,6 @@ class ContactsViewModel @Inject constructor(
                     }
                 }
             }.launchIn(viewModelScope)
-        getContacts() // reload model
     }
 
 
@@ -126,7 +126,6 @@ class ContactsViewModel @Inject constructor(
                     }
                 }
             }.launchIn(viewModelScope)
-        getContacts() // reload model
     }
 
 
@@ -176,7 +175,6 @@ class ContactsViewModel @Inject constructor(
                     }
                 }
             }.launchIn(viewModelScope)
-        getContacts() // reload model
     }
 
 

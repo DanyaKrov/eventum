@@ -22,5 +22,5 @@ interface ContactsRemoteDataSource {
     suspend fun getUserContacts(@Path("id") userId: Long): List<ContactRemote>
 
     @DELETE("contacts/{id}")
-    suspend fun deleteById(@Path("id") id: Long): String
+    suspend fun deleteById(@Path("id") id: Long)
 }

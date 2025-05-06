@@ -1,5 +1,7 @@
 package com.example.eventum.screen_contacts.presentation.ui.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -9,19 +11,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.eventum.screen_contacts.domain.model.Contact
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ContactItem(
     contact: Contact,
-    onEdit: (Contact) -> Unit
+    onEdit: (Contact) -> Unit,
+    onDelete: (Contact) -> Unit
 ) {
     var isEditing by remember { mutableStateOf(false) }
     var editableName by remember { mutableStateOf(contact.name) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 8.dp)) {
-
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+            .combinedClickable(
+                onClick = {},
+                onLongClick = {
+                    showDeleteDialog = true
+                }
+            )
+    ) {
         if (isEditing) {
             OutlinedTextField(
                 value = editableName,
@@ -64,5 +75,26 @@ fun ContactItem(
                 }
             }
         }
+    }
+
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = { Text("Удалить контакт?") },
+            text = { Text("Вы уверены, что хотите удалить этот контакт?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    onDelete(contact)
+                    showDeleteDialog = false
+                }) {
+                    Text("Удалить")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text("Отмена")
+                }
+            }
+        )
     }
 }

@@ -9,7 +9,7 @@ import com.example.eventum.screen_mainPage.domain.model.Event
 
 interface EventRepository {
     suspend fun getEvent(remoteId: Long): Event
-    suspend fun addContact(event: Event, contact: Contact): Boolean
+    suspend fun addContact(event: Event, contact: Contact)
     suspend fun removeContact(event: Event, contact: Contact): Boolean
     suspend fun getEventContacts(event: Event): List<Contact>
     suspend fun updateEvent(newEvent: Event): Boolean

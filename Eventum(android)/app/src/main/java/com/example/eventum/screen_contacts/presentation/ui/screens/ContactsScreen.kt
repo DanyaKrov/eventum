@@ -148,6 +148,9 @@ fun ContactsScreen(
                                     contact = contact,
                                     onEdit = {
                                         viewModel.handleEvent(ContactsEvent.EditContactEvent(it))
+                                    },
+                                    onDelete = {
+                                        viewModel.handleEvent(ContactsEvent.DeleteContactEvent(it))
                                     }
                                 )
                                 Divider()
@@ -181,6 +184,7 @@ fun ContactsScreen(
                                     viewModel.handleEvent(
                                         ContactsEvent.AddContactEvent(
                                             Contact(
+                                                remoteId = 0,
                                                 name = newName,
                                                 userRemoteId = 0
                                             )

@@ -11,7 +11,6 @@ import dagger.internal.DaggerGenerated
 class EventMapper {
     fun entityToPresentableModel(event: EventEntity): Event {
         return Event(
-            event.id,
             event.remoteId,
             event.name,
             event.description,
@@ -24,7 +23,6 @@ class EventMapper {
 
     fun remoteToPresentableModel(event: EventRemote): Event {
         return Event(
-            0,
             event.id,
             event.name,
             event.description,
@@ -47,18 +45,6 @@ class EventMapper {
         )
     }
 
-    fun entityToResponse(event: EventEntity): EventRemote {
-        return EventRemote(
-            event.id,
-            event.name,
-            event.description,
-            event.time,
-            event.picture,
-            event.tag.toLong(),
-            event.userRemoteId
-        )
-    }
-
     fun modelToRequest(event: Event): EventRequest {
         return EventRequest(
             event.name,
@@ -70,7 +56,6 @@ class EventMapper {
     }
 
     fun updateEntity(event: Event) = EventEntity(
-        event.localId,
         event.remoteId,
         event.name,
         event.description,

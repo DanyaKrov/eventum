@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.eventum.screen_event.domain.model.NotificationModel
 import com.example.eventum.screen_event.presentation.event.EventPageEvent
 import com.example.eventum.screen_event.presentation.event.EventPageNavigationEvent
+import com.example.eventum.screen_event.presentation.ui.component.EventContactsSection
 import com.example.eventum.screen_event.presentation.ui.component.NotificationItem
 import com.example.eventum.screen_event.presentation.viewModel.EventViewModel
 import com.example.eventum.screen_hello.presentation.ui.components.BackButton
@@ -51,6 +52,9 @@ fun EventScreen(
 ) {
     val eventModel = viewModel.eventModel.value
     val notificationsModel = viewModel.notificationsModel.value
+    val contactsModel = viewModel.contactsModel.value
+    val availableContactsModel = viewModel.availableContactsModel.value
+
     val context = LocalContext.current
 
     var showAddDialog by remember { mutableStateOf(false) }
@@ -334,6 +338,26 @@ fun EventScreen(
 //                            }
 
 
+                            SelectContactScreen(
+                                allContacts = availableContactsModel.contacts,
+                                attachedContacts = contactsModel.contacts ?: emptyList(),
+                                onAttachContacts = { contacts ->
+                                    contacts.forEach {
+                                        viewModel.handleEvent(EventPageEvent.AddContact(it))
+                                    }
+                                }
+                            )
+
+                        }
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Text("Уведомления",
+                            modifier = Modifier.fillMaxWidth(),
+                            fontFamily = Montserrat,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 21.sp,
+                            color = Color.DarkGray,
+                            textAlign = TextAlign.Center
+                        )
 
                             }
                             Spacer(modifier = Modifier.height(17.dp))

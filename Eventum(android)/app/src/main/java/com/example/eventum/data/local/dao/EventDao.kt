@@ -1,12 +1,15 @@
 package com.example.eventum.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.example.eventum.data.local.model.entity.EventContactsCrossRef
 import com.example.eventum.data.local.model.entity.EventEntity
+import com.example.eventum.data.local.model.entity.EventWithContacts
 import com.example.eventum.data.local.model.entity.EventWithNotificationsEntity
 
 @Dao
@@ -36,4 +39,15 @@ interface EventDao {
     @Transaction
     @Query("SELECT * FROM event WHERE remoteId = :eventId")
     suspend fun getEventWithNotificationsEntity(eventId: Long): EventWithNotificationsEntity
+
+    @Transaction
+    @Query("SELECT * FROM event WHERE remoteId = :eventId")
+    suspend fun getEventWithContactsEntity(eventId: Long): EventWithContacts
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addContactRef(crossRef: EventContactsCrossRef)
+
+    @Delete
+    suspend fun deleteContactRef(crossRef: EventContactsCrossRef)
 }

@@ -24,9 +24,9 @@ class ContactsLocalService @Inject constructor(
         }
     }
 
-    override suspend fun deleteContact(id: Long): String {
+    override suspend fun deleteContact(remoteId: Long): String {
         return try {
-            dao.delete(id)
+            dao.delete(remoteId)
             "Deleted with success"
         }
         catch (e: Exception) {

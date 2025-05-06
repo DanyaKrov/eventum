@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.example.eventum.common.Constants
 import com.example.eventum.screen_contacts.presentation.ui.screens.ContactsScreen
 import com.example.eventum.screen_event.presentation.ui.screen.EventScreen
+import com.example.eventum.screen_event.presentation.ui.screen.SelectContactScreen
 import com.example.eventum.screen_hello.presentation.ui.screens.HelloScreen
 import com.example.eventum.screen_initial.presentation.ui.InitialScreen
 import com.example.eventum.screen_login.presentation.ui.screens.LoginScreen
@@ -32,6 +33,5 @@ fun AppNavHost(navController: NavHostController) {
         composable(Constants.NAVIGATION_MOVE_TO_CONTACTS_PAGE) { ContactsScreen(navController) }
         composable(Constants.NAVIGATION_MOVE_TO_WISHLIST_PAGE) { WishListScreen(navController) }
         composable(Constants.NAVIGATION_MOVE_TO_PROFILE_PAGE) { ProfileScreen(navController) }
-
     }
 }

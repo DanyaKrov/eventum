@@ -138,8 +138,8 @@ class ContactsViewModel @Inject constructor(
 
     private fun sortContacts(contacts: MutableList<Contact>): MutableList<Contact> {
         return when (sortOrder.value) {
-            SortOrder.DATE_ASC -> contacts.sortedBy { it.id }
-            SortOrder.DATE_DESC -> contacts.sortedByDescending { it.id }
+            SortOrder.DATE_ASC -> contacts.sortedBy { it.remoteId }
+            SortOrder.DATE_DESC -> contacts.sortedByDescending { it.remoteId }
             SortOrder.NAME_ASC -> contacts.sortedBy { it.name }
             SortOrder.NAME_DESC -> contacts.sortedByDescending { it.name }
         }.toMutableList()

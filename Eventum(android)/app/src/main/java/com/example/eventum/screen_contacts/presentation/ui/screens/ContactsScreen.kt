@@ -155,7 +155,7 @@ fun ContactsScreen(
                     } else if (model.value.contacts.isEmpty()) {
                         Text("Список контактов пуст", style = MaterialTheme.typography.bodyMedium)
                     } else {
-                        LazyColumn {
+                        LazyColumn(Modifier.weight(1f)) {
                             items(model.value.contacts) { contact ->
                                 ContactItem(
                                     contact = contact,
@@ -185,7 +185,7 @@ fun ContactsScreen(
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(14.dp))
                     Button(
                         onClick = {
                             showAddDialog = true

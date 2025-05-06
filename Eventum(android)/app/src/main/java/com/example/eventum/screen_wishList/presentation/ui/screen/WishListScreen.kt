@@ -2,11 +2,15 @@ package com.example.eventum.screen_wishList.presentation.ui.screen
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -54,7 +58,23 @@ import com.example.eventum.screen_wishList.presentation.viewModel.WishListViewMo
 import kotlinx.coroutines.launch
 import androidx.compose.material3.TextButton as TextButton
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import com.example.eventum.screen_presents.domain.model.Present
+import com.example.eventum.ui.theme.Montserrat
+import com.example.eventum.ui.theme.SoftLightOrange
+import com.example.eventum.ui.theme.SoftLightRed
+import com.example.eventum.ui.theme.SoftOrange
+import com.example.eventum.ui.theme.SoftRed
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,8 +82,10 @@ fun WishListScreen(
     navController: NavHostController = rememberNavController(),
     viewModel: WishListViewModel = hiltViewModel()
 ) {
+
     val model = viewModel.model
     val snackbarHostState = remember { SnackbarHostState() }
+    val rounding = 40.dp
 
     val navigationStatus by viewModel.navigationStatusRead.collectAsState()
     LaunchedEffect(navigationStatus) {
@@ -74,6 +96,9 @@ fun WishListScreen(
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+    var visibility by remember { mutableStateOf(false) }
+    var switchColor by remember { mutableStateOf(SoftRed) }
 
     var showAddDialog by remember { mutableStateOf(false) }
     var newTitle by remember { mutableStateOf("") }
@@ -115,11 +140,6 @@ fun WishListScreen(
                             IconButton(onClick = { scope.launch { drawerState.open() } }) {
                                 Icon(Icons.Default.Menu, contentDescription = "Меню")
                             }
-                        },
-                        actions = {
-                            IconButton(onClick = { showAddDialog = true }) {
-                                Icon(Icons.Default.Add, contentDescription = "Добавить подарок")
-                            }
                         }
                     )
                 }
@@ -130,12 +150,56 @@ fun WishListScreen(
                         .padding(padding)
                         .padding(16.dp)
                 ) {
-                    if (model.value.wishList?.presents.isNullOrEmpty()) {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Text("Список подарков пуст", style = MaterialTheme.typography.bodyMedium)
-                        }
-                    } else {
-                        LazyColumn {
+
+                    Row(Modifier.fillMaxWidth()
+                        .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ){
+                        Text("Видимость",
+                            fontFamily = Montserrat,
+                            fontWeight = FontWeight.Medium,
+                            color = switchColor,
+                            fontSize = 20.sp,
+                            )
+                        Switch(
+                            checked = visibility,
+                            onCheckedChange = {
+//                                viewModel.handleEvent(WishListEvent.ChangeVisibility())
+                                visibility = !visibility
+                                if(visibility) switchColor = Color(0xFF3FC958)
+                                else switchColor = SoftRed
+                            },
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = Color(0xFF3FC958),
+                                checkedTrackColor = Color.White,
+                                uncheckedThumbColor = SoftRed,
+                                uncheckedTrackColor = Color.White,
+                                checkedBorderColor = Color.LightGray,
+                                uncheckedBorderColor = Color.LightGray
+                            )
+                        )
+
+                    }
+
+//                    if (model.value.wishList?.presents.isNullOrEmpty()) {
+//                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+//                            Text("Список подарков пуст", style = MaterialTheme.typography.bodyMedium)
+//                        }
+//                    }
+                        LazyColumn(Modifier.weight(1f)) {
+                            //временный подарок для проверки шаблона карточки
+                            item {
+                                PresentItem(
+                                    present =
+                                        Present(-1,
+                                            0,
+                                            "test",
+                                            "test desc"),
+                                    {},
+                                    {}
+                                )
+                            }
                             items(model.value.wishList?.presents ?: mutableListOf()) { present ->
                                 PresentItem(
                                     present = present,
@@ -148,25 +212,70 @@ fun WishListScreen(
                                 )
                             }
                         }
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    Button(
+                        onClick = {
+                            showAddDialog = true
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                            .background(
+                                Brush.horizontalGradient(
+                                colors = listOf(
+                                    SoftRed,
+                                    SoftLightRed
+                                )),
+                                shape = MaterialTheme.shapes.extraLarge),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+
+                    ) {
+                        Text("Добавить подарок",
+                            color = Color.White,
+                            fontFamily = Montserrat,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 17.sp)
                     }
+//                    }
+
                 }
 
                 if (showAddDialog) {
                     AlertDialog(
                         onDismissRequest = { showAddDialog = false },
-                        title = { Text("Добавить подарок") },
+                        title = { Text("Добавить подарок",
+                            fontFamily = Montserrat,
+                            fontWeight = FontWeight.Medium,) },
                         text = {
                             Column {
                                 OutlinedTextField(
                                     value = newTitle,
                                     onValueChange = { newTitle = it },
-                                    label = { Text("Название") }
+                                    label = { Text("Название",
+                                        fontFamily = Montserrat,
+                                        fontWeight = FontWeight.Medium,) },
+                                    shape = RoundedCornerShape(rounding),
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        focusedBorderColor = Color.Gray,
+                                        unfocusedBorderColor = Color.LightGray,
+                                        focusedLabelColor = Color.Gray,
+                                        unfocusedLabelColor = Color.LightGray
+                                    )
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 OutlinedTextField(
                                     value = newDescription,
                                     onValueChange = { newDescription = it },
-                                    label = { Text("Описание") }
+                                    label = { Text("Описание",
+                                        fontFamily = Montserrat,
+                                        fontWeight = FontWeight.Medium,) },
+                                    shape = RoundedCornerShape(rounding),
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        focusedBorderColor = Color.Gray,
+                                        unfocusedBorderColor = Color.LightGray,
+                                        focusedLabelColor = Color.Gray,
+                                        unfocusedLabelColor = Color.LightGray
+                                    )
                                 )
                             }
                         },
@@ -186,12 +295,18 @@ fun WishListScreen(
                                     }
                                 }
                             ) {
-                                Text("Создать")
+                                Text("Создать",
+                                    fontFamily = Montserrat,
+                                    fontWeight = FontWeight.Medium,
+                                    color = Color.DarkGray)
                             }
                         },
                         dismissButton = {
                             TextButton(onClick = { showAddDialog = false }) {
-                                Text(text = "Отмена")
+                                Text(text = "Отмена",
+                                    fontFamily = Montserrat,
+                                    fontWeight = FontWeight.Medium,
+                                    color = SoftRed)
                             }
                         }
                     )

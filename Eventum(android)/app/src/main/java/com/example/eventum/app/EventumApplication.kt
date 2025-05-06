@@ -13,6 +13,7 @@ import com.example.eventum.screen_hello.presentation.ui.screens.HelloScreen
 import com.example.eventum.screen_initial.presentation.ui.InitialScreen
 import com.example.eventum.screen_login.presentation.ui.screens.LoginScreen
 import com.example.eventum.screen_mainPage.presentation.ui.screens.EventsScreen
+import com.example.eventum.screen_profile.presentation.ui.screen.ProfileScreen
 import com.example.eventum.screen_signUp.presentation.ui.screens.SignUpScreen
 import com.example.eventum.screen_wishList.presentation.ui.screen.WishListScreen
 import dagger.hilt.android.HiltAndroidApp
@@ -31,5 +32,6 @@ fun AppNavHost(navController: NavHostController) {
         composable(Constants.NAVIGATION_MOVE_TO_HELLO_PAGE) { HelloScreen(navController) }
         composable(Constants.NAVIGATION_MOVE_TO_CONTACTS_PAGE) { ContactsScreen(navController) }
         composable(Constants.NAVIGATION_MOVE_TO_WISHLIST_PAGE) { WishListScreen(navController) }
+        composable(Constants.NAVIGATION_MOVE_TO_PROFILE_PAGE) { ProfileScreen(navController) }
     }
 }

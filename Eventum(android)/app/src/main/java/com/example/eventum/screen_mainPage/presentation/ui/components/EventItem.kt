@@ -94,7 +94,7 @@ fun EventItem(event: Event,
                     onLongPress = {
                         showDialog = true
                     },
-                    onDoubleTap = {
+                    onTap = {
                         onShortClick(event)
                     }
                 )

@@ -17,7 +17,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.eventum.screen_contacts.domain.model.Contact
+import com.example.eventum.screen_hello.presentation.ui.components.ButtonComponentType1
+import com.example.eventum.screen_hello.presentation.ui.components.ButtonComponentType2
 import com.example.eventum.ui.theme.Montserrat
 import com.example.eventum.ui.theme.SoftLightOrange
 import com.example.eventum.ui.theme.SoftLightRed
@@ -36,6 +39,7 @@ fun ContactItem(
     var editableLogin by remember { mutableStateOf("") }
 
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showChoice by remember { mutableStateOf(false) }
 
     var authColor by remember { mutableStateOf(SoftLightRed) }
     if (contact.authorisedStatus){
@@ -56,21 +60,24 @@ fun ContactItem(
                         isEditing = true
                     },
                     onLongPress = {
-                        showDeleteDialog = true
+                        showChoice = true
                     }
                 )
             },
 
     ){
         Box(
-            Modifier.fillMaxWidth().background(
-                Brush.horizontalGradient(
-                    colors = listOf(
-                        SoftOrange,
-                        SoftLightOrange
+            Modifier
+                .fillMaxWidth()
+                .background(
+                    Brush.horizontalGradient(
+                        colors = listOf(
+                            SoftOrange,
+                            SoftLightOrange
+                        )
                     )
                 )
-            ).padding(16.dp)
+                .padding(16.dp)
         ) {
             Text(
                 text = contact.name,
@@ -80,7 +87,10 @@ fun ContactItem(
                 color = Color.DarkGray
             )
         }
-        Box(Modifier.fillMaxWidth().background(Color.White).padding(16.dp))
+        Box(Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(16.dp))
         {
             Column(Modifier.fillMaxWidth()) {
                 if (contact.authorisedStatus){
@@ -151,7 +161,37 @@ fun ContactItem(
 //                }
 //            }
 //        }
+    if (showChoice)
+    {
+        AlertDialog(
+            onDismissRequest = { showChoice = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    showChoice = false
+                }) {
+                    Text(
+                        "Отмена",
+                        fontFamily = Montserrat,
+                        fontWeight = FontWeight.Medium,
+                        color = SoftRed
+                    )
+                }
+            },
+            text = {
+                Column(Modifier.fillMaxWidth()) {
+                    ButtonComponentType2("Список подарков") {
+                        TODO()
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    ButtonComponentType1("Удалить контакт") {
+                        showChoice = false
+                        showDeleteDialog = true
+                    }
+                }
 
+            }
+        )
+    }
 
     if (showDeleteDialog) {
         AlertDialog(

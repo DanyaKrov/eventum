@@ -1,6 +1,7 @@
 package com.example.eventum.screen_contacts.presentation.ui.screens
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -45,10 +46,13 @@ import com.example.eventum.screen_mainPage.presentation.ui.components.ScreenNavi
 import com.example.eventum.screen_mainPage.presentation.viewModel.MainPageViewModel
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -57,9 +61,16 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import com.example.eventum.screen_contacts.presentation.event.ContactsEvent
 import com.example.eventum.screen_contacts.presentation.ui.components.ContactItem
+import com.example.eventum.ui.theme.Montserrat
+import com.example.eventum.ui.theme.SoftLightOrange
+import com.example.eventum.ui.theme.SoftOrange
+import com.example.eventum.ui.theme.SoftRed
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,6 +94,8 @@ fun ContactsScreen(
 
     var showAddDialog by remember { mutableStateOf(false) }
     var newName by remember { mutableStateOf("") }
+    var newLogin by remember { mutableStateOf("") }
+
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -153,10 +166,46 @@ fun ContactsScreen(
                                         viewModel.handleEvent(ContactsEvent.DeleteContactEvent(it))
                                     }
                                 )
-                                Divider()
+                                Spacer(Modifier.height(8.dp))
+//                                Divider()
+                            }
+                            //Моковый контакт для авторизированного пользователя
+                            item{
+                                ContactItem(
+                                    contact = Contact(
+                                        0,
+                                        0,
+                                        "Тестовый моковый авторизированный контакт",
+                                        "",
+                                        authorisedStatus = true
+                                    ),
+                                    onEdit = {},
+                                    onDelete = {}
+                                )
                             }
                         }
                     }
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Button(
+                        onClick = {
+                            showAddDialog = true
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                            .background(
+                                Brush.horizontalGradient(
+                                colors = listOf(
+                                    SoftOrange,
+                                    SoftLightOrange
+                                )),
+                                shape = MaterialTheme.shapes.extraLarge),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+
+                    ) {
+                        Text("Добавить контакт",
+                            color = Color.DarkGray)
+                    }
+
+
 
                     if (model.value.errorMessage.isNotBlank()) {
                         Spacer(modifier = Modifier.height(16.dp))
@@ -168,15 +217,43 @@ fun ContactsScreen(
                 if (showAddDialog) {
                     AlertDialog(
                         onDismissRequest = { showAddDialog = false },
-                        title = { Text("Создать контакт") },
+                        title = { Text("Создать контакт",
+                            fontFamily = Montserrat,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.DarkGray) },
                         text = {
-                            OutlinedTextField(
-                                value = newName,
-                                onValueChange = { newName = it },
-                                label = { Text("Имя контакта") },
-                                singleLine = true,
-                                modifier = Modifier.fillMaxWidth()
-                            )
+                            Column(Modifier.fillMaxWidth()) {
+                                OutlinedTextField(
+                                    value = newName,
+                                    onValueChange = { newName = it },
+                                    label = { Text("Имя контакта") },
+                                    singleLine = true,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(40.dp),
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        focusedBorderColor = Color.Gray,
+                                        unfocusedBorderColor = Color.LightGray,
+                                        focusedLabelColor = Color.Gray,
+                                        unfocusedLabelColor = Color.LightGray
+                                    )
+
+                                )
+                                OutlinedTextField(
+                                    value = newLogin,
+                                    onValueChange = { newLogin = it },
+                                    label = { Text("Login (не обязательно)") },
+                                    singleLine = true,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(40.dp),
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        focusedBorderColor = Color.Gray,
+                                        unfocusedBorderColor = Color.LightGray,
+                                        focusedLabelColor = Color.Gray,
+                                        unfocusedLabelColor = Color.LightGray
+                                    )
+                                )
+                            }
+
                         },
                         confirmButton = {
                             TextButton(onClick = {
@@ -194,15 +271,22 @@ fun ContactsScreen(
                                     showAddDialog = false
                                 }
                             }) {
-                                Text("Создать")
+                                Text("Создать",
+                                    fontFamily = Montserrat,
+                                    fontWeight = FontWeight.Medium,
+                                    color = Color.DarkGray)
                             }
                         },
                         dismissButton = {
                             TextButton(onClick = {
                                 showAddDialog = false
                                 newName = ""
+                                newLogin = ""
                             }) {
-                                Text("Отмена")
+                                Text("Отмена",
+                                    fontFamily = Montserrat,
+                                    fontWeight = FontWeight.Medium,
+                                    color = SoftRed)
                             }
                         }
                     )

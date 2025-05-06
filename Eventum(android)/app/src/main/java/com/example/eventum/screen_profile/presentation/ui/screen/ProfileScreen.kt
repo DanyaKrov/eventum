@@ -1,13 +1,13 @@
 package com.example.eventum.screen_profile.presentation.ui.screen
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,21 +24,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.eventum.common.Constants
-import com.example.eventum.screen_mainPage.presentation.event.MainPageEvent
-import com.example.eventum.screen_mainPage.presentation.event.MainPageNavigationEvent
-import com.example.eventum.screen_mainPage.presentation.ui.components.CreateEvent
-import com.example.eventum.screen_mainPage.presentation.ui.components.EventItem
+import com.example.eventum.screen_hello.presentation.ui.components.ButtonComponentType1
+import com.example.eventum.screen_hello.presentation.ui.components.ButtonComponentType2
 import com.example.eventum.screen_mainPage.presentation.ui.components.ScreenNavigator
-import com.example.eventum.screen_mainPage.presentation.viewModel.MainPageViewModel
-import com.example.eventum.screen_profile.presentation.event.ProfileEvent
 import com.example.eventum.screen_profile.presentation.event.ProfileNavigationEvent
+import com.example.eventum.screen_profile.presentation.ui.component.ProfileCard
 import com.example.eventum.screen_profile.presentation.viewModel.ProfileViewModel
 import kotlinx.coroutines.launch
 
@@ -61,6 +58,8 @@ fun ProfileScreen(
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -110,17 +109,26 @@ fun ProfileScreen(
                 )
             }
         ) { padding ->
-            LazyColumn(
+            Column(
                 modifier = Modifier
+                    .fillMaxSize()
                     .padding(padding)
                     .padding(16.dp)
-                    .fillMaxSize()
-            ) {
-
-
-
+            ){
+                ProfileCard(viewModel.model.value.user)
+                Spacer(Modifier.height(17.dp))
+                ButtonComponentType2("Редактировать",)
+                {
+                    TODO()
+                }
+                Spacer(Modifier.height(20.dp))
+                ButtonComponentType1("Выйти из аккаунта") {
+                    TODO()
+                }
 
             }
+
+
         }
     }
 }

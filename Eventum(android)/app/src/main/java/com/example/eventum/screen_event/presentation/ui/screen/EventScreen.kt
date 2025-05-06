@@ -56,20 +56,16 @@ fun EventScreen(
     val availableContactsModel = viewModel.availableContactsModel.value
 
     val context = LocalContext.current
+    val calendar = remember { Calendar.getInstance() }
+    val rounding = 40.dp
 
     var showAddDialog by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
-    var isEditingNotification by remember { mutableStateOf(false) }
-
     var editableTitle by remember { mutableStateOf("") }
     var editableDescription by remember { mutableStateOf("") }
     var editableDate by remember { mutableStateOf("") }
-
     var notificationTitle by remember { mutableStateOf("") }
     var notificationDate by remember { mutableStateOf("") }
-    val calendar = remember { Calendar.getInstance() }
-
-    val rounding = 40.dp
 
     val navigationStatus by viewModel.navigationStatus.collectAsState()
     LaunchedEffect(navigationStatus) {
@@ -89,338 +85,142 @@ fun EventScreen(
     }
 
     Scaffold(
-//        topBar = {
-//            TopAppBar(
-//                title = { Text("Детали события") },
-//                navigationIcon = {
-//                    IconButton(onClick = {
-//                        viewModel.handleNavigationEvent(EventPageNavigationEvent.MoveBack())
-//                    }) {
-//                        Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
-//                    }
-//                },
-//                actions = {
-//                    IconButton(onClick = {
-//                        isEditing = true
-//                    }) {
-//                        Icon(Icons.Default.Edit, contentDescription = "Редактировать")
-//                    }
-//                }
-//            )
-//        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
                     viewModel.handleNavigationEvent(EventPageNavigationEvent.MoveBack())
                 },
-                containerColor = Color.White)
-            {
-                Icon(Icons.Sharp.ArrowBack, contentDescription = "Добавить уведомление")
+                containerColor = Color.White
+            ) {
+                Icon(Icons.Sharp.ArrowBack, contentDescription = "Назад")
             }
         }
     ) { padding ->
         if (eventModel.uiState.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding), contentAlignment = Alignment.Center
-            ) {
-            }
+            Box(modifier = Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {}
         } else {
             Column(
                 modifier = Modifier
                     .padding(padding)
                     .padding(16.dp)
                     .fillMaxSize()
-//                    .background(BackGround)
             ) {
                 eventModel.event?.let { event ->
                     if (isEditing) {
-                        Spacer(Modifier.height(10.dp))
-                        Text("Редактирование события",
-                            fontFamily = Montserrat,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.DarkGray,
-                            fontSize = 25.sp)
-                        Spacer(Modifier.height(10.dp))
+                        Text("Редактирование события", fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                        Spacer(Modifier.height(8.dp))
+
                         OutlinedTextField(
                             value = editableTitle,
                             onValueChange = { editableTitle = it },
-                            label = { Text("Название",
-                                        fontFamily = Montserrat,
-                                        fontWeight = FontWeight.Medium,
-                                    )},
-                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("Название") },
                             shape = RoundedCornerShape(rounding),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                focusedBorderColor = Color.Gray,
-                                unfocusedBorderColor = Color.LightGray,
-                                focusedLabelColor = Color.Gray,
-                                unfocusedLabelColor = Color.LightGray
-                            )
+                            modifier = Modifier.fillMaxWidth()
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Spacer(Modifier.height(8.dp))
                         OutlinedTextField(
                             value = editableDescription,
                             onValueChange = { editableDescription = it },
-                            label = { Text("Описание",
-                                fontFamily = Montserrat,
-                                fontWeight = FontWeight.Medium) },
-                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("Описание") },
                             shape = RoundedCornerShape(rounding),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                focusedBorderColor = Color.Gray,
-                                unfocusedBorderColor = Color.LightGray,
-                                focusedLabelColor = Color.Gray,
-                                unfocusedLabelColor = Color.LightGray
-                            )
+                            modifier = Modifier.fillMaxWidth()
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Spacer(Modifier.height(8.dp))
                         OutlinedTextField(
                             value = editableDate,
                             onValueChange = {},
-                            label = { Text("Дата (yyyy-MM-dd)") },
+                            label = { Text("Дата") },
                             readOnly = true,
-                            shape = RoundedCornerShape(rounding),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                focusedBorderColor = Color.Gray,
-                                unfocusedBorderColor = Color.LightGray,
-                                focusedLabelColor = Color.Gray,
-                                unfocusedLabelColor = Color.LightGray
-                            ),
-                            modifier =  Modifier.fillMaxWidth(),
                             trailingIcon = {
                                 IconButton(onClick = {
                                     DatePickerDialog(
                                         context,
-                                        { _, year, month, dayOfMonth ->
-                                            calendar.set(year, month, dayOfMonth)
-                                            val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                                            editableDate = format.format(calendar.time)
+                                        { _, y, m, d ->
+                                            calendar.set(y, m, d)
+                                            editableDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                                                .format(calendar.time)
                                         },
                                         calendar.get(Calendar.YEAR),
                                         calendar.get(Calendar.MONTH),
                                         calendar.get(Calendar.DAY_OF_MONTH)
                                     ).show()
                                 }) {
-                                    Icon(Icons.Default.CalendarToday, contentDescription = null)
+                                    Icon(Icons.Default.CalendarToday, null)
                                 }
-                            }
+                            },
+                            shape = RoundedCornerShape(rounding),
+                            modifier = Modifier.fillMaxWidth()
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = {
-                            viewModel.handleEvent(EventPageEvent.EditEvent(
-                                event.copy(
+
+                        Spacer(Modifier.height(16.dp))
+                        Button(
+                            onClick = {
+                                viewModel.handleEvent(EventPageEvent.EditEvent(event.copy(
                                     name = editableTitle,
                                     description = editableDescription,
                                     time = editableDate
-                                )
-                            ))
-                            isEditing = false
-                        },
+                                )))
+                                isEditing = false
+                            },
                             modifier = Modifier.fillMaxWidth()
-                                .background(Brush.horizontalGradient(
-                                    colors = listOf(
-                                        SoftRed,
-                                        SoftLightRed
-                                    )),
-                                    shape = MaterialTheme.shapes.extraLarge),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-                            ) {
+                        ) {
                             Text("Сохранить")
                         }
-                    }
-                    else {
-                        Column(Modifier.fillMaxWidth()) {
-                            Card(
-                                shape = RoundedCornerShape(16.dp),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight()
-                                    .padding(8.dp)
-                                    .background(Color.White)
-                            ) {
-                                Box(Modifier.fillMaxWidth().background(
-                                    Brush.horizontalGradient(
-                                        colors = listOf(
-                                            SoftRed,
-                                            SoftLightRed
-                                        )
-                                    )
-                                )
-                                    .padding(16.dp)
-                                )
-                                {
-                                    Column {
-                                        Text(
-                                            text = "Название",
-                                            fontFamily = Montserrat,
-                                            fontWeight = FontWeight.Medium,
-                                            fontSize = 17.sp,
-                                            color = Color.White
-                                        )
-                                        Text(text = event.name,
-                                            fontFamily = Montserrat,
-                                            fontWeight = FontWeight.Medium,
-                                            fontSize = 35.sp,
-                                            color = Color.White)
-                                    }
+                    } else {
+                        Text("Название: ${event.name}", fontSize = 20.sp, fontWeight = FontWeight.Medium)
+                        Text("Описание: ${event.description}")
+                        Text("Дата: ${event.time}")
+                        Spacer(Modifier.height(12.dp))
 
-                                }
-                                Box(Modifier.fillMaxWidth()
-                                    .background(Color.White)
-                                )
-                                {
-                                    Column(
-                                        Modifier.fillMaxWidth().padding(16.dp).background(Color.White)
-                                    ) {
-                                        Text(
-                                            text = "Описание",
-                                            fontFamily = Montserrat,
-                                            fontWeight = FontWeight.Medium,
-                                            fontSize = 17.sp,
-                                            color = Color.DarkGray
-                                        )
-                                        Text(
-                                            text = event.description,
-                                            fontFamily = Montserrat,
-                                            fontWeight = FontWeight.Medium,
-                                            fontSize = 21.sp,
-                                            color = Color.DarkGray
-                                        )
-                                        Spacer(modifier = Modifier.height(24.dp))
-                                        Text(
-                                            text = "Дата",
-                                            fontFamily = Montserrat,
-                                            fontWeight = FontWeight.Medium,
-                                            fontSize = 17.sp,
-                                            color = Color.DarkGray
-                                        )
-                                        Text(
-                                            text = event.time,
-                                            fontFamily = Montserrat,
-                                            fontWeight = FontWeight.Medium,
-                                            fontSize = 21.sp,
-                                            color = Color.DarkGray
-                                        )
-                                        Spacer(modifier = Modifier.height(24.dp))
-                                        Button(
-                                            onClick = {
-                                                isEditing = true
-                                            },
-                                            modifier = Modifier.fillMaxWidth()
-                                                .background(Brush.horizontalGradient(
-                                                    colors = listOf(
-                                                        SoftRed,
-                                                        SoftLightRed
-                                                    )),
-                                                    shape = MaterialTheme.shapes.extraLarge),
-                                            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-
-                                        ) {
-                                            Text("Редактировать",
-                                                color = Color.White)
-                                        }
-                                    }
-                                }
-
-//                            Text(
-//                                text = "Описание: ${event.description}",
-//                                style = MaterialTheme.typography.bodyLarge
-//                            )
-//                            Text(
-//                                text = "Дата: ${event.time}",
-//                                style = MaterialTheme.typography.bodyMedium
-//                            )
-//                            event.tag?.let {
-//                                Text(text = "Тэг: $it", style = MaterialTheme.typography.bodySmall)
-//                            }
-
-
-                            SelectContactScreen(
-                                allContacts = availableContactsModel.contacts,
-                                attachedContacts = contactsModel.contacts ?: emptyList(),
-                                onAttachContacts = { contacts ->
-                                    contacts.forEach {
-                                        viewModel.handleEvent(EventPageEvent.AddContact(it))
-                                    }
-                                }
-                            )
-
+                        Button(onClick = { isEditing = true }, modifier = Modifier.fillMaxWidth()) {
+                            Text("Редактировать")
                         }
-                        Spacer(modifier = Modifier.height(20.dp))
-                        Text("Уведомления",
-                            modifier = Modifier.fillMaxWidth(),
-                            fontFamily = Montserrat,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 21.sp,
-                            color = Color.DarkGray,
-                            textAlign = TextAlign.Center
+
+                        Spacer(Modifier.height(20.dp))
+
+                        SelectContactScreen(
+                            allContacts = availableContactsModel.contacts,
+                            attachedContacts = contactsModel.contacts ?: emptyList(),
+                            onAttachContacts = { contacts ->
+                                contacts.forEach {
+                                    viewModel.handleEvent(EventPageEvent.AddContact(it))
+                                }
+                            }
                         )
 
-                            }
-                            Spacer(modifier = Modifier.height(17.dp))
+                        Spacer(Modifier.height(20.dp))
 
+                        Text("Уведомления", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+                        Spacer(Modifier.height(8.dp))
 
-                            LazyColumn() {
-                                item{
-                                    Text("Уведомления",
-                                        modifier = Modifier.fillMaxWidth(),
-                                        fontFamily = Montserrat,
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 21.sp,
-                                        color = Color.DarkGray,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                                items(notificationsModel.notifications) { notification ->
-                                    NotificationItem(
-                                        notification = notification,
-                                        onEdit = {
-                                            viewModel.handleEvent(EventPageEvent.EditNotification(it))
-                                        },
-                                        onDelete = {
-                                            viewModel.handleEvent(EventPageEvent.DeleteNotification(it))
-                                        }
-                                    )
-//                                Divider()
-                                    Spacer(modifier = Modifier.height(10.dp))
-                                }
-                                item {
-                                    Spacer(modifier = Modifier.height(14.dp))
-                                    Button(
-                                        onClick = {
-                                            showAddDialog = true
-                                        },
-                                        modifier = Modifier.fillMaxWidth()
-                                            .background(Brush.horizontalGradient(
-                                                colors = listOf(
-                                                    SoftOrange,
-                                                    SoftLightOrange
-                                                )),
-                                                shape = MaterialTheme.shapes.extraLarge),
-                                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-
-                                    ) {
-                                        Text("Добавить напоминание",
-                                            color = Color.DarkGray)
-                                    }
-                                }
+                        LazyColumn {
+                            items(notificationsModel.notifications) { notification ->
+                                NotificationItem(
+                                    notification = notification,
+                                    onEdit = { viewModel.handleEvent(EventPageEvent.EditNotification(it)) },
+                                    onDelete = { viewModel.handleEvent(EventPageEvent.DeleteNotification(it)) }
+                                )
+                                Spacer(Modifier.height(8.dp))
                             }
 
+                            item {
+                                Spacer(Modifier.height(8.dp))
+                                Button(
+                                    onClick = { showAddDialog = true },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text("Добавить напоминание")
+                                }
+                            }
                         }
-
-
-
-//                        BackButton { viewModel.handleNavigationEvent(EventPageNavigationEvent.MoveBack()) }
-
                     }
                 }
 
-                if (!eventModel.uiState.errorMessage.isNullOrBlank()) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = eventModel.uiState.errorMessage, color = Color.Red)
+                if (eventModel.uiState.errorMessage?.isNotBlank() == true) {
+                    Spacer(Modifier.height(16.dp))
+                    eventModel.uiState.errorMessage?.let { Text(it, color = Color.Red) }
                 }
             }
         }
@@ -429,6 +229,42 @@ fun EventScreen(
     if (showAddDialog) {
         AlertDialog(
             onDismissRequest = { showAddDialog = false },
+            title = { Text("Новое уведомление") },
+            text = {
+                Column {
+                    OutlinedTextField(
+                        value = notificationTitle,
+                        onValueChange = { notificationTitle = it },
+                        label = { Text("Заголовок") },
+                        shape = RoundedCornerShape(rounding)
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = notificationDate,
+                        onValueChange = {},
+                        label = { Text("Дата") },
+                        readOnly = true,
+                        trailingIcon = {
+                            IconButton(onClick = {
+                                DatePickerDialog(
+                                    context,
+                                    { _, y, m, d ->
+                                        calendar.set(y, m, d)
+                                        notificationDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                                            .format(calendar.time)
+                                    },
+                                    calendar.get(Calendar.YEAR),
+                                    calendar.get(Calendar.MONTH),
+                                    calendar.get(Calendar.DAY_OF_MONTH)
+                                ).show()
+                            }) {
+                                Icon(Icons.Default.CalendarToday, null)
+                            }
+                        },
+                        shape = RoundedCornerShape(rounding)
+                    )
+                }
+            },
             confirmButton = {
                 TextButton(onClick = {
                     if (notificationTitle.isNotBlank() && notificationDate.isNotBlank()) {
@@ -445,78 +281,16 @@ fun EventScreen(
                         notificationTitle = ""
                         notificationDate = ""
                         showAddDialog = false
-                        println("создали напоминание")
                     }
                 }) {
-                    Text("Добавить",
-                        fontFamily = Montserrat,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.DarkGray)
+                    Text("Добавить")
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showAddDialog = false }) {
-                    Text("Отмена",
-                        fontFamily = Montserrat,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.DarkGray)
-                }
-            },
-            title = { Text("Новое уведомление",
-                fontFamily = Montserrat,
-                fontWeight = FontWeight.Medium,) },
-            text = {
-                Column {
-                    OutlinedTextField(
-                        value = notificationTitle,
-                        onValueChange = { notificationTitle = it },
-                        label = { Text("Заголовок",
-                            fontFamily = Montserrat,
-                            fontWeight = FontWeight.Medium) },
-                        shape = RoundedCornerShape(rounding),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.Gray,
-                            unfocusedBorderColor = Color.LightGray,
-                            focusedLabelColor = Color.Gray,
-                            unfocusedLabelColor = Color.LightGray
-                        )
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    OutlinedTextField(
-                        value = notificationDate,
-                        onValueChange = {},
-                        label = { Text("Дата (yyyy-MM-dd)",
-                            fontFamily = Montserrat,
-                            fontWeight = FontWeight.Medium,) },
-                        readOnly = true,
-                        trailingIcon = {
-                            IconButton(onClick = {
-                                DatePickerDialog(
-                                    context,
-                                    { _, year, month, dayOfMonth ->
-                                        calendar.set(year, month, dayOfMonth)
-                                        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                                        notificationDate = format.format(calendar.time)
-                                    },
-                                    calendar.get(Calendar.YEAR),
-                                    calendar.get(Calendar.MONTH),
-                                    calendar.get(Calendar.DAY_OF_MONTH)
-                                ).show()
-                            }) {
-                                Icon(Icons.Default.CalendarToday, contentDescription = null)
-                            }
-                        },
-                        shape = RoundedCornerShape(rounding),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.Gray,
-                            unfocusedBorderColor = Color.LightGray,
-                            focusedLabelColor = Color.Gray,
-                            unfocusedLabelColor = Color.LightGray
-                        )
-                    )
+                    Text("Отмена")
                 }
             }
         )
     }
 }
-

@@ -1,5 +1,6 @@
 package com.example.eventum.screen_contacts.data.local.service
 
+import android.util.Log
 import com.example.eventum.data.local.dao.ContactDao
 import com.example.eventum.data.local.model.entity.ContactEntity
 import com.example.eventum.screen_contacts.data.local.repository.ContactsLocalRepository

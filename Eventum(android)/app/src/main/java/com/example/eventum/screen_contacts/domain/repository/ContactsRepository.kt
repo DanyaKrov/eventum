@@ -6,7 +6,7 @@ import com.example.eventum.screen_presents.domain.model.Present
 
 interface ContactsRepository {
     suspend fun getContacts(userId: Long, forceRefresh: Boolean): List<Contact>
-    suspend fun deleteContact(contactId: Long): String
+    suspend fun deleteContact(contactId: Long)
     suspend fun editContact(contact: Contact): String
     suspend fun createContact(userId: Long, contact: Contact)
 }

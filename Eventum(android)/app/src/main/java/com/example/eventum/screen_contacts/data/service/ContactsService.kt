@@ -19,7 +19,10 @@ class ContactsService @Inject constructor(
             try {
                 val remoteContacts = remoteRepository.getAll(userId)
                 localRepository.deleteAll()
-                remoteContacts.forEach { localRepository.insert(mapper.fromRemoteToEntity(it)) }
+                remoteContacts.forEach {
+                    val entity = mapper.fromRemoteToEntity(it)
+                    localRepository.insert(entity)
+                }
             } catch (e: Exception) {
                 localRepository.getAll(userId).map { mapper.fromEntityToModel(it) }
             }
@@ -34,9 +37,9 @@ class ContactsService @Inject constructor(
 
     }
 
-    override suspend fun deleteContact(contactId: Long): String {
+    override suspend fun deleteContact(contactId: Long) {
         remoteRepository.delete(contactId)
-        return localRepository.deleteContact(contactId)
+        localRepository.deleteContact(contactId)
     }
 
     override suspend fun editContact(contact: Contact): String {
@@ -46,6 +49,7 @@ class ContactsService @Inject constructor(
 
     override suspend fun createContact(userId: Long, contact: Contact) {
         val createdContact = remoteRepository.insert(userId, mapper.fromModelToRequest(contact))
-        localRepository.insert(mapper.fromModelToEntity(contact, createdContact.id))
+        val entity = mapper.fromRemoteToEntity(createdContact)
+        localRepository.insert(entity)
     }
 }

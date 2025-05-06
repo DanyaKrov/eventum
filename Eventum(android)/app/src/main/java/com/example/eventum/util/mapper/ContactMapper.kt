@@ -9,14 +9,17 @@ import dagger.internal.DaggerGenerated
 @DaggerGenerated
 class ContactMapper {
     fun fromEntityToModel(contactEntity: ContactEntity): Contact = Contact(
+        remoteId = contactEntity.remoteId,
         name = contactEntity.name,
-        userRemoteId = contactEntity.userRemoteId
+        userRemoteId = contactEntity.userRemoteId,
+        authorisedStatus = contactEntity.authorisedStatus
     )
 
-    fun fromRemoteToModel(contactEntity: ContactRemote): Contact = Contact(
-        name = contactEntity.name,
-        userRemoteId = contactEntity.hostUserId,
-        authorisedStatus = (contactEntity.friendUser != null)
+    fun fromRemoteToModel(contactRemote: ContactRemote): Contact = Contact(
+        remoteId= contactRemote.id,
+        name = contactRemote.name,
+        userRemoteId = contactRemote.hostUserId,
+        authorisedStatus = (contactRemote.friendUser != null)
     )
 
     fun fromModelToEntity(contact: Contact, remoteId: Long): ContactEntity = ContactEntity(

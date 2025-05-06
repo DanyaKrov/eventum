@@ -15,7 +15,7 @@ class ContactsRemoteService @Inject constructor(
     override suspend fun getAll(userId: Long): List<ContactRemote> =
         dataSource.getUserContacts(userId)
 
-    override suspend fun delete(contactId: Long): String = dataSource.deleteById(contactId)
+    override suspend fun delete(contactId: Long) = dataSource.deleteById(contactId)
 
     override suspend fun insert(userId: Long, contact: ContactRequest): ContactRemote =
         dataSource.create(userId, contact)

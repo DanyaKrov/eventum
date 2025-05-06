@@ -39,8 +39,8 @@ class ProfileViewModel @Inject constructor(
     private val _editImageEvent = MutableStateFlow<Unit?>(null)
     val editImageEvent: StateFlow<Unit?> = _editImageEvent
 
-    private val navigationStatus: MutableSharedFlow<String> = MutableStateFlow("")
-    val navigationStatusRead: MutableSharedFlow<String> = navigationStatus
+    private val navigationStatus: MutableStateFlow<String> = MutableStateFlow("")
+    val navigationStatusRead: StateFlow<String> = navigationStatus
 
 
     init {
@@ -116,6 +116,8 @@ class ProfileViewModel @Inject constructor(
                     navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_MAIN_PAGE)
                 is ProfileNavigationEvent.NavigateToSettingsPage ->
                     navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_SETTINGS_PAGE)
+                is ProfileNavigationEvent.NavigateToWishListPage ->
+                    navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_WISHLIST_PAGE)
             }
         }
     }

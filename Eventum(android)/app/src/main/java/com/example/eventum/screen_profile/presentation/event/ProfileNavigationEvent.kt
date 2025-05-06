@@ -5,4 +5,5 @@ sealed class ProfileNavigationEvent {
     class NavigateToSettingsPage(): ProfileNavigationEvent()
     class NavigateToContactsPage(): ProfileNavigationEvent()
     class NavigateToLogInPage(): ProfileNavigationEvent() // log out button
+    class NavigateToWishListPage():ProfileNavigationEvent()
 }

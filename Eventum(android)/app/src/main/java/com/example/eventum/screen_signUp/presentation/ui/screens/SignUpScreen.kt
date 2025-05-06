@@ -93,7 +93,7 @@ fun SignUpScreen(navController: NavHostController = rememberNavController(),
                 signUpViewModel.handleEvent(SignUpEvent.SecondPasswordChanged(it))
                 println(it)
             }
-            ButtonComponentType1 (labelvalue = stringResource(id = R.string.register)) {
+            ButtonComponentType1 (stringResource(id = R.string.register)) {
                 println("$name, $email, $password, $secondPassword")
                 signUpViewModel.handleEvent(
                     SignUpEvent.SignUpFinished(

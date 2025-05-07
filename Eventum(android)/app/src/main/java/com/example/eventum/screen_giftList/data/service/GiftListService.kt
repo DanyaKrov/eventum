@@ -20,22 +20,24 @@ class GiftListService @Inject constructor(
     private val presentMapper: PresentMapper
     ): GiftListRepository {
     override suspend fun getGifts(contactId: Long, forceRefresh: Boolean): List<Gift> {
-        return if(forceRefresh) {
-            try {
-                updateLocalEntity(contactId)
-            }
-            catch (e: Exception) {
-                getModelFromLocalEntity(contactId)
-            }
-        }
-        else {
-            try {
-                getModelFromLocalEntity(contactId)
-            }
-            catch (e: Exception) {
+        if(forceRefresh) {
+            updateLocalEntity(contactId)
+        } else {
+            val localEvents = localRepository.getGifts(contactId)
+            if (localEvents.isEmpty()) {
                 updateLocalEntity(contactId)
             }
         }
+
+        return localRepository.getGifts(contactId).map {
+            giftMapper.fromEntityToModel(giftEntity = it,
+                present = it.presentRemoteId?.let { it1 -> presentsLocalRepository.getPresent(it1) }
+                    ?.let { it2 ->
+                        presentMapper.fromEntityToModel(
+                            it2
+                        )
+                    },
+                ) }
     }
 
     private suspend fun getModelFromLocalEntity(contactRemoteId: Long): List<Gift> {
@@ -47,12 +49,12 @@ class GiftListService @Inject constructor(
         }
     }
 
-    private suspend fun updateLocalEntity(contactId: Long): List<Gift> {
+    private suspend fun updateLocalEntity(contactId: Long) {
         val remoteGifts = remoteRepository.getGifts(contactId)
+        localRepository.deleteAll()
         remoteGifts.forEach {
-            localRepository.updateGift(giftMapper.fromRemoteToEntity(it))
+            localRepository.createCustomGift(giftMapper.fromRemoteToEntity(it))
         }
-        return remoteGifts.map {giftMapper.fromRemoteToModel(it)}
     }
 
     override suspend fun deleteGift(remoteId: Long): Boolean {

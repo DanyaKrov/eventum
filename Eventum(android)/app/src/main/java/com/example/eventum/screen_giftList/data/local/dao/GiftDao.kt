@@ -16,6 +16,8 @@ interface GiftDao {
     @Update
     suspend fun update(gift: GiftEntity)
 
+    @Query("DELETE FROM gift")
+    suspend fun deleteAll()
 
     @Query("DELETE FROM gift WHERE remoteId=:giftRemoteId")
     suspend fun delete(giftRemoteId: Long)

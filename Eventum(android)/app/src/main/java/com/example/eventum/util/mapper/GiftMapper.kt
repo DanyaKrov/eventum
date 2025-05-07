@@ -23,13 +23,13 @@ class GiftMapper {
             presentTitle = giftRemote.presentTitle
         )
 
-    fun fromEntityToModel(present: Present, giftEntity: GiftEntity, giftStateModel: GiftState? = null): Gift =
+    fun fromEntityToModel(present: Present?, giftEntity: GiftEntity, giftStateModel: GiftState? = null): Gift =
         Gift(
             remoteId = giftEntity.remoteId,
-            presentId = present.remoteId,
+            presentId = present?.remoteId,
             giftState = giftStateModel,
-            presentTitle = present.title,
-            presentDescription = present.description,
+            presentTitle = present?.title ?: "Linked gift",
+            presentDescription = present?.description ?: "",
             contactId = giftEntity.contactRemoteId,
             giftCount = null // later on I will ad counting for gifts
         )

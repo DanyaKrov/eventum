@@ -137,11 +137,11 @@ fun ContactsScreen(
                         }
                     )
                 },
-                floatingActionButton = {
-                    FloatingActionButton(onClick = { showAddDialog = true }) {
-                        Text("+")
-                    }
-                }
+//                floatingActionButton = {
+//                    FloatingActionButton(onClick = { showAddDialog = true }) {
+//                        Text("+")
+//                    }
+//                }
             ) { padding ->
                 Column(
                     modifier = Modifier

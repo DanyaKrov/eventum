@@ -97,7 +97,8 @@ fun WishListScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    var visibility by remember { mutableStateOf(false) }
+    var visibility = model.value.wishList?.visibility ?: false
+
     var switchColor by remember { mutableStateOf(SoftRed) }
 
     var showAddDialog by remember { mutableStateOf(false) }
@@ -165,9 +166,9 @@ fun WishListScreen(
                         Switch(
                             checked = visibility,
                             onCheckedChange = {
-//                                viewModel.handleEvent(WishListEvent.ChangeVisibility())
+                                viewModel.handleEvent(WishListEvent.ChangeVisibility(!visibility))
                                 visibility = !visibility
-                                if(visibility) switchColor = Color(0xFF3FC958)
+                                if (visibility) switchColor = Color(0xFF3FC958)
                                 else switchColor = SoftRed
                             },
                             colors = SwitchDefaults.colors(

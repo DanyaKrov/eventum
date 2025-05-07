@@ -5,5 +5,5 @@ import com.example.eventum.data.remote.model.response.WishListRemoteResponse
 
 interface WishListRemoteRepository {
     suspend fun getWishList(userId: Long): WishListRemoteResponse
-    suspend fun updateWishList(userId: Long, request: WishListRemoteRequest): Boolean
+    suspend fun changeVisibility(userId: Long, wishListRemoteRequest: WishListRemoteRequest)
 }

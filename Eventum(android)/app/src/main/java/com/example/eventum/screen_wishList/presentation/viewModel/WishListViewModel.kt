@@ -1,5 +1,6 @@
 package com.example.eventum.screen_wishList.presentation.viewModel
 
+import android.opengl.Visibility
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +18,7 @@ import com.example.eventum.screen_event.domain.model.NotificationsModel
 import com.example.eventum.screen_presents.domain.model.Present
 import com.example.eventum.screen_wishList.domain.model.WishListModel
 import com.example.eventum.screen_wishList.domain.useCase.AddPresentUseCase
+import com.example.eventum.screen_wishList.domain.useCase.ChangeVisibilityUseCase
 import com.example.eventum.screen_wishList.domain.useCase.DeletePresentUseCase
 import com.example.eventum.screen_wishList.domain.useCase.RefreshWishListUseCase
 import com.example.eventum.screen_wishList.domain.useCase.UpdatePresentUseCase
@@ -39,7 +41,8 @@ class WishListViewModel @Inject constructor(
     private val refreshWishListUseCase: RefreshWishListUseCase,
     private val addPresentUseCase: AddPresentUseCase,
     private val deletePresentUseCase: DeletePresentUseCase,
-    private val updatePresentUseCase: UpdatePresentUseCase
+    private val updatePresentUseCase: UpdatePresentUseCase,
+    private val changeVisibilityUseCase: ChangeVisibilityUseCase
 ): ViewModel() {
     // navigation parameters
     private val navigationStatus: MutableStateFlow<String> = MutableStateFlow("")
@@ -83,13 +86,49 @@ class WishListViewModel @Inject constructor(
 
     fun handleEvent(event: WishListEvent) {
         when (event) {
-            is WishListEvent.ChangeOrderEvent -> TODO()
-            is WishListEvent.ChangeVisibility -> TODO()
+            is WishListEvent.ChangeVisibility -> updateVisibility(event.visibility)
             is WishListEvent.CreatePresent -> createPresent(event.present)
             is WishListEvent.DeletePresent -> deletePresent(event.present)
             is WishListEvent.UpdatePresent -> updatePresent(event.present)
         }
     }
+
+    private fun updateVisibility(visibility: Boolean) {
+        userPreferences.userIdFlow
+            .filterNotNull()
+            .flatMapLatest { userId ->
+                changeVisibilityUseCase(userId, visibility)
+                    .filterNotNull()
+                    .onEach { result ->
+                        when (result) {
+                            is Operation.Success -> {
+                                _model.value = WishListModel(
+                                    wishList = model.value.wishList?.copy(
+                                        visibility = visibility
+                                    ),
+                                    uiState = UiState(isLoading = true)
+                                )
+                            }
+
+                            is Operation.Loading -> {
+                                _model.value = WishListModel(
+                                    wishList = model.value.wishList,
+                                    uiState = UiState(isLoading = true)
+                                )
+                            }
+
+                            is Operation.Error -> {
+                                _model.value = WishListModel(
+                                    wishList = model.value.wishList,
+                                    uiState = UiState(isLoading = false,
+                                        errorMessage = result.message ?: "An unexpected error occurred")
+                                )
+                            }
+                        }
+                    }
+            }.launchIn(viewModelScope)
+    }
+
 
     private fun updatePresent(present: Present) {
         executeOperation(updatePresentUseCase(present))

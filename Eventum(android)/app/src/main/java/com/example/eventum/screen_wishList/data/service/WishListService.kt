@@ -2,6 +2,7 @@ package com.example.eventum.screen_wishList.data.service
 
 import android.util.Log
 import com.example.eventum.data.local.repository.UserLocalRepository
+import com.example.eventum.data.remote.model.request.WishListRemoteRequest
 import com.example.eventum.screen_presents.data.local.repository.PresentsLocalRepository
 import com.example.eventum.screen_wishList.data.local.repository.WishListLocalRepository
 import com.example.eventum.screen_wishList.data.remote.repository.WishListRemoteRepository
@@ -20,9 +21,11 @@ class WishListService @Inject constructor(
     private val presentMapper: PresentMapper
 ): WishListRepository {
     override suspend fun getWishList(userId: Long, forceRefresh: Boolean): WishList {
+        var visibility: Boolean = false
         if (forceRefresh) {
             try {
                 val remoteWishList = remoteRepository.getWishList(userId)
+                visibility = remoteWishList.isAvailable
                 localRepository.deleteWishList(userId)
                 val entity = wishListMapper.fromResponseToEntity(remoteWishList, userId)
                 localRepository.createWishList(entity, remoteWishList.presents.map {
@@ -41,10 +44,11 @@ class WishListService @Inject constructor(
         }
         val wishList = localRepository.getWishList(userId)
         return wishListMapper.fromEntityToModel(wishList = wishList.wishList,
-            presents = wishList.presents.map { presentMapper.fromEntityToModel(it) })
+            presents = wishList.presents.map { presentMapper.fromEntityToModel(it) },
+            visibility = visibility)
     }
 
-    override suspend fun changeVisibility(visibilityCode: String): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun changeVisibility(userId: Long, visibility: Boolean) {
+        remoteRepository.changeVisibility(userId, WishListRemoteRequest(visibility))
     }
 }

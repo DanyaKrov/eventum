@@ -16,19 +16,12 @@ class WishListMapper {
             userId = userId
         )
 
-
-    fun fromResponseToModel(wishList: WishListRemoteResponse, presents: List<Present>, userId: Long): WishList =
-        WishList(
-            remoteId = wishList.id,
-            presents = presents,
-            userId = userId
-        )
-
-    fun fromEntityToModel(wishList: WishListEntity, presents: List<Present>): WishList =
+    fun fromEntityToModel(wishList: WishListEntity, presents: List<Present>, visibility: Boolean): WishList =
         WishList(
             remoteId = wishList.id,
             presents = presents,
             userId = wishList.userId,
+            visibility = visibility
         )
 
     fun fromModelToRemoteRequest(newAvailability: Boolean): WishListRemoteRequest =

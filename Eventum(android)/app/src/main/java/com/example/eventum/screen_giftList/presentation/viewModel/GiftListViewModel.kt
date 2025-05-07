@@ -3,17 +3,22 @@ package com.example.eventum.screen_giftList.presentation.viewModel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.eventum.common.Constants
 import com.example.eventum.data.local.preferences.ContactGiftListPreferences
 import com.example.eventum.domain.model.Resource
 import com.example.eventum.domain.model.UiState
 import com.example.eventum.screen_giftList.domain.model.GiftListModel
 import com.example.eventum.screen_giftList.domain.useCase.RefreshGiftList
+import com.example.eventum.screen_giftList.presentation.event.GiftListEvent
+import com.example.eventum.screen_giftList.presentation.event.GiftListNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,5 +60,22 @@ class GiftListViewModel @Inject constructor(
                     }
                 }
             }
+    }
+    fun handleNavigationEvent(event: GiftListNavigationEvent){
+        when(event){
+            is GiftListNavigationEvent.MoveBack -> navigateBack()
+        }
+    }
+    fun handleEvent(event: GiftListEvent){
+        when(event){
+            is GiftListEvent.EditGiftEvent -> TODO()
+            is GiftListEvent.DeleteGiftEvent -> TODO()
+            is GiftListEvent.AddGiftEvent -> TODO()
+        }
+    }
+    private fun navigateBack(){
+        viewModelScope.launch {
+            navigationStatus.emit(Constants.NAVIGATION_MOVE_TO_CONTACTS_PAGE)
+        }
     }
 }

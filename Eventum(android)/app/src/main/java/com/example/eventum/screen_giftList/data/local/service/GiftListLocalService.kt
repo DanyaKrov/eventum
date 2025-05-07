@@ -22,6 +22,8 @@ class GiftListLocalService @Inject constructor(
         }
     }
 
+    override suspend fun deleteAll() = giftDao.deleteAll()
+
     override suspend fun updateGift(gift: GiftEntity): Boolean {
         return try {
             giftDao.update(gift)

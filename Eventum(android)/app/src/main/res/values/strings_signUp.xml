@@ -2,25 +2,25 @@
     <string name="app_name">Eventum</string>
     // sign up page
     <string name="hello">Hello</string>
-    <string name="create_account">Create an account</string>
-    <string name="your_name">Your name</string>
-    <string name="first_name">Your email</string>
+    <string name="create_account">Создать аккаунт</string>
+    <string name="your_name">Ваше имя</string>
+    <string name="first_name">Ваш e-mail</string>
     <string name="second_name">Second name</string>
-    <string name="enter_password">Password</string>
-    <string name="repeat_password">Repeat password</string>
-    <string name="register">Register</string>
+    <string name="enter_password">Пароль</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="register">Регистрация</string>
     <string name="have_account">Have an account? Click here</string>
-    <string name="PasswordsIdentity">Passwords need to be identical</string>
-    <string name="PasswordLength">Passwords need to be at least 8 letters</string>
-    <string name="EmailRequirement">Please enter valid email address</string>
+    <string name="PasswordsIdentity">Пароли должны совпадать</string>
+    <string name="PasswordLength">Пароль должен содержать минимум 8 символов</string>
+    <string name="EmailRequirement">Введите валидный e-mail</string>
     // login page
-    <string name="login_into_account">Login into your account</string>
-    <string name="login">Login</string>
-    <string name="PasswordNotBlank">You need to enter password</string>
-    <string name="EmailNotBlank">You need to enter email</string>
+    <string name="login_into_account">Войти в аккаунт</string>
+    <string name="login">Войти</string>
+    <string name="PasswordNotBlank">Необходимо ввести пароль</string>
+    <string name="EmailNotBlank">Необходимо ввести e-mail</string>
 
-    <string name="Welcome">Welcome to Eventum</string>
-    <string name="SignIn">Sign in</string>
-    <string name="SignUp">Sign up</string>
+    <string name="Welcome">Добро пожаловать в Eventum</string>
+    <string name="SignIn">Вход</string>
+    <string name="SignUp">Регистрация</string>
 
 </resources>

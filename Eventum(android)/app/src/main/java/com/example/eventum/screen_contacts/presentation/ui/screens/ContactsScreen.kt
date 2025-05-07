@@ -165,6 +165,9 @@ fun ContactsScreen(
                                     },
                                     onDelete = {
                                         viewModel.handleEvent(ContactsEvent.DeleteContactEvent(it))
+                                    },
+                                    onExpand = {
+                                        viewModel.handleNavigation(ContactsNavigationEvent.NavigateToContactGiftsPage(it))
                                     }
                                 )
                                 Spacer(Modifier.height(8.dp))

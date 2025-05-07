@@ -3,7 +3,7 @@ package com.example.eventum.screen_giftList.presentation.viewModel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.eventum.data.local.preferences.GiftListPreferences
+import com.example.eventum.data.local.preferences.ContactGiftListPreferences
 import com.example.eventum.domain.model.Resource
 import com.example.eventum.domain.model.UiState
 import com.example.eventum.screen_giftList.domain.model.GiftListModel
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GiftListViewModel @Inject constructor(
     private val refreshGiftList: RefreshGiftList,
-    private val giftListPreferences: GiftListPreferences
+    private val contactPreferences: ContactGiftListPreferences
 ): ViewModel() {
     // navigation parameters
     private val navigationStatus: MutableStateFlow<String> = MutableStateFlow("")
@@ -32,10 +32,10 @@ class GiftListViewModel @Inject constructor(
     }
 
     private fun getGiftList() {
-        giftListPreferences.giftListIdFlow
+        contactPreferences.contactId
             .filterNotNull()
-            .flatMapLatest { giftListId ->
-                refreshGiftList(giftListId)
+            .flatMapLatest { contactId ->
+                refreshGiftList(contactId)
             }
             .onEach { result ->
                 when (result) {

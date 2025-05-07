@@ -21,6 +21,7 @@ object Constants {
     const val NAVIGATION_MOVE_TO_SETTINGS_PAGE = "move_to_settings_page"
     const val NAVIGATION_MOVE_TO_CONTACTS_PAGE = "move_to_contacts_page"
     const val NAVIGATION_MOVE_TO_WISHLIST_PAGE = "move_to_wishlist_page"
+    const val NAVIGATION_MOVE_TO_GIFTLIST_PAGE = "move_to_giftlist_page"
     const val NAVIGATION_MOVE_TO_CONTACT_SELECTION = "move_to_contact_selection"
 
     // Для первого экрана

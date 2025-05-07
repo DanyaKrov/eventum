@@ -5,8 +5,8 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.eventum.data.local.preferences.ContactGiftListPreferences
 import com.example.eventum.data.local.preferences.EventPreferences
-import com.example.eventum.data.local.preferences.GiftListPreferences
 import com.example.eventum.data.local.preferences.SettingsPreferences
 import com.example.eventum.data.remote.RetrofitClient
 import com.example.eventum.data.local.preferences.UserPreferences
@@ -137,8 +137,8 @@ object HiltModule { // dependency injection module for using StringRepository cl
 
     @Provides
     @Singleton
-    fun provideGiftListPreferences(@ApplicationContext context: Context): GiftListPreferences {
-        return GiftListPreferences(context)
+    fun provideGiftListPreferences(@ApplicationContext context: Context): ContactGiftListPreferences {
+        return ContactGiftListPreferences(context)
     }
 
     @Provides

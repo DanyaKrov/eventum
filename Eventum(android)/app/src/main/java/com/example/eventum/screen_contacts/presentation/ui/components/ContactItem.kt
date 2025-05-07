@@ -32,7 +32,8 @@ import com.example.eventum.ui.theme.SoftRed
 fun ContactItem(
     contact: Contact,
     onEdit: (Contact) -> Unit,
-    onDelete: (Contact) -> Unit
+    onDelete: (Contact) -> Unit,
+    onExpand: (Contact) -> Unit
 ) {
     var isEditing by remember { mutableStateOf(false) }
     var editableName by remember { mutableStateOf(contact.name) }
@@ -180,7 +181,7 @@ fun ContactItem(
             text = {
                 Column(Modifier.fillMaxWidth()) {
                     ButtonComponentType2("Список подарков") {
-                        TODO()
+                        onExpand(contact)
                     }
                     Spacer(Modifier.height(8.dp))
                     ButtonComponentType1("Удалить контакт") {

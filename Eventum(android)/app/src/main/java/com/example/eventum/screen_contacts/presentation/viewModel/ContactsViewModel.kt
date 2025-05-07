@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eventum.common.Constants
+import com.example.eventum.data.local.preferences.ContactGiftListPreferences
 import com.example.eventum.domain.model.Resource
 import com.example.eventum.data.local.preferences.UserPreferences
 import com.example.eventum.domain.model.DomainState
@@ -37,7 +38,8 @@ class ContactsViewModel @Inject constructor(
     private val updateContactUseCase: UpdateContactUseCase,
     private val deleteContactUseCase: DeleteContactUseCase,
     private val addContactUseCase: AddContactUseCase,
-    private val userPreferences: UserPreferences
+    private val userPreferences: UserPreferences,
+    private val contactPreferences: ContactGiftListPreferences
 ): ViewModel() {
     // navigation parameters
     private val navigationStatus: MutableStateFlow<String> = MutableStateFlow("")
@@ -184,8 +186,17 @@ class ContactsViewModel @Inject constructor(
             is ContactsNavigationEvent.NavigateToMainPage -> navigateToMainPage()
             is ContactsNavigationEvent.NavigateToProfilePage -> navigateToProfilePage()
             is ContactsNavigationEvent.NavigateToWishListPage -> navigateToWishListPage()
+            is ContactsNavigationEvent.NavigateToContactGiftsPage -> navigateToGiftsPage(event.selectedContact)
         }
     }
+
+    private fun navigateToGiftsPage(selectedContact: Contact) {
+        viewModelScope.launch {
+            contactPreferences.saveContactId(selectedContact.remoteId)
+            navigationStatus.value = Constants.NAVIGATION_MOVE_TO_GIFTLIST_PAGE
+        }
+    }
+
 
     private fun navigateToWishListPage() {
         viewModelScope.launch {

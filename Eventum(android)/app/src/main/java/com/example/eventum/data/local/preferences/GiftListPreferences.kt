@@ -8,26 +8,26 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GiftListPreferences @Inject constructor(
+class ContactGiftListPreferences @Inject constructor(
     context: Context
 ) {
     private val dataStore = context.dataStore
     companion object {
-        private val GIFTLIST_ID_KEY = longPreferencesKey("giftlist_id")
+        private val CONTACT_ID_KEY = longPreferencesKey("contact_id")
     }
 
-    val giftListIdFlow: Flow<Long?> = dataStore.data
+    val contactId: Flow<Long?> = dataStore.data
         .map { preferences ->
-            preferences[GIFTLIST_ID_KEY]
+            preferences[CONTACT_ID_KEY]
         }
 
 
-    suspend fun saveGiftListId(id: Long) {
-        dataStore.edit { preferences -> preferences[GIFTLIST_ID_KEY] = id }
+    suspend fun saveContactId(id: Long) {
+        dataStore.edit { preferences -> preferences[CONTACT_ID_KEY] = id }
     }
 
-    suspend fun clearGiftListId() {
-        dataStore.edit { preferences -> preferences.remove(GIFTLIST_ID_KEY) }
+    suspend fun clearContactId() {
+        dataStore.edit { preferences -> preferences.remove(CONTACT_ID_KEY) }
     }
 
 }

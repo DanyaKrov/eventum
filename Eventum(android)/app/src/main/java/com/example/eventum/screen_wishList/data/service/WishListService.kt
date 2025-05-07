@@ -21,11 +21,9 @@ class WishListService @Inject constructor(
     private val presentMapper: PresentMapper
 ): WishListRepository {
     override suspend fun getWishList(userId: Long, forceRefresh: Boolean): WishList {
-        var visibility: Boolean = false
         if (forceRefresh) {
             try {
                 val remoteWishList = remoteRepository.getWishList(userId)
-                visibility = remoteWishList.isAvailable
                 localRepository.deleteWishList(userId)
                 val entity = wishListMapper.fromResponseToEntity(remoteWishList, userId)
                 localRepository.createWishList(entity, remoteWishList.presents.map {
@@ -44,8 +42,7 @@ class WishListService @Inject constructor(
         }
         val wishList = localRepository.getWishList(userId)
         return wishListMapper.fromEntityToModel(wishList = wishList.wishList,
-            presents = wishList.presents.map { presentMapper.fromEntityToModel(it) },
-            visibility = visibility)
+            presents = wishList.presents.map { presentMapper.fromEntityToModel(it) })
     }
 
     override suspend fun changeVisibility(userId: Long, visibility: Boolean) {

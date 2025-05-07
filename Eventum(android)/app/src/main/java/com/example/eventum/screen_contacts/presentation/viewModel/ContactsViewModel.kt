@@ -11,6 +11,7 @@ import com.example.eventum.data.local.preferences.UserPreferences
 import com.example.eventum.domain.model.DomainState
 import com.example.eventum.domain.model.Operation
 import com.example.eventum.screen_contacts.domain.model.Contact
+import com.example.eventum.screen_contacts.domain.model.ContactRequestModel
 import com.example.eventum.screen_contacts.domain.model.ContactsModel
 import com.example.eventum.screen_contacts.domain.useCase.AddContactUseCase
 import com.example.eventum.screen_contacts.domain.useCase.DeleteContactUseCase
@@ -158,7 +159,7 @@ class ContactsViewModel @Inject constructor(
         }
     }
 
-    private fun addContact(contact: Contact) {
+    private fun addContact(contact: ContactRequestModel) {
         addContactUseCase(userId, contact)
             .filterNotNull()
             .onEach { result ->

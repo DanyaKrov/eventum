@@ -42,7 +42,7 @@ fun ContactItem(
     var showChoice by remember { mutableStateOf(false) }
 
     var authColor by remember { mutableStateOf(SoftLightRed) }
-    if (contact.authorisedStatus){
+    if (contact.userLogin != null){
         authColor = Color(0xFF3FC958)
     }
 
@@ -93,17 +93,17 @@ fun ContactItem(
             .padding(16.dp))
         {
             Column(Modifier.fillMaxWidth()) {
-                if (contact.authorisedStatus){
+                if (contact.userLogin != null){
                     Text("Авторизованный",
                         fontFamily = Montserrat,
                         fontWeight = FontWeight.Medium,
                         color =authColor)
                     Spacer(Modifier.height(8.dp))
-                    Text("Login",
+                    Text("Логин",
                         fontFamily = Montserrat,
                         fontWeight = FontWeight.Medium,
                         color = Color.DarkGray)
-                    Text("Тут логин",
+                    Text(contact.userLogin,
                         fontFamily = Montserrat,
                         fontWeight = FontWeight.Medium,
                         color = Color.DarkGray,
@@ -265,7 +265,7 @@ fun ContactItem(
                         )
                     )
                     Spacer(Modifier.height(8.dp))
-                    if (contact.authorisedStatus) {
+                    if (contact.userLogin != null) {
                         OutlinedTextField(
                             value = editableLogin,
                             onValueChange = { editableLogin = it },

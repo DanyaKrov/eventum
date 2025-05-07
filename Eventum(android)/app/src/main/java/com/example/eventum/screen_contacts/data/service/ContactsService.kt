@@ -5,6 +5,7 @@ import com.example.eventum.data.remote.model.request.ContactRequest
 import com.example.eventum.screen_contacts.data.local.repository.ContactsLocalRepository
 import com.example.eventum.screen_contacts.data.remote.repository.ContactsRemoteRepository
 import com.example.eventum.screen_contacts.domain.model.Contact
+import com.example.eventum.screen_contacts.domain.model.ContactRequestModel
 import com.example.eventum.screen_contacts.domain.repository.ContactsRepository
 import com.example.eventum.util.mapper.ContactMapper
 import javax.inject.Inject
@@ -43,11 +44,11 @@ class ContactsService @Inject constructor(
     }
 
     override suspend fun editContact(contact: Contact): String {
-        remoteRepository.update(contact.remoteId, mapper.fromModelToRequest(contact))
+        remoteRepository.update(contact.remoteId, mapper.fromModelToUpdateRequest(contact))
         return localRepository.updateContact(mapper.fromModelToEntity(contact, contact.remoteId))
     }
 
-    override suspend fun createContact(userId: Long, contact: Contact) {
+    override suspend fun createContact(userId: Long, contact: ContactRequestModel) {
         val createdContact = remoteRepository.insert(userId, mapper.fromModelToRequest(contact))
         val entity = mapper.fromRemoteToEntity(createdContact)
         localRepository.insert(entity)

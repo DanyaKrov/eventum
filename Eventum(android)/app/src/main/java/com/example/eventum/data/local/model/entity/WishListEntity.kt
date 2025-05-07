@@ -11,7 +11,8 @@ import androidx.room.Relation
 data class WishListEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val remoteId: Long, // id from mysql database
-    val userId: Long
+    val userId: Long,
+    val visibility: Boolean = false
 )
 
 data class WishListWithPresents(

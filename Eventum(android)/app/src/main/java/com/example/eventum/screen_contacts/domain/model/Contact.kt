@@ -5,6 +5,6 @@ data class Contact(
     val userRemoteId: Long,
     val name: String,
     val picture: String = "",
-    val authorisedStatus: Boolean = false, // is contact authorised or not
+    val userLogin: String? = null, // is contact authorised or not
     val tag: String = ""
 )

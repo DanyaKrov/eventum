@@ -4,6 +4,7 @@ import com.example.eventum.data.local.model.entity.ContactEntity
 import com.example.eventum.data.remote.model.request.ContactRequest
 import com.example.eventum.data.remote.model.response.ContactRemote
 import com.example.eventum.screen_contacts.domain.model.Contact
+import com.example.eventum.screen_contacts.domain.model.ContactRequestModel
 import dagger.internal.DaggerGenerated
 
 @DaggerGenerated
@@ -12,14 +13,14 @@ class ContactMapper {
         remoteId = contactEntity.remoteId,
         name = contactEntity.name,
         userRemoteId = contactEntity.userRemoteId,
-        authorisedStatus = contactEntity.authorisedStatus
+        userLogin = contactEntity.userLogin
     )
 
     fun fromRemoteToModel(contactRemote: ContactRemote): Contact = Contact(
         remoteId= contactRemote.id,
         name = contactRemote.name,
         userRemoteId = contactRemote.hostUserId,
-        authorisedStatus = (contactRemote.friendUser != null)
+        userLogin = contactRemote.friendUser?.name
     )
 
     fun fromModelToEntity(contact: Contact, remoteId: Long): ContactEntity = ContactEntity(
@@ -31,11 +32,16 @@ class ContactMapper {
     fun fromRemoteToEntity(contact: ContactRemote): ContactEntity = ContactEntity(
         remoteId = contact.id,
         name = contact.name,
-        userRemoteId = contact.hostUserId
+        userRemoteId = contact.hostUserId,
+        userLogin = contact.friendUser?.name
     )
 
-    fun fromModelToRequest(contact: Contact): ContactRequest = ContactRequest(
+    fun fromModelToUpdateRequest(contact: Contact): ContactRequest = ContactRequest(
         contact.name
-        // need to handle if contact based on existing user
+    )
+
+    fun fromModelToRequest(contact: ContactRequestModel): ContactRequest = ContactRequest(
+        contact.name,
+        contact.authorisedLogin
     )
 }

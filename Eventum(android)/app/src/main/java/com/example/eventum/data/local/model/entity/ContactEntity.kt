@@ -21,6 +21,6 @@ data class ContactEntity(
     @ColumnInfo("remoteId") val remoteId: Long, // remote id from mysql database
     val name: String,
     val userRemoteId: Long,
-    val authorisedStatus: Boolean = false, // is contact authorised or not
+    val userLogin: String? = null, // is contact authorised or not
     val tag: String = ""
 )

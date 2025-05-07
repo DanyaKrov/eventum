@@ -13,15 +13,16 @@ class WishListMapper {
     fun fromResponseToEntity(wishList: WishListRemoteResponse, userId: Long): WishListEntity =
         WishListEntity(
             remoteId = wishList.id,
-            userId = userId
+            userId = userId,
+            visibility = wishList.isAvailable
         )
 
-    fun fromEntityToModel(wishList: WishListEntity, presents: List<Present>, visibility: Boolean): WishList =
+    fun fromEntityToModel(wishList: WishListEntity, presents: List<Present>): WishList =
         WishList(
             remoteId = wishList.id,
             presents = presents,
             userId = wishList.userId,
-            visibility = visibility
+            visibility = wishList.visibility
         )
 
     fun fromModelToRemoteRequest(newAvailability: Boolean): WishListRemoteRequest =
@@ -31,6 +32,7 @@ class WishListMapper {
     fun fromModelToEntity(wishList: WishList): WishListEntity =
         WishListEntity(
             remoteId = wishList.remoteId,
-            userId = wishList.userId
+            userId = wishList.userId,
+            visibility = wishList.visibility
         )
 }

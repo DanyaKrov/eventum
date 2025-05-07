@@ -65,6 +65,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import com.example.eventum.screen_contacts.domain.model.ContactRequestModel
 import com.example.eventum.screen_contacts.presentation.event.ContactsEvent
 import com.example.eventum.screen_contacts.presentation.ui.components.ContactItem
 import com.example.eventum.ui.theme.Montserrat
@@ -169,20 +170,6 @@ fun ContactsScreen(
                                 Spacer(Modifier.height(8.dp))
 //                                Divider()
                             }
-                            //Моковый контакт для авторизированного пользователя
-                            item{
-                                ContactItem(
-                                    contact = Contact(
-                                        0,
-                                        0,
-                                        "Тестовый моковый авторизированный контакт",
-                                        "",
-                                        authorisedStatus = true
-                                    ),
-                                    onEdit = {},
-                                    onDelete = {}
-                                )
-                            }
                         }
                     }
                     Spacer(modifier = Modifier.height(14.dp))
@@ -260,15 +247,15 @@ fun ContactsScreen(
                                 if (newName.isNotBlank()) {
                                     viewModel.handleEvent(
                                         ContactsEvent.AddContactEvent(
-                                            Contact(
-                                                remoteId = 0,
+                                            ContactRequestModel(
                                                 name = newName,
-                                                userRemoteId = 0
+                                                authorisedLogin = newLogin.takeIf { it != "" }
                                             )
                                         )
                                     )
                                     newName = ""
                                     showAddDialog = false
+                                    newLogin = ""
                                 }
                             }) {
                                 Text("Создать",

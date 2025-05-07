@@ -100,6 +100,7 @@ fun WishListScreen(
     var visibility = model.value.wishList?.visibility ?: false
 
     var switchColor by remember { mutableStateOf(SoftRed) }
+    if (visibility) switchColor = Color(0xFF3FC958)
 
     var showAddDialog by remember { mutableStateOf(false) }
     var newTitle by remember { mutableStateOf("") }
